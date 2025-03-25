@@ -2,7 +2,7 @@
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "4ac939b3b0291c121505f442904a891ee24a2ace"
+project_hash = "25896820302f1cb93077856988991fe9eeb4eb07"
 
 [[deps.AbstractAlgebra]]
 deps = ["InteractiveUtils", "LinearAlgebra", "MacroTools", "Preferences", "Random", "RandomExtensions", "SparseArrays", "Test"]
@@ -549,6 +549,18 @@ git-tree-sha1 = "55c53be97790242c29031e5cd45e8ac296dadda3"
 uuid = "2e76f6c2-a576-52d4-95c1-20adfe4de566"
 version = "8.5.0+0"
 
+[[deps.HiGHS]]
+deps = ["HiGHS_jll", "MathOptInterface", "PrecompileTools", "SparseArrays"]
+git-tree-sha1 = "219becee955e18b349be83d74bdd2e5ad4804d0f"
+uuid = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
+version = "1.15.0"
+
+[[deps.HiGHS_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl", "Zlib_jll"]
+git-tree-sha1 = "72bceb63d4ae3683f091f812b6958a199c494a1b"
+uuid = "8fd58aa0-07eb-5a78-9b36-339c94fd15ea"
+version = "1.10.0+0"
+
 [[deps.HostCPUFeatures]]
 deps = ["BitTwiddlingConvenienceFunctions", "IfElse", "Libdl", "Static"]
 git-tree-sha1 = "8e070b599339d622e9a081d17230d74a5c473293"
@@ -971,6 +983,12 @@ version = "0.3.4"
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 version = "2023.12.12"
+
+[[deps.MultiwayNumberPartitioning]]
+deps = ["JuMP", "LinearAlgebra"]
+git-tree-sha1 = "dcde365c18d0d09d258f6897e8dfb48b95c43c0c"
+uuid = "76062700-569f-48fc-9444-88b66f57fbe9"
+version = "0.1.1"
 
 [[deps.MutableArithmetics]]
 deps = ["LinearAlgebra", "SparseArrays", "Test"]
