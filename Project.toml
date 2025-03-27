@@ -12,6 +12,7 @@ GraphsFlows = "06909019-6f44-4949-96fc-b9d9aaa02889"
 HiGHS = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
 MultiwayNumberPartitioning = "76062700-569f-48fc-9444-88b66f57fbe9"
 QuantumClifford = "0525e862-1e90-11e9-3e4d-1b39d7109de1"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
 Colors = "0.13.0"
@@ -19,3 +20,4 @@ Graphs = "1.12.0"
 GraphsFlows = "0.1.1"
 HiGHS = "1.15.0"
 MultiwayNumberPartitioning = "0.1.1"
+Random = "1.11.0"

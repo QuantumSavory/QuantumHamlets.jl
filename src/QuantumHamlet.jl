@@ -6,6 +6,7 @@ using GraphsFlows
 using GraphMakie
 using Colors
 using MultiwayNumberPartitioning, HiGHS
+using Random
 
 greet() = print("(|To be> + |not to be>)/√2")
 
@@ -66,8 +67,8 @@ function quantumLand(citizenRegistry::Dict, numVillages::Int, numVillagers::Int)
 end
 
 function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph) 
-    println(land)
-    println(graph)
+    #println(land)
+    #println(graph)
     
     edgecolors = [:black for _ in 1:ne(graph)]
 
@@ -79,8 +80,20 @@ function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph)
         end
     end
 
-    println("Naive cost is ", cost)
+    #println("Naive cost is ", cost)
     return cost, edgecolors
+end
+
+function k_partition_random(g::Graphs.Graph, k)
+    nodes = shuffle(collect(1:nv(g)))
+    new_reg = Dict()
+    cap = Int(nv(g)/k) # Assuming the graph can be equally partitioned
+    for i in 1:k
+        for j in 1:cap
+            new_reg[nodes[(i-1)*cap+j]] = i
+        end
+    end
+    return new_reg
 end
 
 function k_partition_saran_vazirani(g::Graphs.Graph, k)
