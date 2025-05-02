@@ -83,6 +83,7 @@ function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph)
     return cost, edgecolors
 end
 
+# TODO extend this to work for k>2
 function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
     local_removed_g = remove_local_edges(land, g)
     edgecolors = [:black for _ in 1:ne(g)]
