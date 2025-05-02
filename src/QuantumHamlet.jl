@@ -54,9 +54,11 @@ end
 struct quantumLand
     villages::Vector{quantumVillage}
     registry::Dict{Int,Int}
+    numVillages::Int
+    numVillagers::Int
 end
 function quantumLand(citizenRegistry::Dict, numVillages::Int, numVillagers::Int)
-    land = quantumLand([quantumVillage(i) for i in 1:numVillages],citizenRegistry)
+    land = quantumLand([quantumVillage(i) for i in 1:numVillages],citizenRegistry, numVillages, numVillagers)
 
     for i in 1:numVillagers
         village_id = citizenRegistry[i]
@@ -67,9 +69,6 @@ function quantumLand(citizenRegistry::Dict, numVillages::Int, numVillagers::Int)
 end
 
 function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph) 
-    #println(land)
-    #println(graph)
-    
     edgecolors = [:black for _ in 1:ne(graph)]
 
     cost = 0
@@ -80,8 +79,18 @@ function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph)
         end
     end
 
-    #println("Naive cost is ", cost)
     return cost, edgecolors
+end
+
+"""Takes a land and a graph, and returns a graph with the intra-village edges removed"""
+function remove_local_edges(land::quantumLand, graph::Graphs.Graph)
+    graph_copy = copy(graph)
+    for e in edges(graph)
+        if land.registry[src(e)] == land.registry[dst(e)]
+            rem_edge!(graph_copy, e)
+        end
+    end
+    return graph_copy
 end
 
 function k_partition_random(g::Graphs.Graph, k)
