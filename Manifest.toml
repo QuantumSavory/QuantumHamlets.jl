@@ -2,7 +2,7 @@
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "02164b47592956cde415a375908ed93e70b718ef"
+project_hash = "34eeef4b7ae330e31f43b8808412bc816f6eec09"
 
 [[deps.AbstractAlgebra]]
 deps = ["InteractiveUtils", "LinearAlgebra", "MacroTools", "Preferences", "Random", "RandomExtensions", "SparseArrays", "Test"]
@@ -94,6 +94,12 @@ deps = ["Compat", "JSON", "Logging", "Printf", "Profile", "Statistics", "UUIDs"]
 git-tree-sha1 = "e38fbc49a620f5d0b660d7f543db1009fe0f8336"
 uuid = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 version = "1.6.0"
+
+[[deps.BipartiteMatching]]
+deps = ["Test"]
+git-tree-sha1 = "ed59a1089657356f29cb64511545b13718050277"
+uuid = "79040ab4-24c8-4c92-950c-d48b5991a0f6"
+version = "0.1.1"
 
 [[deps.BitTwiddlingConvenienceFunctions]]
 deps = ["Static"]
@@ -1231,10 +1237,11 @@ version = "2.11.2"
 deps = ["Combinatorics", "DataStructures", "DocStringExtensions", "Graphs", "HostCPUFeatures", "ILog2", "InteractiveUtils", "LinearAlgebra", "MacroTools", "Nemo", "PrecompileTools", "QuantumInterface", "Random", "SIMD", "SparseArrays", "Statistics", "SumTypes"]
 path = "../QuantumClifford.jl"
 uuid = "0525e862-1e90-11e9-3e4d-1b39d7109de1"
-version = "0.9.9"
+version = "0.9.19"
 
     [deps.QuantumClifford.extensions]
     QuantumCliffordGPUExt = "CUDA"
+    QuantumCliffordHeckeExt = "Hecke"
     QuantumCliffordLDPCDecodersExt = "LDPCDecoders"
     QuantumCliffordMakieExt = "Makie"
     QuantumCliffordPlotsExt = "Plots"
@@ -1244,6 +1251,7 @@ version = "0.9.9"
 
     [deps.QuantumClifford.weakdeps]
     CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+    Hecke = "3e1990a7-5d81-5526-99ce-9ba3ff248f21"
     LDPCDecoders = "3c486d74-64b9-4c60-8b1a-13a564e77efb"
     Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
     Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"

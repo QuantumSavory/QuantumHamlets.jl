@@ -7,6 +7,7 @@ using GraphMakie
 using Colors
 using MultiwayNumberPartitioning, HiGHS
 using Random
+using BipartiteMatching
 
 greet() = print("(|To be> + |not to be>)/√2")
 
@@ -74,6 +75,24 @@ function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph)
     cost = 0
     for (index, e) in enumerate(edges(graph))
         if land.registry[src(e)] != land.registry[dst(e)]
+            cost += 1
+            edgecolors[index] = :red
+        end
+    end
+
+    return cost, edgecolors
+end
+
+function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
+    local_removed_g = remove_local_edges(land, g)
+    edgecolors = [:black for _ in 1:ne(g)]
+    cost = 0
+
+    adj_matrix = BitArray(Graphs.adjacency_matrix(local_removed_g))
+    dict, vect = BipartiteMatching.findmaxcardinalitybipartitematching(adj_matrix)
+
+    for (index, e) in enumerate(edges(g))
+        if vect[src(e)] && vect[dst(e)] && (dict[src(e)] == dst(e))
             cost += 1
             edgecolors[index] = :red
         end
@@ -198,6 +217,36 @@ function edges_spanning_partition(g::Graphs.Graph, v1, v2)
     end
 
     return edges
+end
+
+######################## Visualization functions ######################## 
+function print_graph(g::Graph; edgecolors=nothing, nodecolors=nothing)
+    f, ax, p = graphplot(g,
+                        node_color=nodecolors,
+                        edge_color = edgecolors,
+                        nlabels_align=(:center,:center);
+                        ilabels= collect(1:nv(g)))
+    hidedecorations!(ax); hidespines!(ax); ax.aspect = DataAspect()
+
+    return f
+end
+
+"""Returns a graph with nodes colored to match the village they belong to. Edges are colored red
+to indicate cost. Cost is default any cross village edge. Using a different method can color edges differently.
+For now, only the naive_cost_of_partition() method is supported."""
+function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph; method=QuantumHamlet.naive_cost_of_partition)
+    # This subfunction was generated with ChatGPT
+    function distinct_colors(n::Int)
+        # Generate `n` distinct colors using HSV space
+        return [HSV(i * 360 / n, 0.8, 0.9) for i in 0:n-1] .|> RGB
+    end
+
+    _, edgecolors = method(land,g)
+
+    village_colors = distinct_colors(land.numVillages)
+    nodecolors = [village_colors[land.registry[i]] for i in 1:land.numVillagers]
+    f = print_graph(g, edgecolors=edgecolors, nodecolors=nodecolors)
+    return f
 end
 
 function Base.show(io::IO, land::quantumLand)

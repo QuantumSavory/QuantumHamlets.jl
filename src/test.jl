@@ -12,82 +12,50 @@ function random_graphstate(n::Int)
     return QuantumClifford.graphstate(rand_stab)
 end
 
-# This function was generated with ChatGPT
-function distinct_colors(n::Int)
-    # Generate `n` distinct colors using HSV space
-    return [HSV(i * 360 / n, 0.8, 0.9) for i in 0:n-1] .|> RGB
-end
-
-function print_graph(g::Graph; edgecolors=nothing, nodecolors=nothing)
-    f, ax, p = graphplot(g,
-                        node_color=nodecolors,
-                        edge_color = edgecolors,
-                        nlabels_align=(:center,:center);
-                        ilabels= collect(1:nv(g)))
-    hidedecorations!(ax); hidespines!(ax); ax.aspect = DataAspect()
-
-    return f
-end
-
-"""Returns a graph with nodes colored to match the village they belong to. Edges are colored red
-to indicate cost. Cost is default any cross village edge. Using a different method can color edges differently.
-For now, only the naive_cost_of_partition() method is supported."""
-function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph, method=QuantumHamlet.naive_cost_of_partition)
-    _, edgecolors = method(land,g)
-
-    village_colors = distinct_colors(land.numVillages)
-    nodecolors = [village_colors[land.registry[i]] for i in 1:land.numVillagers]
-    f = print_graph(g, edgecolors=edgecolors, nodecolors=nodecolors)
-    return f
-end
-
 #### Init
-numVillages = 3
-logicalBitsPerVillage = 3
+numVillages = 2
+logicalBitsPerVillage = 5
 reg = QuantumHamlet.defaultVillagerRegistry(numVillages,logicalBitsPerVillage)
 rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 g = rand_graphstate[1]
 village_colors = distinct_colors(numVillages)
 
-#### Random initial labeling 
-land = quantumLand(reg, numVillages, numVillages*logicalBitsPerVillage)
-
-cost, _ = QuantumHamlet.naive_cost_of_partition(land,g)
-f = visualize_graph_on_land(land, g)
-
 #### n/2 approximation algorithm for balanced k partitioning
-new_reg, dump = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
+saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
 
 # TODO instead of creating a new land, maybe add a function to relabel qubits? maybe?
-improvedLand = quantumLand(new_reg, numVillages, numVillages*logicalBitsPerVillage)
+saranLand = quantumLand(saran_reg, numVillages, numVillages*logicalBitsPerVillage)
 
-cost2, _ = QuantumHamlet.naive_cost_of_partition(improvedLand,g)
-f2 = visualize_graph_on_land(improvedLand, g)
+saran_cost, _ = QuantumHamlet.naive_cost_of_partition(saranLand,g)
+f_saran = QuantumHamlet.visualize_graph_on_land(saranLand, g)
 
 #### Random balanced partitionings 
-samples = 50
-worst_cost = 0
-best_cost =  [10000000]
-f_random_best = [f]
-random_costs = []
+function random_sample(g::Graphs.Graph, numVillages, numVillagers; method=QuantumHamlet.naive_cost_of_partition, samples=50)
+    best_cost =  [10000000]
+    f_random_best = [Figure()]
+    random_costs = []
+    best_land = [quantumLand(Dict(), 0, 0)]
 
-for _ in 1:samples
-    random_reg = QuantumHamlet.k_partition_random(g, numVillages)
+    for _ in 1:samples
+        random_reg = QuantumHamlet.k_partition_random(g, numVillages)
+        random_land = quantumLand(random_reg, numVillages, numVillages*numVillagers)
+        random_cost, _ = method(random_land,g)
+        f_random = QuantumHamlet.visualize_graph_on_land(random_land, g, method=method)
 
-    random_land = quantumLand(random_reg, numVillages, numVillages*logicalBitsPerVillage)
+        if random_cost < best_cost[1]
+            println("FOUND BETTER")
+            best_cost[1] = random_cost
+            f_random_best[1] = f_random
+            best_land[1] = random_land
+        end
 
-    random_cost, edgecolors = QuantumHamlet.naive_cost_of_partition(random_land,g)
-
-    nodecolors = [village_colors[random_reg[i]] for i in 1:numVillages*logicalBitsPerVillage]
-    f_random = print_graph(g, edgecolors=edgecolors, nodecolors=nodecolors)
-
-    if random_cost < best_cost[1]
-        println("FOUND BETTER")
-        best_cost[1] = random_cost
-        f_random_best[1] = f_random
+        push!(random_costs, random_cost)
     end
 
-    push!(random_costs, random_cost)
+    return best_land[1], f_random_best[1], random_costs
 end
 
-mean(random_costs)
+best_randomLand_naive, f_random_best_naive, random_costs_naive = random_sample(g, numVillages, logicalBitsPerVillage)
+best_randomLand_matching, f_random_best_matching, random_costs_matching = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.matching_cost_of_partition)
+
+#QuantumHamlet.visualize_graph_on_land(best_randomLand_naive, g, method=QuantumHamlet.matching_cost_of_partition)
