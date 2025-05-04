@@ -125,6 +125,64 @@ function k_partition_random(g::Graphs.Graph, k)
     return new_reg
 end
 
+# TODO currently only supported for k=2
+function bury_heuristic_global(g::Graphs.Graph, k=2)
+    r = nv(g)÷k
+
+    # Node weight initialization
+    weights = [0.0 for _ in 1:nv(g)]
+    colored = [false for _ in 1:nv(g)]
+    for (index,v) in enumerate(vertices(g))
+        weights[index] = degree(g,v) + 1
+    end
+    println("Initial weights and colors:")
+    println("\nWeights table")
+    println(weights)
+    println("Colored table")
+    println(colored)
+
+    # Global greedy selection
+    while sum(colored)<nv(g)÷k
+        println("\n\n###########################\nStarting round. r=", r)
+        cost, choice = findmin(weights)
+        println("Chose vertex ", choice, " for the price of ", cost)
+
+        if r>= cost
+            nbd = vcat(choice,neighbors(g,choice))
+            r -= cost
+        else
+            nbd = choice
+            r -= 1
+        end
+
+        for v in nbd
+            if !colored[v]
+                weights[v] -= 1
+                weights[neighbors(g,v)] .-= 1
+                colored[v] = true
+            end
+        end
+        weights[choice] = Inf
+        println("\nUpdated weights table")
+        println(weights)
+        println("Updated Colored table")
+        println(colored)
+    end
+
+    new_reg = Dict()
+    for i in 1:nv(g)
+        new_reg[i] = colored[i]+1
+    end
+    return new_reg
+end
+
+# TODO currently only supported for k=2
+# This version should run much faster than the gloabal version
+function bury_heuristic_seeded(g::Graphs.Graph, k, v)
+    return
+end
+
+# TODO performance on grid graphs is so bad; I think this might not actually be implemented correctly
 function k_partition_saran_vazirani(g::Graphs.Graph, k)
     d = Graphs.DiGraph(g)
     capacity_matrix = zeros(Int, nv(g), nv(g))
@@ -242,12 +300,12 @@ function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph; method=Quan
         return [HSV(i * 360 / n, 0.8, 0.9) for i in 0:n-1] .|> RGB
     end
 
-    _, edgecolors = method(land,g)
+    cost, edgecolors = method(land,g)
 
     village_colors = distinct_colors(land.numVillages)
     nodecolors = [village_colors[land.registry[i]] for i in 1:land.numVillagers]
     f = print_graph(g, edgecolors=edgecolors, nodecolors=nodecolors)
-    return f
+    return f, cost
 end
 
 function Base.show(io::IO, land::quantumLand)
