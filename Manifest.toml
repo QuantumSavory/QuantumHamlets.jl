@@ -2,7 +2,7 @@
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "34eeef4b7ae330e31f43b8808412bc816f6eec09"
+project_hash = "148a4c5b28520954904d4e61aab0fd322e9e299f"
 
 [[deps.AbstractAlgebra]]
 deps = ["InteractiveUtils", "LinearAlgebra", "MacroTools", "Preferences", "Random", "RandomExtensions", "SparseArrays", "Test"]
@@ -63,6 +63,12 @@ git-tree-sha1 = "d57bd3762d308bded22c3b82d033bff85f6195c6"
 uuid = "ec485272-7323-5ecc-a04f-4719b315124d"
 version = "0.4.0"
 
+[[deps.Arpack_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl", "libblastrampoline_jll"]
+git-tree-sha1 = "29e0db2b70b1878c23dd9787e343bc40a642f873"
+uuid = "68821587-b530-5797-8361-c406ea357684"
+version = "3.9.1+2"
+
 [[deps.Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 version = "1.11.0"
@@ -94,12 +100,6 @@ deps = ["Compat", "JSON", "Logging", "Printf", "Profile", "Statistics", "UUIDs"]
 git-tree-sha1 = "e38fbc49a620f5d0b660d7f543db1009fe0f8336"
 uuid = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 version = "1.6.0"
-
-[[deps.BipartiteMatching]]
-deps = ["Test"]
-git-tree-sha1 = "ed59a1089657356f29cb64511545b13718050277"
-uuid = "79040ab4-24c8-4c92-950c-d48b5991a0f6"
-version = "0.1.1"
 
 [[deps.BitTwiddlingConvenienceFunctions]]
 deps = ["Static"]
@@ -468,6 +468,12 @@ git-tree-sha1 = "846f7026a9decf3679419122b49f8a1fdb48d2d5"
 uuid = "559328eb-81f9-559d-9380-de523a88c83c"
 version = "1.0.16+0"
 
+[[deps.GLPK_jll]]
+deps = ["Artifacts", "GMP_jll", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "6aa6294ba949ccfc380463bf50ff988b46de5bc7"
+uuid = "e8aa6df9-e6ca-548a-97ff-1f85fc5b8b98"
+version = "5.0.1+1"
+
 [[deps.GMP_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "781609d7-10c4-51f6-84f2-b8444358ff6d"
@@ -578,6 +584,12 @@ deps = ["LinearAlgebra", "OpenLibm_jll", "SpecialFunctions"]
 git-tree-sha1 = "2bd56245074fab4015b9174f24ceba8293209053"
 uuid = "34004b35-14d8-5ef3-9330-4cdb6864b03a"
 version = "0.3.27"
+
+[[deps.IGraphs]]
+deps = ["CEnum", "Graphs", "igraph_jll"]
+git-tree-sha1 = "26105e08879910bebf1d3e78e07a00392d1f3649"
+uuid = "647e90d3-2106-487c-adb4-c91fc07b96ea"
+version = "0.10.16"
 
 [[deps.ILog2]]
 git-tree-sha1 = "b4e85db9eaae41cc5683b412b2008b9354307980"
@@ -1686,6 +1698,12 @@ deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "622cf78670d067c738667aaa96c553430b65e269"
 uuid = "3161d3a3-bdf6-5164-811a-617609db77b4"
 version = "1.5.7+0"
+
+[[deps.igraph_jll]]
+deps = ["Arpack_jll", "Artifacts", "CompilerSupportLibraries_jll", "GLPK_jll", "GMP_jll", "JLLWrappers", "LLVMOpenMP_jll", "Libdl", "XML2_jll", "libblastrampoline_jll"]
+git-tree-sha1 = "6750b91441e32f531ee425359d9772bea77109e6"
+uuid = "4d841945-e0c2-5143-9479-18e4f0102556"
+version = "0.10.15+0"
 
 [[deps.isoband_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]

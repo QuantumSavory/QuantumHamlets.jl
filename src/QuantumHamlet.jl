@@ -7,7 +7,7 @@ using GraphMakie
 using Colors
 using MultiwayNumberPartitioning, HiGHS
 using Random
-using BipartiteMatching
+using IGraphs
 
 greet() = print("(|To be> + |not to be>)/√2")
 
@@ -85,20 +85,42 @@ end
 
 # TODO extend this to work for k>2
 function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
-    local_removed_g = remove_local_edges(land, g)
+    local_removed_g = QuantumHamlet.remove_local_edges(land, g)
     edgecolors = [:black for _ in 1:ne(g)]
     cost = 0
+    function flip_nodes(v::Int, g::Graphs.Graph, visted::Vector{Bool}, vtypes::Vector{Bool})
+        for neighbor in neighbors(g,v)
+            if !visted[neighbor]
+                visted[neighbor] = true
+                vtypes[neighbor] = !vtypes[v]
+                flip_nodes(neighbor, g, visted, vtypes)
+            end
+        end
+    end
 
-    adj_matrix = BitArray(Graphs.adjacency_matrix(local_removed_g))
-    dict, vect = BipartiteMatching.findmaxcardinalitybipartitematching(adj_matrix)
+    vtypes = [false for _ in 1:nv(local_removed_g)]
+    visited = [false for _ in 1:nv(local_removed_g)]
+    while sum(visited) < length(visited)
+        node = findfirst(==(false),visited)  
+        visited[node] = true      
+        flip_nodes(node, local_removed_g, visited, vtypes)
+    end
+
+    vtypes = IGraphs.IGVectorBool(vtypes)
+    matching = IGraphs.IGVectorInt()
+    weights = IGraphs.IGVectorFloat(ones(Graphs.ne(local_removed_g)))
+    ig = IGraphs.IGraph(local_removed_g)
+    IGraphs.LibIGraph.maximum_bipartite_matching(ig, vtypes, matching, weights, 1e-8)
+
+    matching .+= 1
 
     for (index, e) in enumerate(edges(g))
-        if vect[src(e)] && vect[dst(e)] && (dict[src(e)] == dst(e))
+        if matching[src(e)] == dst(e)
             cost += 1
             edgecolors[index] = :red
         end
     end
-
+    
     return cost, edgecolors
 end
 
@@ -182,7 +204,7 @@ function bury_heuristic_seeded(g::Graphs.Graph, k, v)
     return
 end
 
-# TODO performance on grid graphs is so bad; I think this might not actually be implemented correctly
+# TODO performance on grid graphs is so bad that I think this might not actually be implemented correctly
 function k_partition_saran_vazirani(g::Graphs.Graph, k)
     d = Graphs.DiGraph(g)
     capacity_matrix = zeros(Int, nv(g), nv(g))
@@ -279,7 +301,7 @@ function edges_spanning_partition(g::Graphs.Graph, v1, v2)
 end
 
 ######################## Visualization functions ######################## 
-function print_graph(g::Graph; edgecolors=nothing, nodecolors=nothing)
+function print_graph(g::Graph; edgecolors=nothing, nodecolors=[:white for _ in 1:nv(g)])
     f, ax, p = graphplot(g,
                         node_color=nodecolors,
                         edge_color = edgecolors,
