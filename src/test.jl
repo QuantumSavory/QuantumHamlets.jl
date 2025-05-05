@@ -16,7 +16,6 @@ end
 #### Init
 numVillages = 2
 logicalBitsPerVillage = 10
-reg = QuantumHamlet.defaultVillagerRegistry(numVillages,logicalBitsPerVillage)
 # rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 # g = rand_graphstate[1]
 #g = grid([8,8])
@@ -32,39 +31,39 @@ saran_cost, _ = QuantumHamlet.naive_cost_of_partition(saranLand,g)
 f_saran, saran_cost = QuantumHamlet.visualize_graph_on_land(saranLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 #### Random balanced partitionings 
-function random_sample(g::Graphs.Graph, numVillages, numVillagers; method=QuantumHamlet.naive_cost_of_partition, samples=100)
+function random_sample(g::Graphs.Graph, numVillages, numVillagers; method=QuantumHamlet.matching_cost_of_partition, samples=50, vis=true)
     best_cost =  [10000000]
     f_random_best = [Figure()]
     random_costs = []
     best_land = [quantumLand(Dict(), 0, 0)]
-    problem_land = [quantumLand(Dict(), 0, 0)]
 
     for _ in 1:samples
         random_reg = QuantumHamlet.k_partition_random(g, numVillages)
         random_land = quantumLand(random_reg, numVillages, numVillages*numVillagers)
-        #random_cost, _ = method(random_land,g)
-        try
-            f_random, random_cost = QuantumHamlet.visualize_graph_on_land(random_land, g, method=method)
 
-            if random_cost < best_cost[1]
-                println("FOUND BETTER")
-                best_cost[1] = random_cost
-                f_random_best[1] = f_random
-                best_land[1] = random_land
-            end
-    
-            push!(random_costs, random_cost)
-        catch KeyError
-            println("problem_land founrd")
-            problem_land = random_land
+        if vis
+            f_random, random_cost = QuantumHamlet.visualize_graph_on_land(random_land, g, method=method)
+        else
+            random_cost, _ = method(random_land, g)
         end
+
+        if random_cost < best_cost[1]
+            best_cost[1] = random_cost
+            best_land[1] = random_land
+            if vis
+                println("FOUND BETTER")
+                f_random_best[1] = f_random
+            end
+        end
+
+        push!(random_costs, random_cost)
     end
 
-    return best_land[1], f_random_best[1], random_costs, problem_land
+    return best_land[1], f_random_best[1], random_costs
 end
 
-best_randomLand_naive, f_random_best_naive, random_costs_naive, _ = random_sample(g, numVillages, logicalBitsPerVillage)
-best_randomLand_matching, f_random_best_matching, random_costs_matching, problem_land = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.matching_cost_of_partition)
+#best_randomLand_naive, f_random_best_naive, random_costs_naive = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.naive_cost_of_partition)
+best_randomLand_matching, f_random_best_matching, random_costs_matching = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.matching_cost_of_partition)
 
 # TODO Only defined currently when numVillages = 2
 bury_reg = QuantumHamlet.bury_heuristic_global(g, numVillages)
@@ -72,3 +71,67 @@ buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
 f_bury, bury_cost = QuantumHamlet.visualize_graph_on_land(buryLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 #QuantumHamlet.visualize_graph_on_land(best_randomLand_naive, g, method=QuantumHamlet.matching_cost_of_partition)
+
+function generate_plotting_data(deg; numSamples=20)
+    pt = 4/3
+    f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 15pt)
+
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Chip",ylabel="Required Bell pairs",title="Random regular graph w/ degree"*string(deg))
+    
+    numVillages = 2
+    sizes = 5:5:50
+    bury_costs = []
+    bury_stds = []
+
+    saran_costs = []
+    saran_stds = []
+
+    randommin_costs = []
+    randommin_stds = []
+
+    for logicalBitsPerVillage in sizes
+        bury_sample_arr = []
+        saran_sample_arr = []
+        randommin_sample_arr = []
+        for _ in 1:numSamples
+            g = random_regular_graph(numVillages*logicalBitsPerVillage, deg)
+
+            bury_reg = QuantumHamlet.bury_heuristic_global(g, numVillages)
+            buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
+            bury_cost, _ = QuantumHamlet.matching_cost_of_partition(buryLand, g)
+            push!(bury_sample_arr, bury_cost)
+
+            saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
+            saranLand = quantumLand(saran_reg, numVillages, numVillages*logicalBitsPerVillage)
+            saran_cost, _ = QuantumHamlet.matching_cost_of_partition(saranLand, g)
+            push!(saran_sample_arr, saran_cost)
+
+            _, _, random_costs = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.matching_cost_of_partition, vis=false)
+            push!(randommin_sample_arr, minimum(random_costs))
+        end
+        push!(bury_costs, mean(bury_sample_arr))
+        push!(bury_stds, std(bury_sample_arr))
+
+        push!(saran_costs, mean(saran_sample_arr))
+        push!(saran_stds, std(saran_sample_arr))
+
+        push!(randommin_costs, mean(randommin_sample_arr))
+        push!(randommin_stds, std(randommin_sample_arr))
+    end
+    scatter!(ax, sizes, bury_costs, color=:blue, marker=:circle)
+    errorbars!(ax, sizes, bury_costs, bury_stds, color = :blue)
+
+    scatter!(ax, sizes, saran_costs, color=:green, marker=:circle)
+    errorbars!(ax, sizes, saran_costs, saran_stds, color = :green)
+
+    scatter!(ax, sizes, randommin_costs, color=:orange, marker=:circle)
+    errorbars!(ax, sizes, randommin_costs, randommin_stds, color = :orange)
+
+    lines!(ax, [0,0], [0,0], label="Bury heuristic - Global", color=:blue)
+    lines!(ax, [0,0], [0,0], label="Saran Vazirani n/2\napprox for edge min", color=:green)
+    lines!(ax, [0,0], [0,0], label="Best partition found\nover 50 random partitions.", color=:orange)
+
+ 
+    f[1,2] = Legend(f, ax, "Partition Method")
+    return f
+end

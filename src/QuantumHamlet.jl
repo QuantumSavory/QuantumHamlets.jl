@@ -148,7 +148,7 @@ function k_partition_random(g::Graphs.Graph, k)
 end
 
 # TODO currently only supported for k=2
-function bury_heuristic_global(g::Graphs.Graph, k=2)
+function bury_heuristic_global(g::Graphs.Graph, k=2; verbose=false)
     r = nv(g)÷k
 
     # Node weight initialization
@@ -157,17 +157,23 @@ function bury_heuristic_global(g::Graphs.Graph, k=2)
     for (index,v) in enumerate(vertices(g))
         weights[index] = degree(g,v) + 1
     end
-    println("Initial weights and colors:")
-    println("\nWeights table")
-    println(weights)
-    println("Colored table")
-    println(colored)
+
+    if verbose
+        println("Initial weights and colors:")
+        println("\nWeights table")
+        println(weights)
+        println("Colored table")
+        println(colored)
+    end
 
     # Global greedy selection
     while sum(colored)<nv(g)÷k
-        println("\n\n###########################\nStarting round. r=", r)
         cost, choice = findmin(weights)
-        println("Chose vertex ", choice, " for the price of ", cost)
+
+        if verbose
+            println("\n\n###########################\nStarting round. r=", r)
+            println("Chose vertex ", choice, " for the price of ", cost)
+        end
 
         if r>= cost
             nbd = vcat(choice,neighbors(g,choice))
@@ -185,10 +191,13 @@ function bury_heuristic_global(g::Graphs.Graph, k=2)
             end
         end
         weights[choice] = Inf
-        println("\nUpdated weights table")
-        println(weights)
-        println("Updated Colored table")
-        println(colored)
+
+        if verbose
+            println("\nUpdated weights table")
+            println(weights)
+            println("Updated Colored table")
+            println(colored)
+        end
     end
 
     new_reg = Dict()
