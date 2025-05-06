@@ -19,7 +19,7 @@ logicalBitsPerVillage = 10
 # rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 # g = rand_graphstate[1]
 #g = grid([8,8])
-g = random_regular_graph(20, 7)
+g = random_regular_graph(20, 4)
 
 #### n/2 approximation algorithm for balanced k partitioning
 saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
@@ -71,14 +71,37 @@ buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
 f_bury, bury_cost = QuantumHamlet.visualize_graph_on_land(buryLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 #QuantumHamlet.visualize_graph_on_land(best_randomLand_naive, g, method=QuantumHamlet.matching_cost_of_partition)
+function random_regular_graph_deg3(numVertices)
+    random_regular_graph(numVertices, 3)
+end
 
-function generate_plotting_data(deg; numSamples=20)
+function random_regular_graph_deg4(numVertices)
+    random_regular_graph(numVertices, 4)
+end
+
+function random_regular_graph_deg5(numVertices)
+    random_regular_graph(numVertices, 5)
+end
+
+function grid_graph(numVertices)
+    a = sqrt(numVertices)
+    b = floor(a) |> Int
+    while numVertices%b != 0
+        b -= 1
+    end
+
+    a = numVertices÷b
+    return Graphs.grid([a,b])
+end
+
+function generate_plotting_data(graph_generator; numSamples=20)
+    numVillages = 2
+
     pt = 4/3
     f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 15pt)
 
-    ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Chip",ylabel="Required Bell pairs",title="Random regular graph w/ degree"*string(deg))
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Village",ylabel="Required Bell pairs",title=string(numVillages)*" Villages on "*string(graph_generator))
     
-    numVillages = 2
     sizes = 5:5:50
     bury_costs = []
     bury_stds = []
@@ -94,7 +117,7 @@ function generate_plotting_data(deg; numSamples=20)
         saran_sample_arr = []
         randommin_sample_arr = []
         for _ in 1:numSamples
-            g = random_regular_graph(numVillages*logicalBitsPerVillage, deg)
+            g = graph_generator(numVillages*logicalBitsPerVillage)
 
             bury_reg = QuantumHamlet.bury_heuristic_global(g, numVillages)
             buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
