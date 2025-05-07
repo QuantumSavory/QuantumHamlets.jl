@@ -14,12 +14,12 @@ function random_graphstate(n::Int)
 end
 
 #### Init
-numVillages = 2
-logicalBitsPerVillage = 10
+numVillages = 3
+logicalBitsPerVillage = 8
 # rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 # g = rand_graphstate[1]
 #g = grid([8,8])
-g = random_regular_graph(20, 4)
+g = random_regular_graph(24, 3)
 
 #### n/2 approximation algorithm for balanced k partitioning
 saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
@@ -31,7 +31,7 @@ saran_cost, _ = QuantumHamlet.naive_cost_of_partition(saranLand,g)
 f_saran, saran_cost = QuantumHamlet.visualize_graph_on_land(saranLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 #### Random balanced partitionings 
-function random_sample(g::Graphs.Graph, numVillages, numVillagers; method=QuantumHamlet.matching_cost_of_partition, samples=50, vis=true)
+function random_sample(g::Graphs.Graph, numVillages, numVillagers; method=QuantumHamlet.matching_cost_of_partition, samples=1000, vis=true)
     best_cost =  [10000000]
     f_random_best = [Figure()]
     random_costs = []

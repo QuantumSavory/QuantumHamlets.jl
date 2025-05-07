@@ -83,11 +83,32 @@ function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph)
     return cost, edgecolors
 end
 
-# TODO extend this to work for k>2
+# TODO this should calculate the cost when in the GHZ model
+function vertex_cover_cost_of_partition()
+end
+
+"""Calculates the cost of generating a given graph state by only using bell pairs and YY measurement.
+Does not look for bicliques"""
 function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
+    k = land.numVillages
     local_removed_g = QuantumHamlet.remove_local_edges(land, g)
-    edgecolors = [:black for _ in 1:ne(g)]
-    cost = 0
+
+    bipartite_decomposition = []
+    maps = []
+    for i in 1:k
+        for j in (i+1):k
+            subgraph_vertices = Array{Int64}([])
+            for v in vertices(local_removed_g)
+                if land.registry[v] == i || land.registry[v] == j
+                    push!(subgraph_vertices,v)
+                end
+            end
+            g_bi, map = induced_subgraph(local_removed_g, subgraph_vertices)
+            push!(bipartite_decomposition, g_bi)
+            push!(maps, map)
+        end
+    end
+
     function flip_nodes(v::Int, g::Graphs.Graph, visted::Vector{Bool}, vtypes::Vector{Bool})
         for neighbor in neighbors(g,v)
             if !visted[neighbor]
@@ -98,30 +119,54 @@ function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
         end
     end
 
-    vtypes = [false for _ in 1:nv(local_removed_g)]
-    visited = [false for _ in 1:nv(local_removed_g)]
-    while sum(visited) < length(visited)
-        node = findfirst(==(false),visited)  
-        visited[node] = true      
-        flip_nodes(node, local_removed_g, visited, vtypes)
-    end
+    edgecolors = [:black for _ in 1:ne(g)]
+    cost_all = []
+    matchings = []
+    for (index, bi_g) in enumerate(bipartite_decomposition)
+        cost = 0
 
-    vtypes = IGraphs.IGVectorBool(vtypes)
-    matching = IGraphs.IGVectorInt()
-    weights = IGraphs.IGVectorFloat(ones(Graphs.ne(local_removed_g)))
-    ig = IGraphs.IGraph(local_removed_g)
-    IGraphs.LibIGraph.maximum_bipartite_matching(ig, vtypes, matching, weights, 1e-8)
-
-    matching .+= 1
-
-    for (index, e) in enumerate(edges(g))
-        if matching[src(e)] == dst(e)
-            cost += 1
-            edgecolors[index] = :red
+        vtypes = [false for _ in 1:nv(bi_g)]
+        visited = [false for _ in 1:nv(bi_g)]
+        while sum(visited) < length(visited)
+            node = findfirst(==(false),visited)  
+            visited[node] = true      
+            flip_nodes(node, bi_g, visited, vtypes)
         end
+
+        vtypes = IGraphs.IGVectorBool(vtypes)
+        matching = IGraphs.IGVectorInt()
+        weights = IGraphs.IGVectorFloat(ones(Graphs.ne(bi_g)))
+        ig = IGraphs.IGraph(bi_g)
+        IGraphs.LibIGraph.maximum_bipartite_matching(ig, vtypes, matching, weights, 1e-8)
+
+        matching .+= 1
+       
+        inv_map = inverse_map(maps[index],nv(g))
+
+        for (index, e) in enumerate(edges(g))
+            if inv_map[src(e)]!= 0 && inv_map[dst(e)] != 0
+                if matching[inv_map[src(e)]] == inv_map[dst(e)] 
+                    cost += 1
+                    edgecolors[index] = :red
+                end
+            end
+        end
+        push!(cost_all, cost)
+        push!(matchings, matching)
     end
-    
-    return cost, edgecolors
+
+    return sum(cost_all), edgecolors
+    # debugging return statement
+    #return cost_all, matchings, maps, edgecolors
+end
+
+# TODO this function should exist inside matching_cost_of_partition, but its useful to leave out for debugging for now
+function inverse_map(map, size=maximum(map))
+    inv_map = [0 for _ in 1:size]
+    for (index, e) in enumerate(map)
+        inv_map[e] = index
+    end
+    return inv_map
 end
 
 """Takes a land and a graph, and returns a graph with the intra-village edges removed"""
