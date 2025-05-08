@@ -14,12 +14,12 @@ function random_graphstate(n::Int)
 end
 
 #### Init
-numVillages = 3
-logicalBitsPerVillage = 8
-# rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
-# g = rand_graphstate[1]
-#g = grid([8,8])
-g = random_regular_graph(24, 3)
+numVillages = 4
+logicalBitsPerVillage = 10
+#rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
+#g = rand_graphstate[1]
+#g = grid([6,6])
+g = random_regular_graph(numVillages*logicalBitsPerVillage, 4)
 
 #### n/2 approximation algorithm for balanced k partitioning
 saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
@@ -31,7 +31,7 @@ saran_cost, _ = QuantumHamlet.naive_cost_of_partition(saranLand,g)
 f_saran, saran_cost = QuantumHamlet.visualize_graph_on_land(saranLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 #### Random balanced partitionings 
-function random_sample(g::Graphs.Graph, numVillages, numVillagers; method=QuantumHamlet.matching_cost_of_partition, samples=1000, vis=true)
+function random_sample(g::Graphs.Graph, numVillages, numVillagers; method=QuantumHamlet.matching_cost_of_partition, samples=50, vis=true)
     best_cost =  [10000000]
     f_random_best = [Figure()]
     random_costs = []
@@ -66,7 +66,7 @@ end
 best_randomLand_matching, f_random_best_matching, random_costs_matching = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.matching_cost_of_partition)
 
 # TODO Only defined currently when numVillages = 2
-bury_reg = QuantumHamlet.bury_heuristic_global(g, numVillages)
+bury_reg = QuantumHamlet.bury_heuristic_global_v2(g, numVillages)
 buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
 f_bury, bury_cost = QuantumHamlet.visualize_graph_on_land(buryLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
@@ -94,9 +94,7 @@ function grid_graph(numVertices)
     return Graphs.grid([a,b])
 end
 
-function generate_plotting_data(graph_generator; numSamples=20)
-    numVillages = 2
-
+function generate_plotting_data(graph_generator, numVillages; numSamples=20)
     pt = 4/3
     f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 15pt)
 
@@ -119,7 +117,7 @@ function generate_plotting_data(graph_generator; numSamples=20)
         for _ in 1:numSamples
             g = graph_generator(numVillages*logicalBitsPerVillage)
 
-            bury_reg = QuantumHamlet.bury_heuristic_global(g, numVillages)
+            bury_reg = QuantumHamlet.bury_heuristic_global_v2(g, numVillages)
             buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
             bury_cost, _ = QuantumHamlet.matching_cost_of_partition(buryLand, g)
             push!(bury_sample_arr, bury_cost)

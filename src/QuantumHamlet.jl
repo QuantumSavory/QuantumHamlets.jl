@@ -192,9 +192,36 @@ function k_partition_random(g::Graphs.Graph, k)
     return new_reg
 end
 
-# TODO currently only supported for k=2
-function bury_heuristic_global(g::Graphs.Graph, k=2; verbose=false)
-    r = nv(g)÷k
+# this version should work for any k
+function bury_heuristic_global_v2(g::Graphs.Graph, k; verbose=false)
+    @assert nv(g)%k ==0
+
+    current_graph = copy(g)
+    new_reg = Dict()
+    inv_map = collect(1:nv(g))
+    total_colored = [false for _ in 1:nv(g)]
+    for i in 1:k
+        returned_reg, colored = bury_heuristic_global(current_graph, nv(g)÷k, verbose=verbose)
+
+        for v in 1:nv(g)
+            v_in_subgraph = inv_map[v]
+            if v_in_subgraph != 0
+                if colored[v_in_subgraph]
+                    new_reg[v] = i
+                    total_colored[v] = true
+                end
+            end
+        end
+
+        current_graph, map = induced_subgraph(g, findall(==(false),total_colored))
+        inv_map = inverse_map(map, nv(g))
+    end
+
+    return new_reg
+end
+
+function bury_heuristic_global(g::Graphs.Graph, initial_resources=nv(g)÷2; verbose=false)
+    r = initial_resources
 
     # Node weight initialization
     weights = [0.0 for _ in 1:nv(g)]
@@ -212,7 +239,7 @@ function bury_heuristic_global(g::Graphs.Graph, k=2; verbose=false)
     end
 
     # Global greedy selection
-    while sum(colored)<nv(g)÷k
+    while sum(colored)<initial_resources
         cost, choice = findmin(weights)
 
         if verbose
@@ -249,7 +276,7 @@ function bury_heuristic_global(g::Graphs.Graph, k=2; verbose=false)
     for i in 1:nv(g)
         new_reg[i] = colored[i]+1
     end
-    return new_reg
+    return new_reg, colored
 end
 
 # TODO currently only supported for k=2
