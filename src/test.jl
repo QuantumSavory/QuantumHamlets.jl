@@ -15,10 +15,10 @@ end
 
 #### Init
 numVillages = 4
-logicalBitsPerVillage = 10
+logicalBitsPerVillage = 12
 #rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 #g = rand_graphstate[1]
-#g = grid([6,6])
+#g = grid([6,8])
 g = random_regular_graph(numVillages*logicalBitsPerVillage, 4)
 
 #### n/2 approximation algorithm for balanced k partitioning
@@ -100,7 +100,7 @@ function generate_plotting_data(graph_generator, numVillages; numSamples=20)
 
     ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Village",ylabel="Required Bell pairs",title=string(numVillages)*" Villages on "*string(graph_generator))
     
-    sizes = 5:5:50
+    sizes = 5:5:15
     bury_costs = []
     bury_stds = []
 
@@ -151,7 +151,9 @@ function generate_plotting_data(graph_generator, numVillages; numSamples=20)
     lines!(ax, [0,0], [0,0], label="Bury heuristic - Global", color=:blue)
     lines!(ax, [0,0], [0,0], label="Saran Vazirani n/2\napprox for edge min", color=:green)
     lines!(ax, [0,0], [0,0], label="Best partition found\nover 50 random partitions.", color=:orange)
+    lines!(ax, [0,0], [0,0], label="n(k-1)/2", color=:gray)
 
+    lines!(ax, [0, maximum(sizes)], [0, (maximum(sizes)*numVillages)*(numVillages-1)/2], color=:gray)
  
     f[1,2] = Legend(f, ax, "Partition Method")
     return f

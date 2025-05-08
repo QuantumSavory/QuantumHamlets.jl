@@ -83,8 +83,25 @@ function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph)
     return cost, edgecolors
 end
 
-# TODO this should calculate the cost when in the GHZ model
-function vertex_cover_cost_of_partition()
+"""Returns first the size of the vertex cover, corresponding to GHZ states being 100% free.
+Second returns the cost if an m partite GHZ states has cost m-1."""
+function vertex_cover_cost_of_partition(land::quantumLand, g::Graphs.Graph)
+    k = land.numVillages
+    local_removed_g = QuantumHamlet.remove_local_edges(land, g)
+    cover = vertex_cover(local_removed_g, DegreeVertexCover())
+    ghz_free_cost = length(cover)
+
+    ghz_n_minus_one_cost = 0
+    partite_counter = [false for _ in 1:k]
+    for v in cover
+        partite_counter[land.registry[v]] = true
+        for n in neighbors(local_removed_g, v)
+            partite_counter[land.registry[n]] = true
+        end
+        ghz_n_minus_one_cost += (sum(partite_counter) - 1)
+        partite_counter = [false for _ in 1:k]
+    end
+    return ghz_free_cost, ghz_n_minus_one_cost
 end
 
 """Calculates the cost of generating a given graph state by only using bell pairs and YY measurement.
