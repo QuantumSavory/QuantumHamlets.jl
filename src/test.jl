@@ -14,12 +14,12 @@ function random_graphstate(n::Int)
 end
 
 #### Init
-numVillages = 4
+numVillages = 3
 logicalBitsPerVillage = 12
 #rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 #g = rand_graphstate[1]
-#g = grid([6,8])
-g = random_regular_graph(numVillages*logicalBitsPerVillage, 4)
+g = grid([6,6])
+#g = random_regular_graph(numVillages*logicalBitsPerVillage, 4)
 
 #### n/2 approximation algorithm for balanced k partitioning
 saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
@@ -94,15 +94,17 @@ function grid_graph(numVertices)
     return Graphs.grid([a,b])
 end
 
-function generate_plotting_data(graph_generator, numVillages; numSamples=20)
+function compare_partition_methods(graph_generator, numVillages; numSamples=20)
     pt = 4/3
     f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 15pt)
 
     ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Village",ylabel="Required Bell pairs",title=string(numVillages)*" Villages on "*string(graph_generator))
     
-    sizes = 5:5:15
+    sizes = 4:2:30
     bury_costs = []
     bury_stds = []
+    bury_ghz_costs_optimistic = []
+    bury_ghz_costs_pessimistic = []
 
     saran_costs = []
     saran_stds = []
@@ -111,7 +113,7 @@ function generate_plotting_data(graph_generator, numVillages; numSamples=20)
     randommin_stds = []
 
     for logicalBitsPerVillage in sizes
-        bury_sample_arr = []
+        bury_sample_arr = []; bsa_cheap = []; bsa_expensive = [];
         saran_sample_arr = []
         randommin_sample_arr = []
         for _ in 1:numSamples
@@ -120,7 +122,10 @@ function generate_plotting_data(graph_generator, numVillages; numSamples=20)
             bury_reg = QuantumHamlet.bury_heuristic_global_v2(g, numVillages)
             buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
             bury_cost, _ = QuantumHamlet.matching_cost_of_partition(buryLand, g)
+            cheap, expen = QuantumHamlet.vertex_cover_cost_of_partition(buryLand,g)
             push!(bury_sample_arr, bury_cost)
+            push!(bsa_cheap, cheap)
+            push!(bsa_expensive,expen)
 
             saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
             saranLand = quantumLand(saran_reg, numVillages, numVillages*logicalBitsPerVillage)
@@ -132,6 +137,8 @@ function generate_plotting_data(graph_generator, numVillages; numSamples=20)
         end
         push!(bury_costs, mean(bury_sample_arr))
         push!(bury_stds, std(bury_sample_arr))
+        push!(bury_ghz_costs_optimistic, mean(bsa_cheap))
+        push!(bury_ghz_costs_pessimistic, mean(bsa_expensive))
 
         push!(saran_costs, mean(saran_sample_arr))
         push!(saran_stds, std(saran_sample_arr))
@@ -140,21 +147,64 @@ function generate_plotting_data(graph_generator, numVillages; numSamples=20)
         push!(randommin_stds, std(randommin_sample_arr))
     end
     scatter!(ax, sizes, bury_costs, color=:blue, marker=:circle)
-    errorbars!(ax, sizes, bury_costs, bury_stds, color = :blue)
+    errorbars!(ax, sizes, bury_costs, bury_stds, color = :blue, whiskerwidth=10)
+
+    scatter!(ax, sizes, bury_ghz_costs_optimistic, color=:blue, marker=:utriangle)
+    scatter!(ax, sizes, bury_ghz_costs_pessimistic, color=:blue, marker=:cross)
 
     scatter!(ax, sizes, saran_costs, color=:green, marker=:circle)
-    errorbars!(ax, sizes, saran_costs, saran_stds, color = :green)
+    errorbars!(ax, sizes, saran_costs, saran_stds, color = :green, whiskerwidth=10)
 
     scatter!(ax, sizes, randommin_costs, color=:orange, marker=:circle)
-    errorbars!(ax, sizes, randommin_costs, randommin_stds, color = :orange)
+    errorbars!(ax, sizes, randommin_costs, randommin_stds, color = :orange, whiskerwidth=10)
 
-    lines!(ax, [0,0], [0,0], label="Bury heuristic - Global", color=:blue)
+    lines!(ax, [0,0], [0,0], label="n(k-1)/2 Bound", color=:black)
+    lines!(ax, [0,0], [0,0], label="Best partition found\nover 50 random samples", color=:orange)
     lines!(ax, [0,0], [0,0], label="Saran Vazirani n/2\napprox for edge min", color=:green)
-    lines!(ax, [0,0], [0,0], label="Best partition found\nover 50 random partitions.", color=:orange)
-    lines!(ax, [0,0], [0,0], label="n(k-1)/2", color=:gray)
+    lines!(ax, [0,0], [0,0], label="Bury heuristic - Global", color=:blue)
+
+    scatter!(ax, [0,0], [0,0], label="m party GHZ states\nhave cost m-1", color=:gray, marker=:cross)
+    scatter!(ax, [0,0], [0,0], label="Cheap GHZ states", color=:gray, marker=:utriangle)
 
     lines!(ax, [0, maximum(sizes)], [0, (maximum(sizes)*numVillages)*(numVillages-1)/2], color=:gray)
  
     f[1,2] = Legend(f, ax, "Partition Method")
+    return f
+end
+
+function compare_generation_methods(graph_generator, numVillages)
+    pt = 4/3
+    f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 15pt)
+
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Village",ylabel="Required Bell pairs",title=string(numVillages)*" Villages on "*string(graph_generator))
+    
+    sizes = 5:5:100
+
+    bury_costs = []; bury_ghz_costs_optimistic = []; bury_ghz_costs_pessimistic = [];
+    for logicalBitsPerVillage in sizes
+        g = graph_generator(numVillages*logicalBitsPerVillage)
+
+        bury_reg = QuantumHamlet.bury_heuristic_global_v2(g, numVillages)
+        buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
+        bury_cost, _ = QuantumHamlet.matching_cost_of_partition(buryLand, g)
+        cheap, expen = QuantumHamlet.vertex_cover_cost_of_partition(buryLand,g)
+        push!(bury_costs, bury_cost)
+        push!(bury_ghz_costs_optimistic, cheap)
+        push!(bury_ghz_costs_pessimistic,expen)
+    end
+    scatter!(ax, sizes, bury_costs, color=:blue, marker=:circle)
+    scatter!(ax, sizes, bury_ghz_costs_optimistic, color=:blue, marker=:utriangle)
+    scatter!(ax, sizes, bury_ghz_costs_pessimistic, color=:blue, marker=:cross)
+
+    #lines!(ax, [0,0], [0,0], label="n(k-1)/2 Bound", color=:black)
+    lines!(ax, [0,0], [0,0], label="Bury heuristic - Global", color=:blue)
+
+    scatter!(ax, [0,0], [0,0], label="m party GHZ states\nhave cost m-1", color=:gray, marker=:cross)
+    scatter!(ax, [0,0], [0,0], label="Bell pairs only", color=:gray, marker=:circle)
+    scatter!(ax, [0,0], [0,0], label="Cheap GHZ states", color=:gray, marker=:utriangle)
+
+    #lines!(ax, [0, maximum(sizes)], [0, (maximum(sizes)*numVillages)*(numVillages-1)/2], color=:gray)
+ 
+    f[1,2] = Legend(f, ax, "Graph Preparation method")
     return f
 end
