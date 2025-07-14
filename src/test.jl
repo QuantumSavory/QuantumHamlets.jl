@@ -15,20 +15,21 @@ end
 
 #### Init
 numVillages = 2
-logicalBitsPerVillage = 50
+logicalBitsPerVillage = 30
 #rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 #g = rand_graphstate[1]
 #g = grid([10,10])
-g = random_regular_graph(numVillages*logicalBitsPerVillage, 4)
+g = random_regular_graph(numVillages*logicalBitsPerVillage, 6)
 
-#### n/2 approximation algorithm for balanced k partitioning
-saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
+# #### n/2 approximation algorithm for balanced k partitioning
+# # This works terribly - not even worth considering anymore??
+# saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
 
-# TODO instead of creating a new land, maybe add a function to relabel qubits? maybe?
-saranLand = quantumLand(saran_reg, numVillages, numVillages*logicalBitsPerVillage)
+# # TODO instead of creating a new land, maybe add a function to relabel qubits? maybe?
+# saranLand = quantumLand(saran_reg, numVillages, numVillages*logicalBitsPerVillage)
 
-saran_cost, _ = QuantumHamlet.naive_cost_of_partition(saranLand,g)
-f_saran, saran_cost = QuantumHamlet.visualize_graph_on_land(saranLand, g, method=QuantumHamlet.matching_cost_of_partition)
+# saran_cost, _ = QuantumHamlet.naive_cost_of_partition(saranLand,g)
+# f_saran, saran_cost = QuantumHamlet.visualize_graph_on_land(saranLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 #### Random balanced partitionings 
 function random_sample(g::Graphs.Graph, numVillages, numVillagers; method=QuantumHamlet.matching_cost_of_partition, samples=50, vis=true)
@@ -222,24 +223,34 @@ function compare_generation_methods(graph_generator, numVillages)
     return f
 end
 
-### KL portion
-using CondaPkg
-CondaPkg.add("networkx")
-using PythonCall
-nx = pyimport("networkx")
-nxcomm = pyimport("networkx.algorithms.community")
+# ### KL portion
+# using CondaPkg
+# CondaPkg.add("networkx")
+# using PythonCall
+# nx = pyimport("networkx")
+# nxcomm = pyimport("networkx.algorithms.community")
 
-py_g = nx.Graph()
-py_g.add_edges_from([(src(e), dst(e)) for e in edges(g)])
-kl_part = nxcomm.kernighan_lin.kernighan_lin_bisection(py_g, partition=nothing, max_iter=10)
-a, b = pyconvert(Vector{Int}, kl_part[0]), pyconvert(Vector{Int}, kl_part[1])
+# py_g = nx.Graph()
+# py_g.add_edges_from([(src(e), dst(e)) for e in edges(g)])
+# kl_part = nxcomm.kernighan_lin.kernighan_lin_bisection(py_g, partition=nothing, max_iter=10)
+# a, b = pyconvert(Vector{Int}, kl_part[0]), pyconvert(Vector{Int}, kl_part[1])
 
-kl_reg = Dict()
-for i in a
-    kl_reg[i] = 1
+# kl_reg = Dict()
+# for i in a
+#     kl_reg[i] = 1
+# end
+# for i in b
+#     kl_reg[i] = 2
+# end
+# klLand = quantumLand(kl_reg, numVillages, numVillages*logicalBitsPerVillage)
+# f_kl, kl_cost = QuantumHamlet.visualize_graph_on_land(klLand, g, method=QuantumHamlet.matching_cost_of_partition)
+
+using Metis
+metis_reg = Dict()
+metis_part = Metis.partition(g,numVillages)
+for a in eachindex(metis_part)
+    metis_reg[a] = metis_part[a]
 end
-for i in b
-    kl_reg[i] = 2
-end
-klLand = quantumLand(kl_reg, numVillages, numVillages*logicalBitsPerVillage)
-f_kl, kl_cost = QuantumHamlet.visualize_graph_on_land(klLand, g, method=QuantumHamlet.matching_cost_of_partition)
+
+metisLand = quantumLand(metis_reg, numVillages, numVillages*logicalBitsPerVillage)
+f_metis, metis_cost = QuantumHamlet.visualize_graph_on_land(metisLand, g, method=QuantumHamlet.matching_cost_of_partition)
