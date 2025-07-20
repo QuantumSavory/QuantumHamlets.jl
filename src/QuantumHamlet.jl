@@ -296,6 +296,134 @@ function bury_heuristic_global(g::Graphs.Graph, initial_resources=nv(g)÷2; verb
     return new_reg, colored
 end
 
+# Should maybe adda check that the seed can be chosen - not a problem with this minweight seeder
+function seeder_1(g::Graphs.Graph)
+    # Node weight initialization
+    weights = [0.0 for _ in 1:nv(g)]
+    for (index,v) in enumerate(vertices(g))
+        weights[index] = degree(g,v) + 1
+    end
+    _, index = findmin(weights)
+    #println("seed is", index)
+    return index
+end
+
+function best_seed(g::Graphs.Graph, r0)
+    best_score = Inf
+    best_seed = 1
+    for seed in 1:nv(g)
+        reg, _ = bury_heuristic_local(g, r0, seed)
+        land = quantumLand(reg, 2, nv(g))
+        cost, _ = matching_cost_of_partition(land, g)
+
+        if cost< best_score
+            best_seed = seed
+            best_score = cost
+        end
+        #println(cost, " seed ", seed)
+    end
+    #println("using seed ", best_seed, "\n")
+    return best_seed
+end
+
+# this version should work for any k
+function bury_heuristic_local_v2(g::Graphs.Graph, k; verbose=false)
+    @assert nv(g)%k ==0
+
+    current_graph = copy(g)
+    new_reg = Dict()
+    inv_map = collect(1:nv(g))
+    total_colored = [false for _ in 1:nv(g)]
+    for i in 1:k
+        returned_reg, colored = bury_heuristic_local(current_graph, nv(g)÷k, seeder_1(current_graph), verbose=verbose)
+        #returned_reg, colored = bury_heuristic_local(current_graph, nv(g)÷k, verbose=verbose)
+
+        for v in 1:nv(g)
+            v_in_subgraph = inv_map[v]
+            if v_in_subgraph != 0
+                if colored[v_in_subgraph]
+                    new_reg[v] = i
+                    total_colored[v] = true
+                end
+            end
+        end
+
+        current_graph, map = induced_subgraph(g, findall(==(false),total_colored))
+        inv_map = inverse_map(map, nv(g))
+    end
+
+    return new_reg
+end
+function bury_heuristic_local(g::Graphs.Graph, initial_resources=nv(g)÷2, seed = best_seed(g, initial_resources); verbose=false)
+    r = initial_resources
+
+    # Node weight initialization
+    weights = [0.0 for _ in 1:nv(g)]
+    colored = [false for _ in 1:nv(g)]
+
+    #
+    region = [false for _ in 1:nv(g)]
+    region[neighbors(g,seed)] .= true
+    region[seed] = true
+
+    for (index,v) in enumerate(vertices(g))
+        weights[index] = degree(g,v) + 1
+    end
+
+    if verbose
+        println("Initial weights and colors:")
+        println("\nWeights table")
+        println(weights)
+        println("Colored table")
+        println(colored)
+    end
+
+    # Global greedy selections
+    while sum(colored)<initial_resources
+        cost, choice = findmin(.!region*Inf + weights)
+        if cost == Inf
+            cost, choice = findmin(weights)
+        end
+
+        if verbose
+            println("\n\n###########################\nStarting round. r=", r)
+            println("Chose vertex ", choice, " for the price of ", cost)
+        end
+
+        if r>= cost
+            nbd = vcat(choice,neighbors(g,choice))
+            r -= cost
+        else
+            nbd = choice
+            r -= 1
+        end
+
+        for v in nbd
+            if !colored[v]
+                weights[v] -= 1
+                weights[neighbors(g,v)] .-= 1
+                colored[v] = true
+            end
+            region[v] = true
+        end
+        weights[choice] = Inf
+
+        if verbose
+            println("\nUpdated weights table")
+            println(weights)
+            println("Updated Colored table")
+            println(colored)
+        end
+    end
+
+    new_reg = Dict()
+    for i in 1:nv(g)
+        new_reg[i] = colored[i]+1
+    end
+    return new_reg, colored
+end
+
+
 # TODO currently only supported for k=2
 # This version should run much faster than the gloabal version
 function bury_heuristic_seeded(g::Graphs.Graph, k, v)
