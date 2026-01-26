@@ -22,12 +22,13 @@ nxcomm = pyimport("networkx.algorithms.community")
 # end
 
 #### Init
-numVillages = 20
-logicalBitsPerVillage = 20
+numVillages = 2
+logicalBitsPerVillage = 2575
+
 n = logicalBitsPerVillage * numVillages
 #rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 #g = rand_graphstate[1]
-#g = grid([3,4])
+#g = grid([6,6])
 
 #g = my_erdos(n, 4/(n))
 #g = random_regular_graph(numVillages*logicalBitsPerVillage, 4)
@@ -38,7 +39,7 @@ n = logicalBitsPerVillage * numVillages
 # g = watts_strogatz(n, expected_degree, β)
 
 #g = roach_graph(n÷4)
-# #### n/2 approximation algorithm for balanced k partitioning
+#### n/2 approximation algorithm for balanced k partitioning
 # # This works terribly - not even worth considering anymore??
 # saran_reg, _ = QuantumHamlet.k_partition_saran_vazirani(g, numVillages)
 
@@ -81,16 +82,18 @@ function random_sample(g::Graphs.Graph, numVillages, numVillagers; method=Quantu
 end
 
 #best_randomLand_naive, f_random_best_naive, random_costs_naive = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.naive_cost_of_partition)
-best_randomLand_matching, f_random_best_matching, random_costs_matching = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.matching_cost_of_partition)
+
+# this one is the random one to use?
+#best_randomLand_matching, f_random_best_matching, random_costs_matching = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.matching_cost_of_partition)
 
 # TODO Only defined currently when numVillages = 2
 bury_reg = QuantumHamlet.bury_heuristic_global_v2(g, numVillages)
 buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
 f_bury, bury_cost = QuantumHamlet.visualize_graph_on_land(buryLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
-bury_local_reg = QuantumHamlet.bury_heuristic_local_v2(g, numVillages)
-buryLocalLand = quantumLand(bury_local_reg, numVillages, numVillages*logicalBitsPerVillage)
-f_bury_local, bury_cost_local = QuantumHamlet.visualize_graph_on_land(buryLocalLand, g, method=QuantumHamlet.matching_cost_of_partition)
+# bury_local_reg = QuantumHamlet.bury_heuristic_local_v2(g, numVillages)
+# buryLocalLand = quantumLand(bury_local_reg, numVillages, numVillages*logicalBitsPerVillage)
+# f_bury_local, bury_cost_local = QuantumHamlet.visualize_graph_on_land(buryLocalLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 
 #QuantumHamlet.visualize_graph_on_land(best_randomLand_naive, g, method=QuantumHamlet.matching_cost_of_partition)
