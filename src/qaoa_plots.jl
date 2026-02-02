@@ -18,7 +18,7 @@ nxcomm = pyimport("networkx.algorithms.community")
 using GraphIO.GraphML
 using EzXML
 
-#### Init
+#### 
 # g = loadgraph("./QuantumHamlet/QAOAgraphs/qaoa_100.graphml", GraphIO.GraphML.GraphMLFormat())
 # n = nv(g)
 
@@ -42,7 +42,7 @@ using EzXML
 # Plots performance of METIS versus BURY on compiled graph states provided by a path to a directory with graphml files
 function metis_bury_comparison_from_dir(graphml_dir; dir_name = "", maxHamlets=20)
     pt = 4/3
-    f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 15pt)
+    f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 20pt)
     ax = f[1,1] = Axis(f[1,1],  xlabel="Pre-compilation QAOA Circuit Size ",ylabel="VCG Required Bell Pairs",title="METIS vs BURY "*string(dir_name))
     
     bury_costs = [[] for _ in 1:maxHamlets]
@@ -95,16 +95,16 @@ function metis_bury_comparison_from_dir(graphml_dir; dir_name = "", maxHamlets=2
         y_metis = [data[2] for data in metis_costs[k]]
 
         scatterlines!(ax, x_bury, y_bury, color=k_colors[k-1], marker=:circle, markersize=15)
-        scatterlines!(ax, x_metis, y_metis, color=k_colors[k-1], marker=:diamond, markersize=15)
+        scatterlines!(ax, x_metis, y_metis, color=k_colors[k-1], marker=:xcross, markersize=15)
 
-        lines!(ax, [0,0], [0,0], label=string(k)*" hamlets", color=k_colors[k-1])
+        lines!(ax, [0,0], [0,0], label=string(k), color=k_colors[k-1], linewidth=12)
     end
 
-    scatter!(ax, [0,0], [0,0], label="METIS", color=:gray, marker=:diamond)
-    scatter!(ax, [0,0], [0,0], label="BURY", color=:gray, marker=:circle)
+    scatter!(ax, [0,0], [0,0], label="METIS", color=:gray, marker=:xcross, markersize=16)
+    scatter!(ax, [0,0], [0,0], label="BURY", color=:gray, marker=:circle, markersize=16)
  
-    f[1,2] = Legend(f, ax, "Partition Method")
+    f[1,2] = Legend(f, ax, "Number of\nHamlets")
     return f
 end
 
-test = metis_bury_comparison_from_dir("./QuantumHamlet/QAOAgraphs/", dir_name="QAOA")
+f_qaoa = metis_bury_comparison_from_dir("./QuantumHamlet/QAOAgraphs/", dir_name="QAOA")
