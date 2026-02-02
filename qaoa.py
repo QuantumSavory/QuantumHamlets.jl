@@ -1,3 +1,7 @@
+# Taken from Graphix documentation on QAOA example
+# https://graphix.readthedocs.io/en/latest/gallery/qaoa.html
+# Modified slightly
+
 """
 QAOA
 ====
