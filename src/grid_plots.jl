@@ -52,15 +52,15 @@ function distinct_colors(n::Int)
 end
 
 # Plots performance of METIS versus BURY on compiled graph states provided by a path to a directory with graphml files
-function deterministic_comparison(graph_generator; name="", maxHamlets=10)
+function deterministic_comparison(graph_generator; name="", maxHamlets=8)
     pt = 4/3
-    f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 20pt)
+    f = Figure(size=(900, 700),px_per_unit = 6.0, fontsize = 21pt, yticks = [0, 20, 100, 200, 300, 400])
     ax = f[1,1] = Axis(f[1,1],  xlabel="Vertices in Graph", ylabel="VCG Required Bell Pairs",title="METIS vs BURY on "*name)
     
     bury_costs = [[] for _ in 1:maxHamlets]
     metis_costs = [[] for _ in 1:maxHamlets]
 
-    for i in 5:40
+    for i in 24:100
         g = graph_generator(i*i)
         n = nv(g)
         for k in 2:maxHamlets
@@ -87,6 +87,7 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=10)
     end
 
     k_colors = distinct_colors(maxHamlets-1)
+    wong_colors = Makie.wong_colors()
     for k in 2:maxHamlets
         sort!(bury_costs[k], by = x -> x[1])
         sort!(metis_costs[k], by = x -> x[1])
@@ -96,15 +97,19 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=10)
         x_metis = [data[1] for data in metis_costs[k]]
         y_metis = [data[2] for data in metis_costs[k]]
 
-        scatterlines!(ax, x_bury, y_bury, color=k_colors[k-1], marker=:circle, markersize=12)
-        scatterlines!(ax, x_metis, y_metis, color=k_colors[k-1], marker=:xcross, markersize=12)
+        #scatterlines!(ax, x_bury, y_bury, color=k_colors[k-1], marker=:circle, markersize=12)
+        #scatterlines!(ax, x_metis, y_metis, color=k_colors[k-1], marker=:xcross, markersize=12)
 
-        lines!(ax, [0,0], [0,0], label=string(k), color=k_colors[k-1], linewidth = 12)
+        scatterlines!(ax, x_bury, y_bury, color=wong_colors[(k%7)+1], marker=:circle, markersize=12)
+        scatterlines!(ax, x_metis, y_metis, color=wong_colors[(k%7)+1], marker=:xcross, markersize=12)
+
+        #lines!(ax, [0,0], [0,0], label=string(k), color=k_colors[k-1], linewidth = 12)
+        lines!(ax, [0,0], [0,0], label=string(k), color=wong_colors[(k%7)+1], linewidth = 12)
     end
 
-    scatter!(ax, [0,0], [0,0], label="METIS", color=:gray, marker=:xcross, markersize= 16)
-    scatter!(ax, [0,0], [0,0], label="BURY", color=:gray, marker=:circle, markersize = 16)
- 
+    scatter!(ax, [0], [0], label="METIS", color=:gray, marker=:xcross, markersize= 16)
+    scatter!(ax, [0], [0], label="BURY", color=:gray, marker=:circle, markersize = 16)
+
     f[1,2] = Legend(f, ax, "Number of\nHamlets")
     return f, bury_costs, metis_costs
 end

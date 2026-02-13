@@ -15,6 +15,7 @@ using PythonCall
 nx = pyimport("networkx")
 nxcomm = pyimport("networkx.algorithms.community")
 
+using GraphIO
 using GraphIO.GraphML
 using EzXML
 
@@ -40,19 +41,24 @@ using EzXML
 # metis_cost, _ = QuantumHamlet.matching_cost_of_partition(metisLand, g)
 
 # Plots performance of METIS versus BURY on compiled graph states provided by a path to a directory with graphml files
-function metis_bury_comparison_from_dir(graphml_dir; dir_name = "", maxHamlets=20)
+function metis_bury_comparison_from_dir(graphml_dir; dir_name = "", hamletSizes = 2:8)
     pt = 4/3
-    f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 20pt)
-    ax = f[1,1] = Axis(f[1,1],  xlabel="Pre-compilation QAOA Circuit Size ",ylabel="VCG Required Bell Pairs",title="METIS vs BURY "*string(dir_name))
+    f = Figure(size=(900, 700),px_per_unit = 6.0, fontsize = 21pt)
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Pre-compilation QAOA Circuit Size ",ylabel="VCG Required Bell Pairs",title="METIS vs BURY on "*string(dir_name))
     
-    bury_costs = [[] for _ in 1:maxHamlets]
-    metis_costs = [[] for _ in 1:maxHamlets]
+    bury_costs = Dict()
+    metis_costs = Dict()
+    for k in hamletSizes
+        bury_costs[k] = []
+        metis_costs[k] = []
+    end
 
     for file in readdir(graphml_dir)
+        println(file)
         g = loadgraph(graphml_dir*file, GraphIO.GraphML.GraphMLFormat())
         n = nv(g)
         circuit_size = parse(Int, split(file, ['_', '.'])[2])
-        for k in 2:maxHamlets
+        for k in hamletSizes
             if n%k != 0
                 continue
             end
@@ -75,15 +81,10 @@ function metis_bury_comparison_from_dir(graphml_dir; dir_name = "", maxHamlets=2
         end
     end
 
-    # This subfunction was generated with ChatGPT
-    function distinct_colors(n::Int)
-        # Generate `n` distinct colors using HSV space
-        return [HSV(i * 360 / n, 0.8, 0.9) for i in 0:n-1] .|> RGB
-    end
-    
-    k_colors = distinct_colors(maxHamlets-1)
-    for k in 2:maxHamlets
-        if k%2==1
+    wong_colors = Makie.wong_colors()
+    colorCount = 0
+    for k in hamletSizes
+        if length(bury_costs[k]) == 0
             continue
         end
         sort!(bury_costs[k], by = x -> x[1])
@@ -94,17 +95,19 @@ function metis_bury_comparison_from_dir(graphml_dir; dir_name = "", maxHamlets=2
         x_metis = [data[1] for data in metis_costs[k]]
         y_metis = [data[2] for data in metis_costs[k]]
 
-        scatterlines!(ax, x_bury, y_bury, color=k_colors[k-1], marker=:circle, markersize=15)
-        scatterlines!(ax, x_metis, y_metis, color=k_colors[k-1], marker=:xcross, markersize=15)
+        scatterlines!(ax, x_bury, y_bury, color=wong_colors[(colorCount%7)+1], marker=:circle, markersize=15)
+        scatterlines!(ax, x_metis, y_metis, color=wong_colors[(colorCount%7)+1], marker=:xcross, markersize=15)
 
-        lines!(ax, [0,0], [0,0], label=string(k), color=k_colors[k-1], linewidth=12)
+        lines!(ax, [0,0], [0,0], label=string(k), color=wong_colors[(colorCount%7)+1], linewidth=12)
+        colorCount+= 1
     end
 
     scatter!(ax, [0,0], [0,0], label="METIS", color=:gray, marker=:xcross, markersize=16)
     scatter!(ax, [0,0], [0,0], label="BURY", color=:gray, marker=:circle, markersize=16)
  
+    xlims!(low = 25)
     f[1,2] = Legend(f, ax, "Number of\nHamlets")
     return f
 end
 
-f_qaoa = metis_bury_comparison_from_dir("./QuantumHamlet/QAOAgraphs/", dir_name="QAOA")
+f_qaoa = metis_bury_comparison_from_dir("./QuantumHamlet/QAOAgraphs/", dir_name="QAOA", hamletSizes= [4, 8, 10, 13, 18, 20])

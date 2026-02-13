@@ -28,8 +28,8 @@ logicalBitsPerVillage = 12
 n = logicalBitsPerVillage * numVillages
 # rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 # g = rand_graphstate[1]
-# g = grid([6,6])
-g = grid_graph(n)
+g = grid([6,6])
+#g = grid_graph(n)
 
 #g = my_erdos(n, 4/(n))
 #g = random_regular_graph(numVillages*logicalBitsPerVillage, 4)
@@ -88,22 +88,22 @@ end
 #best_randomLand_matching, f_random_best_matching, random_costs_matching = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.matching_cost_of_partition)
 
 
-# bury_reg = QuantumHamlet.bury_heuristic_global_v2(g, numVillages)
-# buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
-# f_bury, bury_cost = QuantumHamlet.visualize_graph_on_land(buryLand, g, method=QuantumHamlet.matching_cost_of_partition)
+bury_reg = QuantumHamlet.bury_heuristic_global_v2(g, numVillages)
+buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
+f_bury, bury_cost = QuantumHamlet.visualize_graph_on_land(buryLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 # bury_local_reg = QuantumHamlet.bury_heuristic_local_v2(g, numVillages)
 # buryLocalLand = quantumLand(bury_local_reg, numVillages, numVillages*logicalBitsPerVillage)
 # f_bury_local, bury_cost_local = QuantumHamlet.visualize_graph_on_land(buryLocalLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
-# metis_reg = Dict()
-# metis_part = Metis.partition(g,numVillages)
-# for a in eachindex(metis_part)
-#     metis_reg[a] = metis_part[a]
-# end
+metis_reg = Dict()
+metis_part = Metis.partition(g,numVillages)
+for a in eachindex(metis_part)
+    metis_reg[a] = metis_part[a]
+end
 
-# metisLand = quantumLand(metis_reg, numVillages, numVillages*logicalBitsPerVillage)
-# f_metis, metis_cost = QuantumHamlet.visualize_graph_on_land(metisLand, g, method=QuantumHamlet.matching_cost_of_partition)
+metisLand = quantumLand(metis_reg, numVillages, numVillages*logicalBitsPerVillage)
+f_metis, metis_cost = QuantumHamlet.visualize_graph_on_land(metisLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 #QuantumHamlet.visualize_graph_on_land(best_randomLand_naive, g, method=QuantumHamlet.matching_cost_of_partition)
 function random_regular_graph_deg3(numVertices)
@@ -345,6 +345,6 @@ end
 # f_kl, kl_cost = QuantumHamlet.visualize_graph_on_land(klLand, g, method=QuantumHamlet.matching_cost_of_partition)
 
 #f_3reg = compare_partition_methods(random_regular_graph_deg3, 2, name="Random 3-Regular Graphs", numSamples=20)
-f_6reg = compare_partition_methods(random_regular_graph_deg6, 2, name="Random 6-Regular Graphs", numSamples=20)
+#f_6reg = compare_partition_methods(random_regular_graph_deg6, 2, name="Random 6-Regular Graphs", numSamples=20)
 
 #compare_partition_methods(dorogovtsev_mendes, 2, name="Random Dorogovtsev-Mendes Graphs", numSamples=20)

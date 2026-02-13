@@ -8,6 +8,7 @@ using Colors
 using MultiwayNumberPartitioning, HiGHS
 using Random
 using IGraphs
+using Makie
 
 greet() = print("(|To be> + |not to be>)/√2")
 
@@ -527,12 +528,17 @@ function edges_spanning_partition(g::Graphs.Graph, v1, v2)
 end
 
 ######################## Visualization functions ######################## 
-function print_graph(g::Graph; edgecolors=nothing, nodecolors=[:white for _ in 1:nv(g)])
+function print_graph(g::Graph; edgecolors=nothing, nodecolors=[:white for _ in 1:nv(g)], nodelabels = true)
+    labels = collect(1:nv(g))
+    if nodelabels == false
+        labels = nothing
+    end
     f, ax, p = graphplot(g,
                         node_color=nodecolors,
                         edge_color = edgecolors,
                         nlabels_align=(:center,:center);
-                        ilabels= collect(1:nv(g)))
+                        ilabels= labels, 
+                        size = (900,700))
     hidedecorations!(ax); hidespines!(ax); ax.aspect = DataAspect()
 
     return f
@@ -551,7 +557,9 @@ function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph; method=Quan
     cost, edgecolors = method(land,g)
 
     village_colors = distinct_colors(land.numVillages)
-    nodecolors = [village_colors[land.registry[i]] for i in 1:land.numVillagers]
+    village_colors = Makie.wong_colors()
+
+    nodecolors = [village_colors[(land.registry[i]%7)+1] for i in 1:land.numVillagers]
     f = print_graph(g, edgecolors=edgecolors, nodecolors=nodecolors)
     return f, cost
 end
