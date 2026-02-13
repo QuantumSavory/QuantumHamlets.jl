@@ -1,5 +1,4 @@
-module QuantumHamlet
-using QuantumClifford
+module QuantumHamlets
 using CairoMakie
 using Graphs
 using GraphsFlows
@@ -10,7 +9,7 @@ using Random
 using IGraphs
 using Makie
 
-greet() = print("(|To be> + |not to be>)/√2")
+greet() = print("(|To be⟩ + |not to be⟩)/√2")
 
 mutable struct villager
     address::Int 
@@ -88,7 +87,7 @@ end
 Second returns the cost if an m partite GHZ states has cost m-1."""
 function vertex_cover_cost_of_partition(land::quantumLand, g::Graphs.Graph)
     k = land.numVillages
-    local_removed_g = QuantumHamlet.remove_local_edges(land, g)
+    local_removed_g = QuantumHamlets.remove_local_edges(land, g)
     cover = vertex_cover(local_removed_g, DegreeVertexCover())
     ghz_free_cost = length(cover)
 
@@ -109,7 +108,7 @@ end
 Does not look for bicliques"""
 function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
     k = land.numVillages
-    local_removed_g = QuantumHamlet.remove_local_edges(land, g)
+    local_removed_g = QuantumHamlets.remove_local_edges(land, g)
 
     bipartite_decomposition = []
     maps = []
@@ -451,7 +450,7 @@ function k_partition_saran_vazirani(g::Graphs.Graph, k)
 
     edge_set = []
     for c in min_cuts
-        push!(edge_set, QuantumHamlet.edges_spanning_partition(g,c[1],c[2]))
+        push!(edge_set, QuantumHamlets.edges_spanning_partition(g,c[1],c[2]))
     end
 
     dump = []
@@ -547,7 +546,7 @@ end
 """Returns a graph with nodes colored to match the village they belong to. Edges are colored red
 to indicate cost. Cost is default any cross village edge. Using a different method can color edges differently.
 For now, only the naive_cost_of_partition() method is supported."""
-function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph; method=QuantumHamlet.naive_cost_of_partition)
+function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph; method=QuantumHamlets.naive_cost_of_partition)
     # This subfunction was generated with ChatGPT
     function distinct_colors(n::Int)
         # Generate `n` distinct colors using HSV space
