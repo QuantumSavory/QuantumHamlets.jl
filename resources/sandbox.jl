@@ -15,6 +15,38 @@ using PythonCall
 nx = pyimport("networkx")
 nxcomm = pyimport("networkx.algorithms.community")
 
+using Nemo
+
+function cut_rank_cost(land::quantumLand, g::Graphs.Graph)
+    k = land.numVillages
+    local_removed_g = QuantumHamlets.remove_local_edges(land, g)
+
+    bipartite_decomposition = []
+    maps = []
+    for i in 1:k
+        for j in (i+1):k
+            subgraph_vertices = Array{Int64}([])
+            for v in vertices(local_removed_g)
+                if land.registry[v] == i || land.registry[v] == j
+                    push!(subgraph_vertices,v)
+                end
+            end
+            g_bi, map = induced_subgraph(local_removed_g, subgraph_vertices)
+            push!(bipartite_decomposition, g_bi)
+            push!(maps, map)
+        end
+    end
+
+    R, = residue_ring(ZZ, 2)
+    sum_ranks = 0
+    for graph in bipartite_decomposition
+        sum_ranks += rank(matrix(R, adjacency_matrix(graph)))
+    end    
+    #return bipartite_decomposition
+    return sum_ranks÷2
+end
+
+
 # Almost certain partitioning this is not interesting and the value converges to some <E>
 # function random_graphstate(n::Int)
 #     rand_stab = QuantumClifford.random_stabilizer(n)
@@ -29,7 +61,7 @@ n = logicalBitsPerVillage * numVillages
 # rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
 # g = rand_graphstate[1]
 g = grid([6,6])
-#g = grid_graph(n)
+g = grid_graph(n)
 
 #g = my_erdos(n, 4/(n))
 #g = random_regular_graph(numVillages*logicalBitsPerVillage, 4)
@@ -136,20 +168,15 @@ function grid_graph(numVertices)
     return Graphs.grid([a,b])
 end
 
-# This function was generated with ChatGPT
-function distinct_colors(n::Int)
-    # Generate `n` distinct colors using HSV space
-    return [HSV(i * 360 / n, 0.8, 0.9) for i in 0:n-1] .|> RGB
-end
-
 function compare_partition_methods(graph_generator, numVillages; name=string(graph_generator), numSamples=50)
     pt = 4/3
-    f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 20pt)
+    f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 21pt)
 
-    ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Hamlets",ylabel="VCG Required Bell Pairs",title=string(numVillages)*" Hamlets partitioning "*name)
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Hamlet",ylabel="Cut Rank",title=string(numVillages)*" Hamlets partitioning "*name)
     
     # Should maybe make this less hardcoded
-    colors = distinct_colors(6) # number of methods to compare
+    #colors = distinct_colors(6) # number of methods to compare
+    colors = Makie.wong_colors()
 
     sizes = 20:4:100
     bury_costs = []
@@ -184,12 +211,16 @@ function compare_partition_methods(graph_generator, numVillages; name=string(gra
 
             bury_reg = QuantumHamlets.bury_heuristic_global_v2(g, numVillages)
             buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
-            bury_cost, _ = QuantumHamlets.matching_cost_of_partition(buryLand, g)
+            #bury_cost, _ = QuantumHamlets.matching_cost_of_partition(buryLand, g)
+            bury_cost = cut_rank_cost(buryLand, g)
+
             push!(bury_sample_arr, bury_cost)
 
             bury_reg_local = QuantumHamlets.bury_heuristic_local_v2(g, numVillages)
             buryLand_local = quantumLand(bury_reg_local, numVillages, numVillages*logicalBitsPerVillage)
-            bury_cost_local, _ = QuantumHamlets.matching_cost_of_partition(buryLand_local, g)
+            #bury_cost_local, _ = QuantumHamlets.matching_cost_of_partition(buryLand_local, g)
+            bury_cost_local = cut_rank_cost(buryLand_local, g)
+
             push!(bury_sample_arr_local, bury_cost_local)
 
             metis_reg = Dict()
@@ -199,12 +230,16 @@ function compare_partition_methods(graph_generator, numVillages; name=string(gra
             end
 
             metisLand = quantumLand(metis_reg, numVillages, numVillages*logicalBitsPerVillage)
-            metis_cost, _ = QuantumHamlets.matching_cost_of_partition(metisLand, g)
+            #metis_cost, _ = QuantumHamlets.matching_cost_of_partition(metisLand, g)
+            metis_cost = cut_rank_cost(metisLand, g)
+
             push!(metis_sample_arr, metis_cost)
 
             saran_reg, _ = QuantumHamlets.k_partition_saran_vazirani(g, numVillages)
             saranLand = quantumLand(saran_reg, numVillages, numVillages*logicalBitsPerVillage)
-            saran_cost, _ = QuantumHamlets.matching_cost_of_partition(saranLand, g)
+            #saran_cost, _ = QuantumHamlets.matching_cost_of_partition(saranLand, g)
+            saran_cost = cut_rank_cost(saranLand, g)
+
             push!(saran_sample_arr, saran_cost)
 
             if numVillages == 2
@@ -220,12 +255,14 @@ function compare_partition_methods(graph_generator, numVillages; name=string(gra
                     kl_reg[i] = 2
                 end
                 klLand = quantumLand(kl_reg, numVillages, numVillages*logicalBitsPerVillage)
-                kl_cost, _ = QuantumHamlets.matching_cost_of_partition(klLand, g)
+                #kl_cost, _ = QuantumHamlets.matching_cost_of_partition(klLand, g)
+                kl_cost = cut_rank_cost(klLand, g)
+
                 push!(kl_sample_arr, kl_cost)
             end
 
-            _, _, random_costs = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlets.matching_cost_of_partition, vis=false)
-            push!(randommin_sample_arr, minimum(random_costs))
+            # _, _, random_costs = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlets.matching_cost_of_partition, samples=100, vis=false)
+            # push!(randommin_sample_arr, minimum(random_costs))
         end
         push!(bury_costs, mean(bury_sample_arr))
         push!(bury_stds, std(bury_sample_arr))
@@ -244,8 +281,8 @@ function compare_partition_methods(graph_generator, numVillages; name=string(gra
             push!(kl_stds, std(kl_sample_arr))
         end
 
-        push!(randommin_costs, mean(randommin_sample_arr))
-        push!(randommin_stds, std(randommin_sample_arr))
+        # push!(randommin_costs, mean(randommin_sample_arr))
+        # push!(randommin_stds, std(randommin_sample_arr))
     end
     scatter!(ax, sizes, bury_costs, color=colors[1], marker=:circle)
     errorbars!(ax, sizes, bury_costs, bury_stds, color=colors[1], whiskerwidth=10)
@@ -261,8 +298,8 @@ function compare_partition_methods(graph_generator, numVillages; name=string(gra
         errorbars!(ax, sizes, kl_costs, kl_stds, color = colors[4], whiskerwidth=10)
     end
 
-    scatter!(ax, sizes, randommin_costs, color=colors[5], marker=:circle)
-    errorbars!(ax, sizes, randommin_costs, randommin_stds, color = colors[5], whiskerwidth=10)
+    # scatter!(ax, sizes, randommin_costs, color=colors[5], marker=:circle)
+    # errorbars!(ax, sizes, randommin_costs, randommin_stds, color = colors[5], whiskerwidth=10)
 
 
     scatter!(ax, sizes, metis_costs, color=colors[6], marker=:circle)
@@ -274,7 +311,7 @@ function compare_partition_methods(graph_generator, numVillages; name=string(gra
     lines!(ax, [0,0], [0,0], label="BURY - \nSEEDED", color=colors[2], linewidth=12)
     lines!(ax, [0,0], [0,0], label="KL", color=colors[4], linewidth=12)
     lines!(ax, [0,0], [0,0], label="Saran-Vazirani", color=colors[3], linewidth=12)
-    lines!(ax, [0,0], [0,0], label="Random\nSampling 50", color=colors[5], linewidth=12)
+    #lines!(ax, [0,0], [0,0], label="Random\nSampling 100", color=colors[5], linewidth=12)
     
     lines!(ax, [0,0], [0,0], label="METIS", color=colors[6], linewidth=12)
     #lines!(ax, [0, maximum(sizes)], [0, (maximum(sizes)*numVillages)*(numVillages-1)/2], color=:gray)
@@ -344,7 +381,9 @@ end
 # klLand = quantumLand(kl_reg, numVillages, numVillages*logicalBitsPerVillage)
 # f_kl, kl_cost = QuantumHamlets.visualize_graph_on_land(klLand, g, method=QuantumHamlets.matching_cost_of_partition)
 
-#f_3reg = compare_partition_methods(random_regular_graph_deg3, 2, name="Random 3-Regular Graphs", numSamples=20)
-#f_6reg = compare_partition_methods(random_regular_graph_deg6, 2, name="Random 6-Regular Graphs", numSamples=20)
+#f_3reg = compare_partition_methods(random_regular_graph_deg3, 2, name="Random 3-Regular Graphs", numSamples=50)
+f_6reg = compare_partition_methods(random_regular_graph_deg6, 2, name="Random 6-Regular Graphs", numSamples=50)
 
 #compare_partition_methods(dorogovtsev_mendes, 2, name="Random Dorogovtsev-Mendes Graphs", numSamples=20)
+
+

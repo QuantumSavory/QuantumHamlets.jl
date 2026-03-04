@@ -1,5 +1,5 @@
-using QuantumHamlet
-using QuantumHamlet: quantumLand
+using QuantumHamlets
+using QuantumHamlets: quantumLand
 using QuantumClifford
 using Graphs
 using GraphMakie
@@ -51,16 +51,46 @@ function distinct_colors(n::Int)
     return [HSV(i * 360 / n, 0.8, 0.9) for i in 0:n-1] .|> RGB
 end
 
+using Nemo
+function cut_rank_cost(land::quantumLand, g::Graphs.Graph)
+    k = land.numVillages
+    local_removed_g = QuantumHamlets.remove_local_edges(land, g)
+
+    bipartite_decomposition = []
+    maps = []
+    for i in 1:k
+        for j in (i+1):k
+            subgraph_vertices = Array{Int64}([])
+            for v in vertices(local_removed_g)
+                if land.registry[v] == i || land.registry[v] == j
+                    push!(subgraph_vertices,v)
+                end
+            end
+            g_bi, map = induced_subgraph(local_removed_g, subgraph_vertices)
+            push!(bipartite_decomposition, g_bi)
+            push!(maps, map)
+        end
+    end
+
+    R, = residue_ring(ZZ, 2)
+    sum_ranks = 0
+    for graph in bipartite_decomposition
+        sum_ranks += rank(matrix(R, adjacency_matrix(graph)))
+    end    
+    #return bipartite_decomposition
+    return sum_ranks÷2
+end
+
 # Plots performance of METIS versus BURY on compiled graph states provided by a path to a directory with graphml files
 function deterministic_comparison(graph_generator; name="", maxHamlets=8)
     pt = 4/3
     f = Figure(size=(900, 700),px_per_unit = 6.0, fontsize = 21pt, yticks = [0, 20, 100, 200, 300, 400])
-    ax = f[1,1] = Axis(f[1,1],  xlabel="Vertices in Graph", ylabel="VCG Required Bell Pairs",title="METIS vs BURY on "*name)
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Vertices in Graph", ylabel="Cut Rank",title="METIS vs BURY on "*name)
     
     bury_costs = [[] for _ in 1:maxHamlets]
     metis_costs = [[] for _ in 1:maxHamlets]
 
-    for i in 24:100
+    for i in 24:50
         g = graph_generator(i*i)
         n = nv(g)
         for k in 2:maxHamlets
@@ -68,9 +98,10 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=8)
                 continue
             end
 
-            bury_reg = QuantumHamlet.bury_heuristic_global_v2(g, k)
+            bury_reg = QuantumHamlets.bury_heuristic_global_v2(g, k)
             buryLand = quantumLand(bury_reg, k, n)
-            bury_cost, _ = QuantumHamlet.matching_cost_of_partition(buryLand, g)
+            #bury_cost, _ = QuantumHamlets.naive_cost_of_partition(buryLand, g)
+            bury_cost = cut_rank_cost(buryLand,g)
 
             push!(bury_costs[k], [n,bury_cost])
 
@@ -81,7 +112,8 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=8)
             end
 
             metisLand = quantumLand(metis_reg, k, n)
-            metis_cost, _ = QuantumHamlet.matching_cost_of_partition(metisLand, g)
+            #metis_cost, _ = QuantumHamlets.naive_cost_of_partition(metisLand, g)
+            metis_cost = cut_rank_cost(metisLand,g)
             push!(metis_costs[k], [n,metis_cost])
         end
     end

@@ -532,9 +532,11 @@ function print_graph(g::Graph; edgecolors=nothing, nodecolors=[:white for _ in 1
     if nodelabels == false
         labels = nothing
     end
+    thicken_lines = edgecolors.==:red
     f, ax, p = graphplot(g,
                         node_color=nodecolors,
                         edge_color = edgecolors,
+                        edge_width= [2 for _ in 1:ne(g)]+2*thicken_lines,
                         nlabels_align=(:center,:center);
                         ilabels= labels, 
                         size = (900,700))
