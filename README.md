@@ -1,4 +1,5 @@
 # QuantumHamlet
+README under construction: tutorials and better documentation comning soon!
 
 ## Graph Theory User
 Sentence explaining what this is.
