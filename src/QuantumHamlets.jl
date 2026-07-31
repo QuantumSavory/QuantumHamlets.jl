@@ -9,8 +9,6 @@ using Random
 using IGraphs
 using Makie
 
-greet() = print("(|To be⟩ + |not to be⟩)/√2")
-
 mutable struct villager
     address::Int 
     id::Int
@@ -26,8 +24,8 @@ mutable struct quantumVillage
     villagers::Vector{villager}
     id::Int
 end
-function quantumVillage(村番号::Int)
-    return quantumVillage(0,0,0,villager[],村番号)
+function quantumVillage(village_ID::Int)
+    return quantumVillage(0,0,0,villager[],village_ID)
 end
 
 function add_villager!(v::quantumVillage, p::villager)
@@ -173,11 +171,10 @@ function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
     end
 
     return sum(cost_all), edgecolors
-    # debugging return statement
-    #return cost_all, matchings, maps, edgecolors
 end
 
-# TODO this function should exist inside matching_cost_of_partition, but its useful to leave out for debugging for now
+"""Input:\n
+Output:"""
 function inverse_map(map, size=maximum(map))
     inv_map = [0 for _ in 1:size]
     for (index, e) in enumerate(map)
@@ -210,7 +207,7 @@ function k_partition_random(g::Graphs.Graph, k)
 end
 
 # this version should work for any k
-function bury_heuristic_global_v2(g::Graphs.Graph, k; verbose=false)
+function bury_k(g::Graphs.Graph, k; verbose=false)
     @assert nv(g)%k ==0
 
     current_graph = copy(g)
@@ -218,7 +215,7 @@ function bury_heuristic_global_v2(g::Graphs.Graph, k; verbose=false)
     inv_map = collect(1:nv(g))
     total_colored = [false for _ in 1:nv(g)]
     for i in 1:k
-        returned_reg, colored = bury_heuristic_global(current_graph, nv(g)÷k, verbose=verbose)
+        _, colored = bury(current_graph, nv(g)÷k, verbose=verbose)
 
         for v in 1:nv(g)
             v_in_subgraph = inv_map[v]
@@ -237,8 +234,17 @@ function bury_heuristic_global_v2(g::Graphs.Graph, k; verbose=false)
     return new_reg
 end
 
-function bury_heuristic_global(g::Graphs.Graph, initial_resources=nv(g)÷2; verbose=false)
-    r = initial_resources
+"""
+Implementation of BURY algorithm from our work, QuantumHamlets: https://arxiv.org/abs/2603.06387
+This version colors a number of nodes in the graph equal to the second parameter in the input, and has k set to 2.
+To use BURY for k partition, use the "bury_k" function in this library.\n
+Input: A graph to be bipartitioned, and a number of nodes that will be in the first partition \n
+Output: A registry (see README example for explanation), and a Boolean vector marking which nodes where colored
+(k=2 case has only colored/not colored in the bipartition). For most users, the registry is all you need. 
+The vector is primarily metadata for "bury_k".
+"""
+function bury(g::Graphs.Graph, r0=nv(g)÷2; verbose=false)
+    r = r0
 
     # Node weight initialization
     weights = [0.0 for _ in 1:nv(g)]
@@ -256,7 +262,7 @@ function bury_heuristic_global(g::Graphs.Graph, initial_resources=nv(g)÷2; verb
     end
 
     # Global greedy selection
-    while sum(colored)<initial_resources
+    while sum(colored)<r0
         cost, choice = findmin(weights)
 
         if verbose
@@ -280,7 +286,6 @@ function bury_heuristic_global(g::Graphs.Graph, initial_resources=nv(g)÷2; verb
             end
         end
         weights[choice] = Inf
-
         if verbose
             println("\nUpdated weights table")
             println(weights)
@@ -354,14 +359,13 @@ function bury_heuristic_local_v2(g::Graphs.Graph, k; verbose=false)
 
     return new_reg
 end
-function bury_heuristic_local(g::Graphs.Graph, initial_resources=nv(g)÷2, seed = best_seed(g, initial_resources); verbose=false)
-    r = initial_resources
+function bury_heuristic_local(g::Graphs.Graph, r0=nv(g)÷2, seed = best_seed(g, r0); verbose=false)
+    r = r0
 
     # Node weight initialization
     weights = [0.0 for _ in 1:nv(g)]
     colored = [false for _ in 1:nv(g)]
 
-    #
     region = [false for _ in 1:nv(g)]
     region[neighbors(g,seed)] .= true
     region[seed] = true
@@ -379,7 +383,7 @@ function bury_heuristic_local(g::Graphs.Graph, initial_resources=nv(g)÷2, seed 
     end
 
     # Global greedy selections
-    while sum(colored)<initial_resources
+    while sum(colored)<r0
         cost, choice = findmin(.!region*Inf + weights)
         if cost == Inf
             cost, choice = findmin(weights)
@@ -423,15 +427,46 @@ function bury_heuristic_local(g::Graphs.Graph, initial_resources=nv(g)÷2, seed 
     return new_reg, colored
 end
 
-
-# TODO currently only supported for k=2
-# This version should run much faster than the gloabal version
-function bury_heuristic_seeded(g::Graphs.Graph, k, v)
-    return
-end
-
-# TODO performance on grid graphs is so bad that I think this might not actually be implemented correctly
+"""Implementation of the n/2 balanced partitioning algorithm from https://ics.uci.edu/~vazirani/k-cut.pdf \n
+Input: a graph and number of pices to partition into.\n
+Output:
+"""
 function k_partition_saran_vazirani(g::Graphs.Graph, k)
+    # Takes an input to multipartion S, and indices returned by the optimizer, inds. 
+    # This function returns a bool stating whether the partiion is perfectly balanced or not.
+    function partitionable(S, inds, k)
+        ans = true
+        val = sum(S[inds .== 1])
+        for i in 2:k
+            val_prime = sum(S[inds .== i])
+            if val_prime != val
+                ans = false
+                break
+            end
+        end
+        return ans
+    end
+    # Given a graph g, and two vectors corresponding the vertices within that graph, returns the set of edges the crosses the partition
+    function edges_spanning_partition(g::Graphs.Graph, v1, v2)
+        if length(v1) > length(v2)
+            v3 = v2
+            v2 = v1
+            v1 = v3
+        end
+
+        edges = []
+        for v in v1
+            neighbors = Graphs.neighbors(g,v)
+            for n in neighbors
+                if n ∉ v1
+                    push!(edges,Edge(v,n))
+                end
+            end
+        end
+
+        return edges
+    end
+
     d = Graphs.DiGraph(g)
     capacity_matrix = zeros(Int, nv(g), nv(g))
     for e in edges(d)
@@ -450,7 +485,7 @@ function k_partition_saran_vazirani(g::Graphs.Graph, k)
 
     edge_set = []
     for c in min_cuts
-        push!(edge_set, QuantumHamlets.edges_spanning_partition(g,c[1],c[2]))
+        push!(edge_set, edges_spanning_partition(g,c[1],c[2]))
     end
 
     dump = []
@@ -488,44 +523,6 @@ function k_partition_saran_vazirani(g::Graphs.Graph, k)
     return new_reg, dump
 end
 
-"""Helper function for Saran-Vazirani. 
-Takes an input to multipartion S, and indices returned by the optimizer, inds. 
-This function returns a bool stating whether the partiion is perfectly balanced or not."""
-function partitionable(S, inds, k)
-    ans = true
-    val = sum(S[inds .== 1])
-    for i in 2:k
-        val_prime = sum(S[inds .== i])
-        if val_prime != val
-            ans = false
-            break
-        end
-    end
-    return ans
-end
-
-"""Helper function for Saran-Vazirani. 
-Given a graph g, and two vectors corresponding the vertices within that graph, returns the set of edges the crosses the partition"""
-function edges_spanning_partition(g::Graphs.Graph, v1, v2)
-    if length(v1) > length(v2)
-        v3 = v2
-        v2 = v1
-        v1 = v3
-    end
-
-    edges = []
-    for v in v1
-        neighbors = Graphs.neighbors(g,v)
-        for n in neighbors
-            if n ∉ v1
-                push!(edges,Edge(v,n))
-            end
-        end
-    end
-
-    return edges
-end
-
 ######################## Visualization functions ######################## 
 function print_graph(g::Graph; edgecolors=nothing, nodecolors=[:white for _ in 1:nv(g)], nodelabels = true)
     labels = collect(1:nv(g))
@@ -536,7 +533,7 @@ function print_graph(g::Graph; edgecolors=nothing, nodecolors=[:white for _ in 1
     f, ax, p = graphplot(g,
                         node_color=nodecolors,
                         edge_color = edgecolors,
-                        edge_width= [2 for _ in 1:ne(g)]+2*thicken_lines,
+                        edge_width= [2 for _ in 1:ne(g)] .+ 2*thicken_lines,
                         nlabels_align=(:center,:center);
                         ilabels= labels, 
                         size = (900,700))

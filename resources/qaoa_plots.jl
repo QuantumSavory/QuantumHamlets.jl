@@ -27,7 +27,7 @@ using EzXML
 # @assert n%numVillages == 0
 # logicalBitsPerVillage = n ÷ numVillages
 
-# bury_reg = QuantumHamlets.bury_heuristic_global_v2(g, numVillages)
+# bury_reg = QuantumHamlets.bury_k(g, numVillages)
 # buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
 # bury_cost, _ = QuantumHamlets.matching_cost_of_partition(buryLand, g)
 
@@ -44,7 +44,7 @@ using EzXML
 function metis_bury_comparison_from_dir(graphml_dir; dir_name = "", hamletSizes = 2:8)
     pt = 4/3
     f = Figure(size=(900, 700),px_per_unit = 6.0, fontsize = 21pt)
-    ax = f[1,1] = Axis(f[1,1],  xlabel="Pre-compilation QAOA Circuit Size ",ylabel="Edges Cut",title="METIS vs BURY on "*string(dir_name))
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Pre-compilation QAOA Circuit Size ",ylabel="Edges Cut")
     
     bury_costs = Dict()
     metis_costs = Dict()
@@ -63,7 +63,7 @@ function metis_bury_comparison_from_dir(graphml_dir; dir_name = "", hamletSizes 
                 continue
             end
 
-            bury_reg = QuantumHamlets.bury_heuristic_global_v2(g, k)
+            bury_reg = QuantumHamlets.bury_k(g, k)
             buryLand = quantumLand(bury_reg, k, n)
             bury_cost, _ = QuantumHamlets.naive_cost_of_partition(buryLand, g)
             #bury_cost = cut_rank_cost(buryLand, g)            

@@ -1,6 +1,5 @@
 using QuantumHamlets
 using QuantumHamlets: quantumLand
-#using QuantumClifford
 using Graphs
 using GraphMakie
 using CairoMakie
@@ -8,12 +7,12 @@ using Colors
 using Statistics
 using IGraphs
 using Metis
-### KL portion
-using CondaPkg
-CondaPkg.add("networkx")
-using PythonCall
-nx = pyimport("networkx")
-nxcomm = pyimport("networkx.algorithms.community")
+# ### KL portion
+# using CondaPkg
+# CondaPkg.add("networkx")
+# using PythonCall
+# nx = pyimport("networkx")
+# nxcomm = pyimport("networkx.algorithms.community")
 
 using Nemo
 
@@ -46,20 +45,11 @@ function cut_rank_cost(land::quantumLand, g::Graphs.Graph)
     return sum_ranks÷2
 end
 
-
-# Almost certain partitioning this is not interesting and the value converges to some <E>
-# function random_graphstate(n::Int)
-#     rand_stab = QuantumClifford.random_stabilizer(n)
-#     return QuantumClifford.graphstate(rand_stab)
-# end
-
 #### Init
 numVillages = 3
 logicalBitsPerVillage = 12
 
 n = logicalBitsPerVillage * numVillages
-# rand_graphstate = random_graphstate(logicalBitsPerVillage*numVillages)
-# g = rand_graphstate[1]
 g = grid([6,6])
 g = grid_graph(n)
 
@@ -120,7 +110,7 @@ end
 #best_randomLand_matching, f_random_best_matching, random_costs_matching = random_sample(g, numVillages, logicalBitsPerVillage, method=QuantumHamlet.matching_cost_of_partition)
 
 
-bury_reg = QuantumHamlets.bury_heuristic_global_v2(g, numVillages)
+bury_reg = QuantumHamlets.bury_k(g, numVillages)
 buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
 f_bury, bury_cost = QuantumHamlets.visualize_graph_on_land(buryLand, g, method=QuantumHamlets.matching_cost_of_partition)
 
@@ -209,7 +199,7 @@ function compare_partition_methods(graph_generator, numVillages; name=string(gra
         for _ in 1:numSamples
             g = graph_generator(numVillages*logicalBitsPerVillage)
 
-            bury_reg = QuantumHamlets.bury_heuristic_global_v2(g, numVillages)
+            bury_reg = QuantumHamlets.bury_k(g, numVillages)
             buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
             #bury_cost, _ = QuantumHamlets.matching_cost_of_partition(buryLand, g)
             bury_cost = cut_rank_cost(buryLand, g)
@@ -334,7 +324,7 @@ function compare_generation_methods(graph_generator, numVillages)
     for logicalBitsPerVillage in sizes
         g = graph_generator(numVillages*logicalBitsPerVillage)
 
-        bury_reg = QuantumHamlets.bury_heuristic_global_v2(g, numVillages)
+        bury_reg = QuantumHamlets.bury_k(g, numVillages)
         buryLand = quantumLand(bury_reg, numVillages, numVillages*logicalBitsPerVillage)
         bury_cost, _ = QuantumHamlets.matching_cost_of_partition(buryLand, g)
         cheap, expen = QuantumHamlets.vertex_cover_cost_of_partition(buryLand,g)
@@ -382,7 +372,7 @@ end
 # f_kl, kl_cost = QuantumHamlets.visualize_graph_on_land(klLand, g, method=QuantumHamlets.matching_cost_of_partition)
 
 #f_3reg = compare_partition_methods(random_regular_graph_deg3, 2, name="Random 3-Regular Graphs", numSamples=50)
-f_6reg = compare_partition_methods(random_regular_graph_deg6, 2, name="Random 6-Regular Graphs", numSamples=50)
+#f_6reg = compare_partition_methods(random_regular_graph_deg6, 2, name="Random 6-Regular Graphs", numSamples=50)
 
 #compare_partition_methods(dorogovtsev_mendes, 2, name="Random Dorogovtsev-Mendes Graphs", numSamples=20)
 

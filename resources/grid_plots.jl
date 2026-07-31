@@ -8,12 +8,6 @@ using Colors
 using Statistics
 using IGraphs
 using Metis
-### KL portion
-using CondaPkg
-CondaPkg.add("networkx")
-using PythonCall
-nx = pyimport("networkx")
-nxcomm = pyimport("networkx.algorithms.community")
 
 using GraphIO.GraphML
 using EzXML
@@ -98,7 +92,7 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=8)
                 continue
             end
 
-            bury_reg = QuantumHamlets.bury_heuristic_global_v2(g, k)
+            bury_reg = QuantumHamlets.bury_k(g, k)
             buryLand = quantumLand(bury_reg, k, n)
             #bury_cost, _ = QuantumHamlets.naive_cost_of_partition(buryLand, g)
             bury_cost = cut_rank_cost(buryLand,g)
