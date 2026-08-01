@@ -1,7 +1,7 @@
 name = "QuantumHamlets"
 uuid = "6dd259e6-3040-4cc2-aafd-5578a5416026"
-authors = ["Anthony Micciche <amicciche@umass.edu>"]
 version = "0.1.0"
+authors = ["Anthony Micciche <amicciche@umass.edu>"]
 
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
@@ -13,6 +13,7 @@ HiGHS = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
 IGraphs = "647e90d3-2106-487c-adb4-c91fc07b96ea"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 MultiwayNumberPartitioning = "76062700-569f-48fc-9444-88b66f57fbe9"
+Nemo = "2edaba10-b0f1-5616-af89-8c11ac63239a"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
@@ -25,5 +26,6 @@ HiGHS = "1.15.0"
 IGraphs = "0.10.16"
 Makie = "0.24.6"
 MultiwayNumberPartitioning = "0.1.1"
+Nemo = "0.54.2"
 Random = "1.11.0"
 julia = "1.11"

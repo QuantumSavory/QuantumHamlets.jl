@@ -1,4 +1,4 @@
-# QuantumHamlet
+# QuantumHamlets
 README under construction: more tutorials and, much better documentation coming by end of August 2026! Please feel free to email us questions if you would like to use this library and the current state of documentation is stopping you. 
 
 ## Citing
@@ -15,6 +15,16 @@ If you would like to cite this work, please cite our paper: https://arxiv.org/ab
       url={https://arxiv.org/abs/2603.06387}, 
 }
 ```
+## For a non-quantum user, interested in regular graph partitioning for other applications
+Our paper, "Quantum Hamlets: Distributed Compilation of Large Algorithmic Graph States", looks at partioning certain classes of quantum states that can be represented as graphs for use in distributed quantum computing.
+
+In that context, rather than minimizing edges cut, it is better to minimize the sizes of the maximum matching sizes that cross the partitions (for the purpose of reducing the amount of long range quantum entanglement needed).
+
+In this pursuit, we developed a new heuristic algorithm for partitioning graphs with this goal in mind. To our knowledge, we were the first to consider this problem of graph paritioning with matchings as the objective, and the NP hardness proof is also present in our paper. 
+
+We hope that our abstractions were clear enough that Example 1 below is shows you how to use our heuristic, BURY.
+
+## For a user interested in quantum graph state partitioning
 
 ## Example 1: Partitioning a Grid into $k$ pieces
 First, we need to define how many hamlets ($k$) and villagers per hamlet ($n/k$) we are considering:

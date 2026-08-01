@@ -8,60 +8,59 @@ using MultiwayNumberPartitioning, HiGHS
 using Random
 using IGraphs
 using Makie
+using Nemo
 
+"""Struct to hold villager qubits. Their address should be the hamlet their in, and their id is unique identifier amongst all villagers"""
 mutable struct villager
     address::Int 
     id::Int
 end
 
-# Maybe add a layout, or a state to represent what is and isn't busy
-# Maybe also think about other codes? this could instead hold data on the physical qubits instead
-# THis could hold information on the tiles?
-mutable struct quantumVillage
+mutable struct hamlet
     numVillagers::Int
     numMayors::Int
     numFarms::Int
     villagers::Vector{villager}
     id::Int
 end
-function quantumVillage(village_ID::Int)
-    return quantumVillage(0,0,0,villager[],village_ID)
+function hamlet(hamlet_ID::Int)
+    return hamlet(0,0,0,villager[],hamlet_ID)
 end
 
-function add_villager!(v::quantumVillage, p::villager)
-    push!(v.villagers,p)
-    v.numVillagers+=1
-    return v
+function add_villager!(h::hamlet, p::villager)
+    push!(h.villagers,p)
+    h.numVillagers+=1
+    return h
 end
 
-# Default map from villagers to their villages
-function defaultVillagerRegistry(numVillages::Int,logicalBitsPerVillage::Int)
+# Default map from villagers to their hamlets
+function defaultVillagerRegistry(numHamlets::Int,hamletSize::Int)
     villagerLookup = Dict()
     currentCapacity = 0
-    currentVillage = 1
-    for p in 1:numVillages*logicalBitsPerVillage
-        villagerLookup[p] = currentVillage
+    currentHamlet = 1
+    for p in 1:numHamlets*hamletSize
+        villagerLookup[p] = currentHamlet
         currentCapacity += 1
-        if currentCapacity == logicalBitsPerVillage
+        if currentCapacity == hamletSize
             currentCapacity = 0
-            currentVillage += 1
+            currentHamlet += 1
         end
     end
     return villagerLookup
 end
 
 struct quantumLand
-    villages::Vector{quantumVillage}
+    hamlets::Vector{hamlet}
     registry::Dict{Int,Int}
-    numVillages::Int
+    numHamlets::Int
     numVillagers::Int
 end
-function quantumLand(citizenRegistry::Dict, numVillages::Int, numVillagers::Int)
-    land = quantumLand([quantumVillage(i) for i in 1:numVillages],citizenRegistry, numVillages, numVillagers)
+function quantumLand(citizenRegistry::Dict, numHamlets::Int, numVillagers::Int)
+    land = quantumLand([hamlet(i) for i in 1:numHamlets],citizenRegistry, numHamlets, numVillagers)
 
     for i in 1:numVillagers
-        village_id = citizenRegistry[i]
-        add_villager!(land.villages[village_id],villager(village_id,i))
+        hamlet_id = citizenRegistry[i]
+        add_villager!(land.hamlets[hamlet_id],villager(hamlet_id,i))
     end
 
     return land
@@ -84,7 +83,7 @@ end
 """Returns first the size of the vertex cover, corresponding to GHZ states being 100% free.
 Second returns the cost if an m partite GHZ states has cost m-1."""
 function vertex_cover_cost_of_partition(land::quantumLand, g::Graphs.Graph)
-    k = land.numVillages
+    k = land.numHamlets
     local_removed_g = QuantumHamlets.remove_local_edges(land, g)
     cover = vertex_cover(local_removed_g, DegreeVertexCover())
     ghz_free_cost = length(cover)
@@ -102,10 +101,39 @@ function vertex_cover_cost_of_partition(land::quantumLand, g::Graphs.Graph)
     return ghz_free_cost, ghz_n_minus_one_cost
 end
 
-"""Calculates the cost of generating a given graph state by only using bell pairs and YY measurement.
+function cut_rank_cost(land::quantumLand, g::Graphs.Graph)
+    k = land.numHamlets
+    local_removed_g = QuantumHamlets.remove_local_edges(land, g)
+
+    bipartite_decomposition = []
+    maps = []
+    for i in 1:k
+        for j in (i+1):k
+            subgraph_vertices = Array{Int64}([])
+            for v in vertices(local_removed_g)
+                if land.registry[v] == i || land.registry[v] == j
+                    push!(subgraph_vertices,v)
+                end
+            end
+            g_bi, map = induced_subgraph(local_removed_g, subgraph_vertices)
+            push!(bipartite_decomposition, g_bi)
+            push!(maps, map)
+        end
+    end
+
+    R, = residue_ring(ZZ, 2)
+    sum_ranks = 0
+    for graph in bipartite_decomposition
+        sum_ranks += rank(matrix(R, adjacency_matrix(graph)))
+    end    
+    #return bipartite_decomposition
+    return sum_ranks÷2
+end
+
+"""Calculates the cost of generating a given graph state by only using bell pairs and Y measurements.
 Does not look for bicliques"""
 function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
-    k = land.numVillages
+    k = land.numHamlets
     local_removed_g = QuantumHamlets.remove_local_edges(land, g)
 
     bipartite_decomposition = []
@@ -183,7 +211,7 @@ function inverse_map(map, size=maximum(map))
     return inv_map
 end
 
-"""Takes a land and a graph, and returns a graph with the intra-village edges removed"""
+"""Takes a land and a graph, and returns a graph with the intra-hamlet edges removed"""
 function remove_local_edges(land::quantumLand, graph::Graphs.Graph)
     graph_copy = copy(graph)
     for e in edges(graph)
@@ -194,6 +222,9 @@ function remove_local_edges(land::quantumLand, graph::Graphs.Graph)
     return graph_copy
 end
 
+"""Randomly partitions the graph into k pieces\n
+Input: a graph from Graphs.jl, and integer k denoting the number of pieces\n
+Output: a registry (dictionary mapping villager ids to hamlet ids)"""
 function k_partition_random(g::Graphs.Graph, k)
     nodes = shuffle(collect(1:nv(g)))
     new_reg = Dict()
@@ -250,7 +281,7 @@ function bury(g::Graphs.Graph, r0=nv(g)÷2; verbose=false)
     weights = [0.0 for _ in 1:nv(g)]
     colored = [false for _ in 1:nv(g)]
     for (index,v) in enumerate(vertices(g))
-        weights[index] = degree(g,v) + 1
+        weights[index] = Graphs.degree(g,v) + 1
     end
 
     if verbose
@@ -306,7 +337,7 @@ function seeder_1(g::Graphs.Graph)
     # Node weight initialization
     weights = [0.0 for _ in 1:nv(g)]
     for (index,v) in enumerate(vertices(g))
-        weights[index] = degree(g,v) + 1
+        weights[index] = Graphs.degree(g,v) + 1
     end
     _, index = findmin(weights)
     #println("seed is", index)
@@ -371,7 +402,7 @@ function bury_heuristic_local(g::Graphs.Graph, r0=nv(g)÷2, seed = best_seed(g, 
     region[seed] = true
 
     for (index,v) in enumerate(vertices(g))
-        weights[index] = degree(g,v) + 1
+        weights[index] = Graphs.degree(g,v) + 1
     end
 
     if verbose
@@ -542,8 +573,8 @@ function print_graph(g::Graph; edgecolors=nothing, nodecolors=[:white for _ in 1
     return f
 end
 
-"""Returns a graph with nodes colored to match the village they belong to. Edges are colored red
-to indicate cost. Cost is default any cross village edge. Using a different method can color edges differently.
+"""Returns a graph with nodes colored to match the hamlet they belong to. Edges are colored red
+to indicate cost. Cost is default any cross hamlet edge. Using a different method can color edges differently.
 For now, only the naive_cost_of_partition() method is supported."""
 function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph; method=QuantumHamlets.naive_cost_of_partition)
     # This subfunction was generated with ChatGPT
@@ -554,25 +585,25 @@ function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph; method=Quan
 
     cost, edgecolors = method(land,g)
 
-    village_colors = distinct_colors(land.numVillages)
-    village_colors = Makie.wong_colors()
+    hamlet_colors = distinct_colors(land.numHamlets)
+    hamlet_colors = Makie.wong_colors()
 
-    nodecolors = [village_colors[(land.registry[i]%7)+1] for i in 1:land.numVillagers]
+    nodecolors = [hamlet_colors[(land.registry[i]%7)+1] for i in 1:land.numVillagers]
     f = print_graph(g, edgecolors=edgecolors, nodecolors=nodecolors)
     return f, cost
 end
 
 function Base.show(io::IO, land::quantumLand)
-    for i in land.villages
+    for i in land.hamlets
         println(i)
     end
 end
 function Base.show(io::IO, p::villager)
     print("Qubit $(p.id), who lives in hamlet $(p.address)")
 end
-function Base.show(io::IO, village::quantumVillage)
-    print("Village $(village.id) has $(village.numVillagers) villagers, $(village.numFarms) farms, and $(village.numMayors) mayors.\n")
-    for p in village.villagers
+function Base.show(io::IO, hamlet::hamlet)
+    print("Village $(hamlet.id) has $(hamlet.numVillagers) villagers, $(hamlet.numFarms) farms, and $(hamlet.numMayors) mayors.\n")
+    for p in hamlet.villagers
         println(p)
     end
 end
