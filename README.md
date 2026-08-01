@@ -83,8 +83,9 @@ for a in eachindex(metis_part)
     metis_reg[a] = metis_part[a]
 end
 
-metisLand = quantumLand(metis_reg, numHamlets, n)
+metisLand = QuantumHamlets.quantumLand(metis_reg, numHamlets, n)
 f_metis, metis_cost = QuantumHamlets.visualize_graph_on_land(metisLand, g, method=QuantumHamlets.matching_cost_of_partition)
+f_metis
 ```
 ![metis partitioned 6x6 grid with vcg cost](./resources/figs/metis_vcg_6_6_grid.png)
 `metis_cost` here is equal to 10. Notice that using Metis would give a better performance on cut edges (by visual inspection - we calculated the matching sizes), however, BURY performs better at reducing the matching sizes across the cuts. 

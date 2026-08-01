@@ -24,7 +24,7 @@ mutable struct hamlet
     id::Int
 end
 function hamlet(hamlet_ID::Int)
-    return hamlet(0,0,0,villager[],hamlet_ID)
+    return hamlet(0,1,0,villager[],hamlet_ID)
 end
 
 function add_villager!(h::hamlet, p::villager)
