@@ -66,6 +66,11 @@ function quantumLand(citizenRegistry::Dict, numHamlets::Int, numVillagers::Int)
     return land
 end
 
+"""Calculates the edges cut to establish a graph state on the given quantumLand\n
+Input: a quantum land object which specifies how nodes are distributed, and a graph from Graphs.jl\n
+Output: First the number edges cut, then a vector of colors (cut edges are set to red and others black). 
+The vector of colors is used by "visualize_graph_on_land" to illustrate the partition and cost.
+"""
 function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph) 
     edgecolors = [:black for _ in 1:ne(graph)]
 
@@ -101,6 +106,10 @@ function vertex_cover_cost_of_partition(land::quantumLand, g::Graphs.Graph)
     return ghz_free_cost, ghz_n_minus_one_cost
 end
 
+"""Calculates the the cost of a k-partition in terms of cut rank.\n
+Input: a quantum land object, a graph from Graphs.jl\n
+Output: cut rank returned as an integer
+"""
 function cut_rank_cost(land::quantumLand, g::Graphs.Graph)
     k = land.numHamlets
     local_removed_g = QuantumHamlets.remove_local_edges(land, g)
@@ -126,12 +135,15 @@ function cut_rank_cost(land::quantumLand, g::Graphs.Graph)
     for graph in bipartite_decomposition
         sum_ranks += rank(matrix(R, adjacency_matrix(graph)))
     end    
-    #return bipartite_decomposition
+
     return sum_ranks÷2
 end
 
-"""Calculates the cost of generating a given graph state by only using bell pairs and Y measurements.
-Does not look for bicliques"""
+"""Calculates the cost of generating a given graph state by only using bell pairs and Y measurements.\n
+Input: a quantum land object, a graph from Graphs.jl\n
+Output: First the sum of the matching sizes between each pair of partitions,
+then a vector of colors (cut edges are set to red and others black). 
+The vector of colors is used by "visualize_graph_on_land" to illustrate the partition and cost."""
 function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
     k = land.numHamlets
     local_removed_g = QuantumHamlets.remove_local_edges(land, g)
@@ -201,8 +213,7 @@ function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
     return sum(cost_all), edgecolors
 end
 
-"""Input:\n
-Output:"""
+"""Helper function to some of the other methods"""
 function inverse_map(map, size=maximum(map))
     inv_map = [0 for _ in 1:size]
     for (index, e) in enumerate(map)
@@ -237,7 +248,12 @@ function k_partition_random(g::Graphs.Graph, k)
     return new_reg
 end
 
-# this version should work for any k
+"""
+Implementation of k-partition BURY algorithm from our work, QuantumHamlets: https://arxiv.org/abs/2603.06387
+This function assumes that k divides the number of vertices in g. \n
+Input: a graph from Graphs.jl, and integer k denoting the number of pieces\n
+Output: a registry (dictionary mapping villager ids to hamlet ids)
+"""
 function bury_k(g::Graphs.Graph, k; verbose=false)
     @assert nv(g)%k ==0
 
@@ -332,7 +348,7 @@ function bury(g::Graphs.Graph, r0=nv(g)÷2; verbose=false)
     return new_reg, colored
 end
 
-# Should maybe adda check that the seed can be chosen - not a problem with this minweight seeder
+# Should maybe add a check that the seed can be chosen - not a problem with this minweight seeder
 function seeder_1(g::Graphs.Graph)
     # Node weight initialization
     weights = [0.0 for _ in 1:nv(g)]
@@ -348,7 +364,7 @@ function best_seed(g::Graphs.Graph, r0)
     best_score = Inf
     best_seed = 1
     for seed in 1:nv(g)
-        reg, _ = bury_heuristic_local(g, r0, seed)
+        reg, _ = bury_seeded(g, r0, seed)
         land = quantumLand(reg, 2, nv(g))
         cost, _ = matching_cost_of_partition(land, g)
 
@@ -363,7 +379,7 @@ function best_seed(g::Graphs.Graph, r0)
 end
 
 # this version should work for any k
-function bury_heuristic_local_v2(g::Graphs.Graph, k; verbose=false)
+function bury_k_seeded(g::Graphs.Graph, k; verbose=false)
     @assert nv(g)%k ==0
 
     current_graph = copy(g)
@@ -371,8 +387,8 @@ function bury_heuristic_local_v2(g::Graphs.Graph, k; verbose=false)
     inv_map = collect(1:nv(g))
     total_colored = [false for _ in 1:nv(g)]
     for i in 1:k
-        returned_reg, colored = bury_heuristic_local(current_graph, nv(g)÷k, seeder_1(current_graph), verbose=verbose)
-        #returned_reg, colored = bury_heuristic_local(current_graph, nv(g)÷k, verbose=verbose)
+        returned_reg, colored = bury_seeded(current_graph, nv(g)÷k, seeder_1(current_graph), verbose=verbose)
+        #returned_reg, colored = bury_seeded(current_graph, nv(g)÷k, verbose=verbose)
 
         for v in 1:nv(g)
             v_in_subgraph = inv_map[v]
@@ -390,7 +406,7 @@ function bury_heuristic_local_v2(g::Graphs.Graph, k; verbose=false)
 
     return new_reg
 end
-function bury_heuristic_local(g::Graphs.Graph, r0=nv(g)÷2, seed = best_seed(g, r0); verbose=false)
+function bury_seeded(g::Graphs.Graph, r0=nv(g)÷2, seed = best_seed(g, r0); verbose=false)
     r = r0
 
     # Node weight initialization
@@ -577,15 +593,7 @@ end
 to indicate cost. Cost is default any cross hamlet edge. Using a different method can color edges differently.
 For now, only the naive_cost_of_partition() method is supported."""
 function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph; method=QuantumHamlets.naive_cost_of_partition)
-    # This subfunction was generated with ChatGPT
-    function distinct_colors(n::Int)
-        # Generate `n` distinct colors using HSV space
-        return [HSV(i * 360 / n, 0.8, 0.9) for i in 0:n-1] .|> RGB
-    end
-
     cost, edgecolors = method(land,g)
-
-    hamlet_colors = distinct_colors(land.numHamlets)
     hamlet_colors = Makie.wong_colors()
 
     nodecolors = [hamlet_colors[(land.registry[i]%7)+1] for i in 1:land.numVillagers]

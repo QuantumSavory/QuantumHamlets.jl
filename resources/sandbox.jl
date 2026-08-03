@@ -57,7 +57,7 @@ bury_reg = QuantumHamlets.bury_k(g, numHamlets)
 buryLand = quantumLand(bury_reg, numHamlets, numHamlets*hamletSize)
 f_bury, bury_cost = QuantumHamlets.visualize_graph_on_land(buryLand, g, method=QuantumHamlets.matching_cost_of_partition)
 
-# bury_local_reg = QuantumHamlets.bury_heuristic_local_v2(g, numHamlets)
+# bury_local_reg = QuantumHamlets.bury_k_seeded(g, numHamlets)
 # buryLocalLand = quantumLand(bury_local_reg, numHamlets, numHamlets*hamletSize)
 # f_bury_local, bury_cost_local = QuantumHamlets.visualize_graph_on_land(buryLocalLand, g, method=QuantumHamlets.matching_cost_of_partition)
 
@@ -107,7 +107,6 @@ function compare_partition_methods(graph_generator, numHamlets; name=string(grap
     ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Hamlet",ylabel="Cut Rank",title=string(numHamlets)*" Hamlets partitioning "*name)
     
     # Should maybe make this less hardcoded
-    #colors = distinct_colors(6) # number of methods to compare
     colors = Makie.wong_colors()
 
     sizes = 20:4:100
@@ -148,7 +147,7 @@ function compare_partition_methods(graph_generator, numHamlets; name=string(grap
 
             push!(bury_sample_arr, bury_cost)
 
-            bury_reg_local = QuantumHamlets.bury_heuristic_local_v2(g, numHamlets)
+            bury_reg_local = QuantumHamlets.bury_k_seeded(g, numHamlets)
             buryLand_local = quantumLand(bury_reg_local, numHamlets, numHamlets*hamletSize)
             #bury_cost_local, _ = QuantumHamlets.matching_cost_of_partition(buryLand_local, g)
             bury_cost_local = QuantumHamlets.cut_rank_cost(buryLand_local, g)

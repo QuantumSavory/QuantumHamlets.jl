@@ -23,12 +23,6 @@ function grid_graph(numVertices)
     return Graphs.grid([a,b])
 end
 
-# This function was generated with ChatGPT
-function distinct_colors(n::Int)
-    # Generate `n` distinct colors using HSV space
-    return [HSV(i * 360 / n, 0.8, 0.9) for i in 0:n-1] .|> RGB
-end
-
 # Plots performance of METIS versus BURY on compiled graph states provided by a path to a directory with graphml files
 function deterministic_comparison(graph_generator; name="", maxHamlets=8)
     pt = 4/3
@@ -68,7 +62,6 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=8)
         end
     end
 
-    k_colors = distinct_colors(maxHamlets-1)
     wong_colors = Makie.wong_colors()
     for k in 2:maxHamlets
         sort!(bury_costs[k], by = x -> x[1])
@@ -79,13 +72,9 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=8)
         x_metis = [data[1] for data in metis_costs[k]]
         y_metis = [data[2] for data in metis_costs[k]]
 
-        #scatterlines!(ax, x_bury, y_bury, color=k_colors[k-1], marker=:circle, markersize=12)
-        #scatterlines!(ax, x_metis, y_metis, color=k_colors[k-1], marker=:xcross, markersize=12)
-
         scatterlines!(ax, x_bury, y_bury, color=wong_colors[(k%7)+1], marker=:circle, markersize=12)
         scatterlines!(ax, x_metis, y_metis, color=wong_colors[(k%7)+1], marker=:xcross, markersize=12)
 
-        #lines!(ax, [0,0], [0,0], label=string(k), color=k_colors[k-1], linewidth = 12)
         lines!(ax, [0,0], [0,0], label=string(k), color=wong_colors[(k%7)+1], linewidth = 12)
     end
 

@@ -22,7 +22,7 @@ In that context, rather than minimizing edges cut, it is better to minimize the 
 
 In this pursuit, we developed a new heuristic algorithm for partitioning graphs with this goal in mind. To our knowledge, we were the first to consider this problem of graph paritioning with matchings as the objective, and the NP hardness proof is also present in our paper. 
 
-We hope that our abstractions were clear enough that Example 1 below is shows you how to use our heuristic, BURY.
+We hope that our abstractions were clear enough that Example 1 below is shows you how to use our heuristic, BURY, for your non Quantum application.
 
 ## For a user interested in quantum graph state partitioning
 
