@@ -23,16 +23,13 @@ jobs:
       - uses: actions/checkout@v7
       - uses: julia-actions/setup-julia@v3
         with:
-          version: 'min'
+          version: '1.12'
       - uses: julia-actions/cache@v3
         with:
           delete-old-caches: false
       - uses: julia-actions/julia-downgrade-compat@v2.7.0
         with:
-          projects: '.'
-          skip: Random
           mode: 'forcedeps'
-          julia_version: 'min'
       - uses: julia-actions/julia-buildpkg@v1
       - name: Load the package without re-resolving
         run: julia --color=yes --check-bounds=yes --project=. -e 'using QuantumHamlets'
