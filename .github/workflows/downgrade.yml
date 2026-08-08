@@ -29,6 +29,7 @@ jobs:
           delete-old-caches: false
       - uses: julia-actions/julia-downgrade-compat@v2.7.0
         with:
+          skip: Random
           mode: 'forcedeps'
       - uses: julia-actions/julia-buildpkg@v1
       - name: Load the package without re-resolving
