@@ -38,7 +38,7 @@ using EzXML
 function metis_bury_comparison_from_dir(graphml_dir; hamletSizes = 2:8)
     pt = 4/3
     f = Figure(size=(900, 700),px_per_unit = 6.0, fontsize = 21pt)
-    ax = f[1,1] = Axis(f[1,1],  xlabel="Pre-compilation QAOA Circuit Size ",ylabel="VCG Required Bell Pairs")
+    ax = f[1,1] = Axis(f[1,1],  title="METIS vs BURY on QAOA",xlabel="Pre-compilation QAOA Circuit Size ",ylabel="VCG Required Bell Pairs")
     
     bury_costs = Dict()
     metis_costs = Dict()
@@ -108,4 +108,4 @@ function metis_bury_comparison_from_dir(graphml_dir; hamletSizes = 2:8)
     return f
 end
 
-f_qaoa = metis_bury_comparison_from_dir("./QuantumHamlets.jl/resources/QAOAgraphs_mini/", hamletSizes= [4, 8, 10, 13, 18, 20])
+f_qaoa = metis_bury_comparison_from_dir("./QuantumHamlets.jl/resources/QAOAgraphs/", hamletSizes= [4, 8, 10, 13, 18, 20])

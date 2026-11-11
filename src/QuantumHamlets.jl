@@ -49,6 +49,9 @@ function defaultVillagerRegistry(numHamlets::Int,hamletSize::Int)
     return villagerLookup
 end
 
+"""This is the main struct one should use. Specifying a registry (dictionary mapping villagers to hamlets),
+ a number of hamlets, and a total number of villagers, allows one to initialize a quantumLand. That land can then
+ be passed as an argument to many other useful functions."""
 struct quantumLand
     hamlets::Vector{hamlet}
     registry::Dict{Int,Int}
@@ -136,7 +139,7 @@ function cut_rank_cost(land::quantumLand, g::Graphs.Graph)
         sum_ranks += rank(matrix(R, adjacency_matrix(graph)))
     end    
 
-    return sum_ranks÷2
+    return sum_ranks÷2, nothing
 end
 
 """Calculates the cost of generating a given graph state by only using bell pairs and Y measurements.\n
@@ -348,6 +351,27 @@ function bury(g::Graphs.Graph, r0=nv(g)÷2; verbose=false)
     return new_reg, colored
 end
 
+# TODO update cut rank cost to account for this method by adding another return arg
+"""BURY used to """
+function bury_not_balanced_bipartition(g, min_v, max_v; bury_v = bury, cost_f = matching_cost_of_partition)
+    n = nv(g)
+    lowest_cost = n
+    best_reg = nothing
+    best_colors = nothing
+    for v in min_v:max_v
+        bury_reg, colors  = bury_v(g, v)
+        buryLand = quantumLand(bury_reg, 2, n)
+        cost, _ = cost_f(buryLand, g)
+        if cost <= lowest_cost
+            best_reg = bury_reg
+            best_colors = colors
+            lowest_cost = cost
+        end
+    end
+
+    return best_reg, best_colors
+end
+
 # Should maybe add a check that the seed can be chosen - not a problem with this minweight seeder
 function seeder_1(g::Graphs.Graph)
     # Node weight initialization
@@ -356,26 +380,65 @@ function seeder_1(g::Graphs.Graph)
         weights[index] = Graphs.degree(g,v) + 1
     end
     _, index = findmin(weights)
-    #println("seed is", index)
     return index
 end
 
-function best_seed(g::Graphs.Graph, r0)
+"""Finds the seed vertex that producing the smallest matching"""
+function best_seed(g::Graphs.Graph, r0; verbose=false)
     best_score = Inf
     best_seed = 1
     for seed in 1:nv(g)
+        if verbose
+            println("Trying seed ", seed, " out of ", nv(g))
+        end
         reg, _ = bury_seeded(g, r0, seed)
         land = quantumLand(reg, 2, nv(g))
         cost, _ = matching_cost_of_partition(land, g)
+        #cost, _ = cut_rank_cost(land, g)
 
         if cost< best_score
             best_seed = seed
             best_score = cost
+            println("Found better. Seed: ", best_seed, ". Cost: ", best_score)
         end
-        #println(cost, " seed ", seed)
     end
-    #println("using seed ", best_seed, "\n")
     return best_seed
+end
+
+"""Finds the seed vertex, out of sqrt(n) samples, that producing the smallest matching"""
+function best_sqrt_seed(g::Graphs.Graph, r0; verbose=false)
+    best_score = Inf
+    best_seed = 1
+    for i in 1:ceil(Int,sqrt(nv(g)))
+        seed = rand(vertices(g))
+        if verbose
+            println("Trying seed ", i, " out of ", ceil(Int,sqrt(nv(g))))
+        end
+        reg, _ = bury_seeded(g, r0, seed)
+        land = quantumLand(reg, 2, nv(g))
+        cost, _ = matching_cost_of_partition(land, g)
+        #cost, _ = cut_rank_cost(land, g)
+
+        if cost< best_score
+            best_seed = seed
+            best_score = cost
+            println("Found better. Seed: ", best_seed, ". Cost: ", best_score)
+        end
+    end
+    return best_seed
+end
+
+"""Finds seeds based on maximum anitpodal vertices of the graphs"""
+function antipode_seeds(g::Graphs.Graph, r0)
+    dists = floyd_warshall_shortest_paths(g).dists
+    antipodes = findall(==(maximum(dists)), dists)
+    seed_list = []
+    for pair in antipodes
+        push!(seed_list, pair[1])
+    end
+    sort!(unique!(seed_list))
+
+    return seed_list
 end
 
 # this version should work for any k
@@ -406,7 +469,8 @@ function bury_k_seeded(g::Graphs.Graph, k; verbose=false)
 
     return new_reg
 end
-function bury_seeded(g::Graphs.Graph, r0=nv(g)÷2, seed = best_seed(g, r0); verbose=false)
+#  
+function bury_seeded(g::Graphs.Graph, r0=nv(g)÷2, seed =  best_sqrt_seed(g, r0); verbose=false)
     r = r0
 
     # Node weight initialization

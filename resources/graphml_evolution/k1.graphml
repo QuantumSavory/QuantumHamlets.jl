@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+    <key attr.name="type" attr.type="int" for="node" id="type">
+        <default>1</default>
+    </key>
+    <key attr.name="phase" attr.type="string" for="node" id="phase">
+        <default>0</default>
+    </key>
+    <key attr.name="edge type" attr.type="int" for="edge" id="etype">
+        <default>1</default>
+    </key>
+    <key attr.name="x" attr.type="double" for="node" id="x">
+        <default>0</default>
+    </key>
+    <key attr.name="y" attr.type="double" for="node" id="y">
+        <default>0</default>
+    </key>
+    <graph edgedefault="undirected">
+        <node id="1"><data key="type">1</data><data key="phase">43123/903166</data><data key="x">100</data><data key="y">2600</data></node>
+        <node id="5"><data key="type">1</data><data key="phase">43123/903166</data><data key="x">700</data><data key="y">2700</data></node>
+        <node id="18"><data key="type">1</data><data key="phase">43123/903166</data><data key="x">1600</data><data key="y">2800</data></node>
+        <node id="51"><data key="type">1</data><data key="phase">751855/728661</data><data key="x">4100</data><data key="y">3500</data></node>
+        <node id="79"><data key="type">1</data><data key="phase">23194/728661</data><data key="x">5600</data><data key="y">2700</data></node>
+        <node id="85"><data key="type">1</data><data key="phase">43123/451583</data><data key="x">6100</data><data key="y">3500</data></node>
+        <node id="128"><data key="type">1</data><data key="phase">43123/451583</data><data key="x">9100</data><data key="y">1900</data></node>
+        <node id="161"><data key="type">1</data><data key="phase">0</data><data key="x">11700</data><data key="y">-100</data></node>
+        <node id="296"><data key="type">1</data><data key="phase">0</data><data key="x">18700</data><data key="y">-100</data></node>
+        <node id="325"><data key="type">1</data><data key="phase">11597/728661</data><data key="x">5700</data><data key="y">-200</data></node>
+        <node id="327"><data key="type">1</data><data key="phase">11597/728661</data><data key="x">11700</data><data key="y">-200</data></node>
+        <node id="328"><data key="type">1</data><data key="phase">23194/728661</data><data key="x">1800</data><data key="y">-200</data></node>
+        <node id="349"><data key="type">1</data><data key="phase">1763209/903166</data><data key="x">37900</data><data key="y">2600</data></node>
+        <node id="353"><data key="type">1</data><data key="phase">1763209/903166</data><data key="x">37300</data><data key="y">2700</data></node>
+        <node id="366"><data key="type">1</data><data key="phase">1763209/903166</data><data key="x">36400</data><data key="y">2800</data></node>
+        <node id="369"><data key="type">1</data><data key="phase">0</data><data key="x">36200</data><data key="y">-100</data></node>
+        <node id="427"><data key="type">1</data><data key="phase">1434128/728661</data><data key="x">32400</data><data key="y">2700</data></node>
+        <node id="428"><data key="type">1</data><data key="phase">0</data><data key="x">32300</data><data key="y">-100</data></node>
+        <node id="433"><data key="type">1</data><data key="phase">860043/451583</data><data key="x">31900</data><data key="y">3500</data></node>
+        <node id="476"><data key="type">1</data><data key="phase">860043/451583</data><data key="x">28900</data><data key="y">1900</data></node>
+        <node id="639"><data key="type">1</data><data key="phase">860043/451583</data><data key="x">20200</data><data key="y">2700</data></node>
+        <node id="673"><data key="type">1</data><data key="phase">1445725/728661</data><data key="x">32300</data><data key="y">-200</data></node>
+        <node id="675"><data key="type">1</data><data key="phase">1445725/728661</data><data key="x">26300</data><data key="y">-200</data></node>
+        <node id="676"><data key="type">1</data><data key="phase">1434128/728661</data><data key="x">36200</data><data key="y">-200</data></node>
+        <node id="695"><data key="type">1</data><data key="phase">1434128/728661</data><data key="x">18700</data><data key="y">-200</data></node>
+        <edge id="1_79" source="1" target="79"><data key="etype">2</data></edge>
+        <edge id="1_51" source="1" target="51"><data key="etype">2</data></edge>
+        <edge id="5_51" source="5" target="51"><data key="etype">2</data></edge>
+        <edge id="18_51" source="18" target="51"><data key="etype">2</data></edge>
+        <edge id="18_328" source="18" target="328"><data key="etype">2</data></edge>
+        <edge id="51_296" source="51" target="296"><data key="etype">2</data></edge>
+        <edge id="51_128" source="51" target="128"><data key="etype">2</data></edge>
+        <edge id="51_476" source="51" target="476"><data key="etype">2</data></edge>
+        <edge id="51_366" source="51" target="366"><data key="etype">2</data></edge>
+        <edge id="51_349" source="51" target="349"><data key="etype">2</data></edge>
+        <edge id="51_353" source="51" target="353"><data key="etype">2</data></edge>
+        <edge id="51_85" source="51" target="85"><data key="etype">2</data></edge>
+        <edge id="51_433" source="51" target="433"><data key="etype">2</data></edge>
+        <edge id="79_296" source="79" target="296"><data key="etype">2</data></edge>
+        <edge id="79_349" source="79" target="349"><data key="etype">2</data></edge>
+        <edge id="79_353" source="79" target="353"><data key="etype">2</data></edge>
+        <edge id="79_428" source="79" target="428"><data key="etype">2</data></edge>
+        <edge id="79_369" source="79" target="369"><data key="etype">2</data></edge>
+        <edge id="79_639" source="79" target="639"><data key="etype">2</data></edge>
+        <edge id="79_85" source="79" target="85"><data key="etype">2</data></edge>
+        <edge id="79_161" source="79" target="161"><data key="etype">2</data></edge>
+        <edge id="79_433" source="79" target="433"><data key="etype">2</data></edge>
+        <edge id="85_675" source="85" target="675"><data key="etype">2</data></edge>
+        <edge id="85_427" source="85" target="427"><data key="etype">2</data></edge>
+        <edge id="128_325" source="128" target="325"><data key="etype">2</data></edge>
+        <edge id="161_327" source="161" target="327"><data key="etype">2</data></edge>
+        <edge id="161_675" source="161" target="675"><data key="etype">2</data></edge>
+        <edge id="161_427" source="161" target="427"><data key="etype">2</data></edge>
+        <edge id="296_427" source="296" target="427"><data key="etype">2</data></edge>
+        <edge id="296_695" source="296" target="695"><data key="etype">2</data></edge>
+        <edge id="325_428" source="325" target="428"><data key="etype">2</data></edge>
+        <edge id="325_476" source="325" target="476"><data key="etype">2</data></edge>
+        <edge id="328_369" source="328" target="369"><data key="etype">2</data></edge>
+        <edge id="328_366" source="328" target="366"><data key="etype">2</data></edge>
+        <edge id="353_427" source="353" target="427"><data key="etype">2</data></edge>
+        <edge id="369_676" source="369" target="676"><data key="etype">2</data></edge>
+        <edge id="369_427" source="369" target="427"><data key="etype">2</data></edge>
+        <edge id="427_428" source="427" target="428"><data key="etype">2</data></edge>
+        <edge id="427_639" source="427" target="639"><data key="etype">2</data></edge>
+        <edge id="427_433" source="427" target="433"><data key="etype">2</data></edge>
+        <edge id="428_673" source="428" target="673"><data key="etype">2</data></edge>
+        <edge id="433_675" source="433" target="675"><data key="etype">2</data></edge>
+
+    </graph>
+</graphml>
+

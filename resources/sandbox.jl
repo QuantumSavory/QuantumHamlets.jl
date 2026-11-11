@@ -8,13 +8,32 @@ using Statistics
 using IGraphs
 using Metis
 
+using GraphIO
+using GraphIO.GraphML
+using EzXML
 #### Init
-numHamlets = 3
-hamletSize = 12
+# numHamlets = 2
+# hamletSize = 98
 
-n = hamletSize * numHamlets
-g = grid([6,6])
-g = grid_graph(n)
+# n = hamletSize * numHamlets
+#g = random_regular_graph_deg3(n)
+#g = graphstate(ghz(9))[1]
+#g = grid([2, 2])
+# g = grid_graph(n)
+#g = graphstate(random_stabilizer(9))[1]
+
+g = loadgraph("./QuantumHamlets.jl/resources/graphml_evolution/k1.graphml", GraphIO.GraphML.GraphMLFormat())
+n = nv(g)
+
+bury_reg, _  = QuantumHamlets.bury_not_balanced_bipartition(g, ceil(Int, n/3), floor(Int,n/2))
+buryLand = QuantumHamlets.quantumLand(bury_reg, 2, n)
+f_bury, bury_cost = QuantumHamlets.visualize_graph_on_land(buryLand, g, method=QuantumHamlets.matching_cost_of_partition)
+bury_cost_cr, _ = QuantumHamlets.cut_rank_cost(buryLand, g)
+
+bury_reg_seeded, _  = QuantumHamlets.bury_not_balanced_bipartition(g, ceil(Int, n/3), floor(Int,n/2), bury_v=QuantumHamlets.bury_seeded)
+buryLand_seeded = QuantumHamlets.quantumLand(bury_reg_seeded, 2, n)
+f_bury_seeded, bury_cost_seeded = QuantumHamlets.visualize_graph_on_land(buryLand_seeded, g, method=QuantumHamlets.matching_cost_of_partition)
+bury_cost_cr_seeded, _ = QuantumHamlets.cut_rank_cost(buryLand_seeded, g)
 
 #### Random balanced partitionings 
 function random_sample(g::Graphs.Graph, numHamlets, numVillagers; method=QuantumHamlets.matching_cost_of_partition, samples=50, vis=true)
@@ -51,24 +70,24 @@ end
 #best_randomLand_naive, f_random_best_naive, random_costs_naive = random_sample(g, numHamlets, hamletSize, method=QuantumHamlets.naive_cost_of_partition)
 
 # this one is the random one to use?
-#best_randomLand_matching, f_random_best_matching, random_costs_matching = random_sample(g, numHamlets, hamletSize, method=QuantumHamlet.matching_cost_of_partition)
+#best_randomLand_matching, f_random_best_matching, random_costs_matching = random_sample(g, numHamlets, hamletSize, method=QuantumHamlets.matching_cost_of_partition)
 
-bury_reg = QuantumHamlets.bury_k(g, numHamlets)
-buryLand = quantumLand(bury_reg, numHamlets, numHamlets*hamletSize)
-f_bury, bury_cost = QuantumHamlets.visualize_graph_on_land(buryLand, g, method=QuantumHamlets.matching_cost_of_partition)
+# bury_reg = QuantumHamlets.bury_k(g, numHamlets)
+# buryLand = quantumLand(bury_reg, numHamlets, numHamlets*hamletSize)
+# f_bury, bury_cost = QuantumHamlets.visualize_graph_on_land(buryLand, g, method=QuantumHamlets.matching_cost_of_partition)
 
-# bury_local_reg = QuantumHamlets.bury_k_seeded(g, numHamlets)
-# buryLocalLand = quantumLand(bury_local_reg, numHamlets, numHamlets*hamletSize)
-# f_bury_local, bury_cost_local = QuantumHamlets.visualize_graph_on_land(buryLocalLand, g, method=QuantumHamlets.matching_cost_of_partition)
+# bury_seeded_reg = QuantumHamlets.bury_k_seeded(g, numHamlets)
+# burySeededlLand = quantumLand(bury_seeded_reg, numHamlets, numHamlets*hamletSize)
+# f_bury_seeded, bury_cost_seeded = QuantumHamlets.visualize_graph_on_land(burySeededlLand, g, method=QuantumHamlets.matching_cost_of_partition)
 
-metis_reg = Dict()
-metis_part = Metis.partition(g,numHamlets)
-for a in eachindex(metis_part)
-    metis_reg[a] = metis_part[a]
-end
+# metis_reg = Dict()
+# metis_part = Metis.partition(g,numHamlets)
+# for a in eachindex(metis_part)
+#     metis_reg[a] = metis_part[a]
+# end
 
-metisLand = quantumLand(metis_reg, numHamlets, numHamlets*hamletSize)
-f_metis, metis_cost = QuantumHamlets.visualize_graph_on_land(metisLand, g, method=QuantumHamlets.matching_cost_of_partition)
+# metisLand = quantumLand(metis_reg, numHamlets, numHamlets*hamletSize)
+# f_metis, metis_cost = QuantumHamlets.visualize_graph_on_land(metisLand, g, method=QuantumHamlets.matching_cost_of_partition)
 
 function random_regular_graph_deg3(numVertices)
     random_regular_graph(numVertices, 3)
@@ -311,6 +330,5 @@ end
 # klLand = quantumLand(kl_reg, numHamlets, numHamlets*hamletSize)
 # f_kl, kl_cost = QuantumHamlets.visualize_graph_on_land(klLand, g, method=QuantumHamlets.matching_cost_of_partition)
 
-f_3reg = compare_partition_methods(random_regular_graph_deg3, 2, name="Random 3-Regular Graphs", numSamples=5)
+#f_3reg = compare_partition_methods(random_regular_graph_deg3, 2, name="Random 3-Regular Graphs", numSamples=5)
 #f_6reg = compare_partition_methods(random_regular_graph_deg6, 2, name="Random 6-Regular Graphs", numSamples=50)
-

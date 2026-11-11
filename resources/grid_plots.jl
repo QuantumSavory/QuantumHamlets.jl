@@ -27,7 +27,7 @@ end
 function deterministic_comparison(graph_generator; name="", maxHamlets=8)
     pt = 4/3
     f = Figure(size=(900, 700),px_per_unit = 6.0, fontsize = 21pt, yticks = [0, 20, 100, 200, 300, 400])
-    ax = f[1,1] = Axis(f[1,1],  xlabel="Vertices in Graph", ylabel="Cut Rank",title="METIS vs BURY on "*name)
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Vertices in Graph", ylabel="VCG Required Bell Pairs",title="METIS vs BURY on "*name)
     
     bury_costs = [[] for _ in 1:maxHamlets]
     metis_costs = [[] for _ in 1:maxHamlets]
@@ -44,7 +44,7 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=8)
             buryLand = quantumLand(bury_reg, k, n)
             #bury_cost, _ = QuantumHamlets.naive_cost_of_partition(buryLand, g)
             bury_cost, _ = QuantumHamlets.matching_cost_of_partition(buryLand, g)
-            #bury_cost = QuantumHamlets.cut_rank_cost(buryLand,g)
+            bury_cost = QuantumHamlets.cut_rank_cost(buryLand,g)
 
             push!(bury_costs[k], [n,bury_cost])
 

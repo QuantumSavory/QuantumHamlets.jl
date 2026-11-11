@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+    <key attr.name="type" attr.type="int" for="node" id="type">
+        <default>1</default>
+    </key>
+    <key attr.name="phase" attr.type="string" for="node" id="phase">
+        <default>0</default>
+    </key>
+    <key attr.name="edge type" attr.type="int" for="edge" id="etype">
+        <default>1</default>
+    </key>
+    <key attr.name="x" attr.type="double" for="node" id="x">
+        <default>0</default>
+    </key>
+    <key attr.name="y" attr.type="double" for="node" id="y">
+        <default>0</default>
+    </key>
+    <graph edgedefault="undirected">
+        <node id="16"><data key="type">1</data><data key="phase">1/4</data><data key="x">100</data><data key="y">300</data></node>
+        <node id="22"><data key="type">1</data><data key="phase">1/4</data><data key="x">100</data><data key="y">600</data></node>
+        <node id="24"><data key="type">1</data><data key="phase">1/4</data><data key="x">100</data><data key="y">700</data></node>
+        <node id="28"><data key="type">1</data><data key="phase">1/4</data><data key="x">100</data><data key="y">900</data></node>
+        <node id="37"><data key="type">1</data><data key="phase">1/4</data><data key="x">700</data><data key="y">300</data></node>
+        <node id="63"><data key="type">1</data><data key="phase">0</data><data key="x">2000</data><data key="y">-100</data></node>
+        <node id="65"><data key="type">1</data><data key="phase">3/4</data><data key="x">2100</data><data key="y">300</data></node>
+        <node id="76"><data key="type">1</data><data key="phase">5/4</data><data key="x">2700</data><data key="y">200</data></node>
+        <node id="77"><data key="type">1</data><data key="phase">0</data><data key="x">2800</data><data key="y">-100</data></node>
+        <node id="93"><data key="type">1</data><data key="phase">0</data><data key="x">1200</data><data key="y">-100</data></node>
+        <node id="114"><data key="type">1</data><data key="phase">1/4</data><data key="x">3000</data><data key="y">600</data></node>
+        <node id="115"><data key="type">1</data><data key="phase">0</data><data key="x">3100</data><data key="y">-100</data></node>
+        <node id="118"><data key="type">1</data><data key="phase">0</data><data key="x">3300</data><data key="y">-100</data></node>
+        <node id="126"><data key="type">1</data><data key="phase">0</data><data key="x">3700</data><data key="y">-100</data></node>
+        <node id="130"><data key="type">1</data><data key="phase">3/4</data><data key="x">3700</data><data key="y">600</data></node>
+        <node id="142"><data key="type">1</data><data key="phase">0</data><data key="x">1200</data><data key="y">-100</data></node>
+        <node id="146"><data key="type">1</data><data key="phase">0</data><data key="x">1400</data><data key="y">-100</data></node>
+        <node id="166"><data key="type">1</data><data key="phase">1/4</data><data key="x">4100</data><data key="y">900</data></node>
+        <node id="181"><data key="type">1</data><data key="phase">1/4</data><data key="x">4600</data><data key="y">900</data></node>
+        <node id="191"><data key="type">1</data><data key="phase">0</data><data key="x">5500</data><data key="y">-100</data></node>
+        <node id="235"><data key="type">1</data><data key="phase">1/4</data><data key="x">7300</data><data key="y">600</data></node>
+        <node id="242"><data key="type">1</data><data key="phase">0</data><data key="x">8000</data><data key="y">-100</data></node>
+        <node id="247"><data key="type">1</data><data key="phase">1/4</data><data key="x">8300</data><data key="y">300</data></node>
+        <node id="264"><data key="type">1</data><data key="phase">0</data><data key="x">9000</data><data key="y">-100</data></node>
+        <node id="270"><data key="type">1</data><data key="phase">0</data><data key="x">9400</data><data key="y">-100</data></node>
+        <node id="289"><data key="type">1</data><data key="phase">1/4</data><data key="x">10000</data><data key="y">300</data></node>
+        <node id="301"><data key="type">1</data><data key="phase">5/4</data><data key="x">2000</data><data key="y">-200</data></node>
+        <node id="302"><data key="type">1</data><data key="phase">7/4</data><data key="x">9400</data><data key="y">-200</data></node>
+        <node id="304"><data key="type">1</data><data key="phase">5/4</data><data key="x">6300</data><data key="y">-200</data></node>
+        <node id="305"><data key="type">1</data><data key="phase">1/4</data><data key="x">5500</data><data key="y">-200</data></node>
+        <node id="306"><data key="type">1</data><data key="phase">1/4</data><data key="x">800</data><data key="y">-200</data></node>
+        <node id="308"><data key="type">1</data><data key="phase">3/4</data><data key="x">1200</data><data key="y">-200</data></node>
+        <node id="309"><data key="type">1</data><data key="phase">1/4</data><data key="x">1200</data><data key="y">-200</data></node>
+        <node id="310"><data key="type">1</data><data key="phase">7/4</data><data key="x">9000</data><data key="y">-200</data></node>
+        <node id="313"><data key="type">1</data><data key="phase">7/4</data><data key="x">3100</data><data key="y">-200</data></node>
+        <node id="317"><data key="type">1</data><data key="phase">1/4</data><data key="x">1200</data><data key="y">-200</data></node>
+        <node id="320"><data key="type">1</data><data key="phase">1/4</data><data key="x">8000</data><data key="y">-200</data></node>
+        <node id="321"><data key="type">1</data><data key="phase">7/4</data><data key="x">3700</data><data key="y">-200</data></node>
+        <node id="322"><data key="type">1</data><data key="phase">7/4</data><data key="x">5900</data><data key="y">-200</data></node>
+        <node id="326"><data key="type">1</data><data key="phase">1/4</data><data key="x">1400</data><data key="y">-200</data></node>
+        <node id="327"><data key="type">1</data><data key="phase">1/4</data><data key="x">3300</data><data key="y">-200</data></node>
+        <node id="328"><data key="type">1</data><data key="phase">1/4</data><data key="x">2800</data><data key="y">-200</data></node>
+        <node id="329"><data key="type">1</data><data key="phase">1/4</data><data key="x">6500</data><data key="y">-200</data></node>
+        <node id="332"><data key="type">1</data><data key="phase">5/4</data><data key="x">2900</data><data key="y">-200</data></node>
+        <edge id="16_65" source="16" target="65"><data key="etype">2</data></edge>
+        <edge id="16_76" source="16" target="76"><data key="etype">2</data></edge>
+        <edge id="22_322" source="22" target="322"><data key="etype">2</data></edge>
+        <edge id="22_332" source="22" target="332"><data key="etype">2</data></edge>
+        <edge id="24_142" source="24" target="142"><data key="etype">2</data></edge>
+        <edge id="24_146" source="24" target="146"><data key="etype">2</data></edge>
+        <edge id="24_130" source="24" target="130"><data key="etype">2</data></edge>
+        <edge id="24_166" source="24" target="166"><data key="etype">2</data></edge>
+        <edge id="28_130" source="28" target="130"><data key="etype">2</data></edge>
+        <edge id="28_166" source="28" target="166"><data key="etype">2</data></edge>
+        <edge id="37_270" source="37" target="270"><data key="etype">2</data></edge>
+        <edge id="37_63" source="37" target="63"><data key="etype">2</data></edge>
+        <edge id="37_77" source="37" target="77"><data key="etype">2</data></edge>
+        <edge id="37_242" source="37" target="242"><data key="etype">2</data></edge>
+        <edge id="37_289" source="37" target="289"><data key="etype">2</data></edge>
+        <edge id="37_304" source="37" target="304"><data key="etype">2</data></edge>
+        <edge id="37_322" source="37" target="322"><data key="etype">2</data></edge>
+        <edge id="37_332" source="37" target="332"><data key="etype">2</data></edge>
+        <edge id="37_247" source="37" target="247"><data key="etype">2</data></edge>
+        <edge id="37_329" source="37" target="329"><data key="etype">2</data></edge>
+        <edge id="37_114" source="37" target="114"><data key="etype">2</data></edge>
+        <edge id="63_301" source="63" target="301"><data key="etype">2</data></edge>
+        <edge id="63_308" source="63" target="308"><data key="etype">2</data></edge>
+        <edge id="63_65" source="63" target="65"><data key="etype">2</data></edge>
+        <edge id="65_270" source="65" target="270"><data key="etype">2</data></edge>
+        <edge id="65_264" source="65" target="264"><data key="etype">2</data></edge>
+        <edge id="65_242" source="65" target="242"><data key="etype">2</data></edge>
+        <edge id="65_304" source="65" target="304"><data key="etype">2</data></edge>
+        <edge id="65_322" source="65" target="322"><data key="etype">2</data></edge>
+        <edge id="65_332" source="65" target="332"><data key="etype">2</data></edge>
+        <edge id="65_308" source="65" target="308"><data key="etype">2</data></edge>
+        <edge id="65_329" source="65" target="329"><data key="etype">2</data></edge>
+        <edge id="65_114" source="65" target="114"><data key="etype">2</data></edge>
+        <edge id="76_242" source="76" target="242"><data key="etype">2</data></edge>
+        <edge id="76_289" source="76" target="289"><data key="etype">2</data></edge>
+        <edge id="76_247" source="76" target="247"><data key="etype">2</data></edge>
+        <edge id="76_308" source="76" target="308"><data key="etype">2</data></edge>
+        <edge id="77_247" source="77" target="247"><data key="etype">2</data></edge>
+        <edge id="77_308" source="77" target="308"><data key="etype">2</data></edge>
+        <edge id="77_328" source="77" target="328"><data key="etype">2</data></edge>
+        <edge id="93_309" source="93" target="309"><data key="etype">2</data></edge>
+        <edge id="93_304" source="93" target="304"><data key="etype">2</data></edge>
+        <edge id="93_329" source="93" target="329"><data key="etype">2</data></edge>
+        <edge id="93_322" source="93" target="322"><data key="etype">2</data></edge>
+        <edge id="114_118" source="114" target="118"><data key="etype">2</data></edge>
+        <edge id="114_304" source="114" target="304"><data key="etype">2</data></edge>
+        <edge id="114_115" source="114" target="115"><data key="etype">2</data></edge>
+        <edge id="114_191" source="114" target="191"><data key="etype">2</data></edge>
+        <edge id="114_332" source="114" target="332"><data key="etype">2</data></edge>
+        <edge id="114_126" source="114" target="126"><data key="etype">2</data></edge>
+        <edge id="114_308" source="114" target="308"><data key="etype">2</data></edge>
+        <edge id="114_247" source="114" target="247"><data key="etype">2</data></edge>
+        <edge id="115_313" source="115" target="313"><data key="etype">2</data></edge>
+        <edge id="115_304" source="115" target="304"><data key="etype">2</data></edge>
+        <edge id="115_329" source="115" target="329"><data key="etype">2</data></edge>
+        <edge id="118_327" source="118" target="327"><data key="etype">2</data></edge>
+        <edge id="118_329" source="118" target="329"><data key="etype">2</data></edge>
+        <edge id="118_322" source="118" target="322"><data key="etype">2</data></edge>
+        <edge id="126_321" source="126" target="321"><data key="etype">2</data></edge>
+        <edge id="126_322" source="126" target="322"><data key="etype">2</data></edge>
+        <edge id="126_332" source="126" target="332"><data key="etype">2</data></edge>
+        <edge id="130_181" source="130" target="181"><data key="etype">2</data></edge>
+        <edge id="130_142" source="130" target="142"><data key="etype">2</data></edge>
+        <edge id="130_306" source="130" target="306"><data key="etype">2</data></edge>
+        <edge id="130_146" source="130" target="146"><data key="etype">2</data></edge>
+        <edge id="130_166" source="130" target="166"><data key="etype">2</data></edge>
+        <edge id="130_304" source="130" target="304"><data key="etype">2</data></edge>
+        <edge id="130_322" source="130" target="322"><data key="etype">2</data></edge>
+        <edge id="142_317" source="142" target="317"><data key="etype">2</data></edge>
+        <edge id="142_166" source="142" target="166"><data key="etype">2</data></edge>
+        <edge id="146_326" source="146" target="326"><data key="etype">2</data></edge>
+        <edge id="146_306" source="146" target="306"><data key="etype">2</data></edge>
+        <edge id="166_181" source="166" target="181"><data key="etype">2</data></edge>
+        <edge id="166_306" source="166" target="306"><data key="etype">2</data></edge>
+        <edge id="191_305" source="191" target="305"><data key="etype">2</data></edge>
+        <edge id="191_304" source="191" target="304"><data key="etype">2</data></edge>
+        <edge id="191_322" source="191" target="322"><data key="etype">2</data></edge>
+        <edge id="235_304" source="235" target="304"><data key="etype">2</data></edge>
+        <edge id="235_332" source="235" target="332"><data key="etype">2</data></edge>
+        <edge id="242_320" source="242" target="320"><data key="etype">2</data></edge>
+        <edge id="247_270" source="247" target="270"><data key="etype">2</data></edge>
+        <edge id="247_264" source="247" target="264"><data key="etype">2</data></edge>
+        <edge id="247_289" source="247" target="289"><data key="etype">2</data></edge>
+        <edge id="247_304" source="247" target="304"><data key="etype">2</data></edge>
+        <edge id="247_322" source="247" target="322"><data key="etype">2</data></edge>
+        <edge id="247_332" source="247" target="332"><data key="etype">2</data></edge>
+        <edge id="247_308" source="247" target="308"><data key="etype">2</data></edge>
+        <edge id="247_329" source="247" target="329"><data key="etype">2</data></edge>
+        <edge id="264_310" source="264" target="310"><data key="etype">2</data></edge>
+        <edge id="264_308" source="264" target="308"><data key="etype">2</data></edge>
+        <edge id="270_302" source="270" target="302"><data key="etype">2</data></edge>
+        <edge id="289_308" source="289" target="308"><data key="etype">2</data></edge>
+        <edge id="304_308" source="304" target="308"><data key="etype">2</data></edge>
+        <edge id="308_322" source="308" target="322"><data key="etype">2</data></edge>
+        <edge id="308_332" source="308" target="332"><data key="etype">2</data></edge>
+        <edge id="308_329" source="308" target="329"><data key="etype">2</data></edge>
+        <edge id="322_329" source="322" target="329"><data key="etype">2</data></edge>
+        <edge id="329_332" source="329" target="332"><data key="etype">2</data></edge>
+
+    </graph>
+</graphml>
+
