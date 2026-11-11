@@ -1,0 +1,15 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+Test Summary:          | Pass  Total  Time
+Existing partition API |   55     55  1.7s
+Test Summary:     | Pass  Total  Time
+Existing cost API |   20     20  1.0s
+Test Summary:       | Broken  Total  Time
+Known bugs deferred |      5      5  1.8s
+Test Summary:             | Pass  Total  Time
+GraphPartition membership |   14     14  0.3s
+Test Summary:                     | Pass  Total  Time
+Simplified partition and cost API |   26     26  0.4s

@@ -1,0 +1,11 @@
+Julia: 1.12.6
+CPU: Apple M1 Pro
+Threads: 1
+Graphs: 1.13.4
+BenchmarkTools: 1.6.3
+Production public APIs with Dict{Any,Any} outputs; original multipartition driver.
+Three rotated rounds, evals=1, samples<=51 (automatic<=21), seconds/trial=0.3.
+Full untimed BenchmarkTools GC per trial; automatic GC remains enabled.
+Compilation/loading excluded, result construction included; automatic includes matching.
+Automatic RNG seed reset before each sample: 1112887897
+No automatic seed search on large GraphML fixtures.

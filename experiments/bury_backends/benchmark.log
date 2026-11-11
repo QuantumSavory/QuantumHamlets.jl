@@ -1,0 +1,19 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+Finished grid64x64 / ordinary / 2048
+Finished grid64x64 / seeded / 2048
+Finished initial_barenco3 / ordinary / 41
+Finished initial_barenco3 / seeded / 41
+Finished initial_barenco10 / ordinary / 285
+Finished initial_barenco10 / seeded / 285
+Finished reduced_barenco3 / ordinary / 12
+Finished reduced_barenco3 / seeded / 12
+Finished evolution_k5 / ordinary / 886
+Finished evolution_k5 / seeded / 886
+Finished grid32x32 / multi / 4
+Finished grid8x8 / automatic / 32
+GRAPHML_VALIDATED workloads=90 backends=3 exact_outputs_types_and_graph_preservation=true
+PRODUCTION_BACKEND_BENCHMARKS_COMPLETE

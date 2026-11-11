@@ -1,0 +1,273 @@
+
+PROFILE current ordinary BURY grid128x128
+ Count  Overhead File                    Line Function
+ =====  ======== ====                    ==== ========
+     8         8 @Base/int.jl             87 +
+     9         9 @Base/int.jl            421 count_ones
+    17         0 @QuantumHamlets/src/bury.jl   62 bury(g::SimpleGraph{Int64}, r0::I…
+    17         0 @Base/reduce.jl         554 sum
+    17         0 @Base/reduce.jl         554 #sum#279
+    17         0 @Base/reducedim.jl      408 count
+    17         0 @Base/reducedim.jl      408 #count#731
+    17         0 @Base/reducedim.jl      409 count
+    17         0 @Base/reducedim.jl      409 #count#732
+    17         0 @Base/reducedim.jl      411 _count
+    17         0 @Base/reduce.jl        1093 _simple_count(::typeof(identity),…
+    84         0 @Base/reduce.jl           ? _foldl_impl
+    84        84 @Base/iterators.jl        ? iterate
+    85         0 @Base/iterators.jl      287 iterate
+    85         0 @Base/indices.jl        571 iterate
+    85        85 @Base/range.jl          921 iterate
+   101       101 @Base/float.jl          638 isless
+   103         0 @Base/iterators.jl      290 iterate
+   103         0 @Base/iterators.jl      283 _pairs_elt
+   105       105 @Base/essentials.jl     919 getindex
+   188         0 @Base/reduce.jl          55 _foldl_impl
+   272         0 @Base/iterators.jl      682 iterate
+   278         0 @Base/float.jl          640 isless
+   278         0 @Base/float.jl          632 _fpint
+   278       277 @Base/essentials.jl     733 reinterpret
+   379         0 @Base/reduce.jl          54 _foldl_impl
+   379         0 @Base/reduce.jl          92 MappingRF
+   379         0 @Base/reduce.jl          78 BottomRF
+   379         0 @Base/reduce.jl         908 _rf_findmin
+   379         0 @Base/operators.jl      277 isgreater
+   651         0 @QuantumHamlets/src/bury.jl   63 bury(g::SimpleGraph{Int64}, r0::I…
+   651         0 @Base/reducedim.jl     1099 findmin
+   651         0 @Base/reducedim.jl     1099 #findmin#788
+   651         0 @Base/reduce.jl         936 _findmin
+   651         0 @Base/reducedim.jl     1122 findmin
+   651         0 @Base/reducedim.jl     1122 #findmin#789
+   651         0 @Base/reduce.jl         907 _findmin
+   651         0 @Base/reduce.jl         167 mapfoldl
+   651         0 @Base/reduce.jl         167 #mapfoldl#270
+   651         0 @Base/reduce.jl          36 mapfoldl_impl
+   651         0 @Base/reduce.jl          40 foldl_impl
+   678         0 @Base/client.jl         550 _start()
+   678         0 @Base/client.jl         317 exec_options(opts::Base.JLOptions)
+   678         0 @Base/Base.jl           306 include(mod::Module, _path::Strin…
+   678         0 @Base/loading.jl       2934 _include(mapexpr::Function, mod::…
+   678         0 @Base/loading.jl       2874 include_string(mapexpr::typeof(id…
+   678         0 @Base/boot.jl           489 eval(m::Module, e::Any)
+   678         0 …ormance/benchmarks.jl  179 main()
+   678         0 @Base/io.jl             409 open(::Function, ::String, ::Stri…
+   678         0 @Base/io.jl             412 open(::var"#main##26#main##27"{Ve…
+   678         0 …ormance/benchmarks.jl  181 #main##26
+   678         0 …ormance/benchmarks.jl   92 save_profile(f::var"#main##28#mai…
+   678         0 @Profile/src/Profile.jl   60 macro expansion
+   678         0 …ormance/benchmarks.jl   93 macro expansion
+   678         0 …ormance/benchmarks.jl  181 #main##28
+   678         0 @QuantumHamlets/src/bury.jl   43 bury
+Total snapshots: 1360. Utilization: 50% across all threads and tasks. Use the `groupby` kwarg to break down by thread and/or task.
+
+PROFILE current seeded BURY grid128x128
+ Count  Overhead File                    Line Function
+ =====  ======== ====                    ==== ========
+     6         6 @Base/int.jl            378 |
+     9         0 @Base/broadcast.jl      616 getindex
+     9         0 @Base/broadcast.jl      620 _getindex
+     9         0 @Base/broadcast.jl      672 _broadcast_getindex
+     9         0 @Base/broadcast.jl      699 _broadcast_getindex_evalf
+     9         9 @Base/float.jl          495 +
+    10         0 @Base/boot.jl           962 UInt64
+    10        10 @Base/boot.jl           939 toUInt64
+    12        12 @Base/simdloop.jl        75 macro expansion
+    12         0 @Base/int.jl            542 <<
+    12        12 @Base/int.jl            535 <<
+    19         0 @Base/reduce.jl           ? _foldl_impl
+    19        19 @Base/iterators.jl        ? iterate
+    25         0 @Base/iterators.jl      290 iterate
+    25         0 @Base/iterators.jl      283 _pairs_elt
+    25        25 @Base/essentials.jl     919 getindex
+    27         0 @Base/iterators.jl      287 iterate
+    27         0 @Base/indices.jl        571 iterate
+    27        27 @Base/range.jl          921 iterate
+    28         0 @Base/broadcast.jl     1024 macro expansion
+    30         0 @Base/simdloop.jl        78 macro expansion
+    31         0 @Base/broadcast.jl     1023 copyto!
+    32        32 @Base/float.jl          638 isless
+    36        36 @Base/int.jl             87 +
+    49         0 @Base/broadcast.jl      227 similar
+    49         0 @Base/broadcast.jl      228 similar
+    49         0 @Base/abstractarray.jl  866 similar
+    49         0 @Base/abstractarray.jl  867 similar
+    49         0 @Base/boot.jl           660 Array
+    49         0 @Base/boot.jl           647 Array
+    49        49 @Base/boot.jl           588 GenericMemory
+    51         0 @Base/float.jl          640 isless
+    51         0 @Base/float.jl          632 _fpint
+    51        51 @Base/essentials.jl     733 reinterpret
+    55         0 @Base/reduce.jl          55 _foldl_impl
+    74         0 @Base/iterators.jl      682 iterate
+    83         0 @Base/reduce.jl          54 _foldl_impl
+    83         0 @Base/reduce.jl          92 MappingRF
+    83         0 @Base/reduce.jl          78 BottomRF
+    83         0 @Base/reduce.jl         908 _rf_findmin
+    83         0 @Base/operators.jl      277 isgreater
+   116         0 @Base/arraymath.jl       16 +(A::Vector{Float64}, Bs::Vector{…
+   157         0 @Base/reducedim.jl     1099 findmin
+   157         0 @Base/reducedim.jl     1099 #findmin#788
+   157         0 @Base/reduce.jl         936 _findmin
+   157         0 @Base/reducedim.jl     1122 findmin
+   157         0 @Base/reducedim.jl     1122 #findmin#789
+   157         0 @Base/reduce.jl         907 _findmin
+   157         0 @Base/reduce.jl         167 mapfoldl
+   157         0 @Base/reduce.jl         167 #mapfoldl#270
+   157         0 @Base/reduce.jl          36 mapfoldl_impl
+   157         0 @Base/reduce.jl          40 foldl_impl
+   188         0 @Base/arraymath.jl       24 *(A::BitVector, B::Float64)
+   210         0 @Base/array.jl          986 setindex!
+   210       210 @Base/array.jl          991 _setindex!
+   214         0 @Base/broadcast.jl      995 macro expansion
+   242         0 @Base/simdloop.jl        77 macro expansion
+   256         0 @Base/broadcast.jl      994 copyto!
+   291         0 @Base/broadcast.jl      947 copyto!
+   304         0 @Base/broadcast.jl      883 broadcast_preserving_zero_d
+   339         0 @Base/broadcast.jl      894 materialize
+   339         0 @Base/broadcast.jl      919 copy
+   493         0 @QuantumHamlets/src/bury.jl  253 bury_seeded(g::SimpleGraph{Int64}…
+   502         0 …ormance/benchmarks.jl  179 main()
+   502         0 @Base/io.jl             409 open(::Function, ::String, ::Stri…
+   502         0 @Base/io.jl             412 open(::var"#main##26#main##27"{Ve…
+   502         0 …ormance/benchmarks.jl  182 #main##26
+   502         0 …ormance/benchmarks.jl   92 save_profile(f::var"#main##30#mai…
+   502         0 @Profile/src/Profile.jl   60 macro expansion
+   502         0 …ormance/benchmarks.jl   93 macro expansion
+   502         0 …ormance/benchmarks.jl  182 #main##30
+   502         0 @QuantumHamlets/src/bury.jl  228 bury_seeded
+   503         0 @Base/client.jl         550 _start()
+   503         0 @Base/client.jl         317 exec_options(opts::Base.JLOptions)
+   503         0 @Base/Base.jl           306 include(mod::Module, _path::Strin…
+   503         0 @Base/loading.jl       2934 _include(mapexpr::Function, mod::…
+   503         0 @Base/loading.jl       2874 include_string(mapexpr::typeof(id…
+   503         1 @Base/boot.jl           489 eval(m::Module, e::Any)
+Total snapshots: 1228. Utilization: 50% across all threads and tasks. Use the `groupby` kwarg to break down by thread and/or task.
+
+PROFILE current automatic seed grid16x16
+ Count  Overhead File                    Line Function
+ =====  ======== ====                    ==== ========
+     5         0 @SimpleTraits/src/SimpleTraits.jl  332 iterate
+     5         0 @QuantumHamlets/src/graph_utils.jl   14 remove_local_edges(land::QuantumH…
+     5         0 @Base/int.jl            542 <<
+     5         5 @Base/int.jl            535 <<
+     5         0 @Base/simdloop.jl        78 macro expansion
+     5         0 @Base/broadcast.jl      671 _broadcast_getindex
+     5         0 @Base/broadcast.jl      695 _getindex
+     5         0 @Base/broadcast.jl      665 _broadcast_getindex
+     5         3 @Base/dict.jl            94 Dict{Int64, Int64}(kv::Dict{Any, …
+     5         0 @Base/array.jl         2393 findnext(testf::Base.Fix2{typeof(…
+     5         2 @QuantumHamlets/src/quantum_land.jl   62 QuantumHamlets.quantumLand(citize…
+     6         6 @Base/array.jl         2394 findnext(testf::Base.Fix2{typeof(…
+     6         6 @Base/boot.jl           648 Array
+     6         0 @Base/broadcast.jl      616 getindex
+     6         0 @Base/broadcast.jl      620 _getindex
+     6         6 @Base/Base_compiler.jl   54 getproperty
+     6         6 @Base/essentials.jl      11 length
+     6         0 @Base/dict.jl           363 setindex!(h::Dict{Int64, Int64}, …
+     7         0 @QuantumHamlets/src/graph_utils.jl   15 remove_local_edges(land::QuantumH…
+     7         0 @Base/dict.jl           476 getindex
+     7         0 @Base/iterators.jl      290 iterate
+     7         0 @Base/iterators.jl      283 _pairs_elt
+     7         0 @QuantumHamlets/src/costs.jl  129 matching_cost_of_partition(land::…
+     7         0 @Base/broadcast.jl      902 materialize!
+     7         0 @Base/broadcast.jl      905 materialize!
+     7         4 @QuantumHamlets/src/costs.jl  117 matching_cost_of_partition(land::…
+     7         7 @Base/dict.jl           168 rehash!(h::Dict{Any, Any}, newsz:…
+     8         0 @Base/broadcast.jl     1023 copyto!
+     8         0 @Base/broadcast.jl     1024 macro expansion
+     8         0 @IGraphs/src/array_api.jl   25 IGraphs.IGVectorBool(v::Vector{Bo…
+     8         7 @IGraphs/src/wrapccall.jl  211 vector_bool_set(v::IGraphs.IGVect…
+     8         0 @Base/reduce.jl           ? _foldl_impl
+     8         8 @Base/iterators.jl        ? iterate
+     8         0 @Base/dict.jl           356 setindex!(h::Dict{Int64, Nothing}…
+     9         1 @QuantumHamlets/src/costs.jl  123 matching_cost_of_partition(land::…
+     9         7 @Base/essentials.jl     919 getindex
+     9         0 @Base/array.jl         2396 findnext(testf::Base.Fix2{typeof(…
+     9         0 @Base/abstractarray.jl  216 nextind
+     9         9 @Base/essentials.jl     386 getindex
+     9         0 @QuantumHamlets/src/quantum_land.jl   58 QuantumHamlets.quantumLand(citize…
+     9         0 @QuantumHamlets/src/quantum_land.jl   52 quantumLand
+     9         0 @Base/abstractdict.jl   578 convert
+    10         0 @Base/reduce.jl          55 _foldl_impl
+    10         0 @QuantumHamlets/src/costs.jl  135 matching_cost_of_partition(land::…
+    10        10 @Base/simdloop.jl        75 macro expansion
+    10         0 @Graphs/src/operators.jl  665 induced_subgraph(g::SimpleGraph{I…
+    12         0 @IGraphs/src/array_api.jl   10 setindex!
+    12         8 @IGraphs/src/wrapccall.jl  211 vector_int_get(v::IGraphs.IGVecto…
+    13         0 @IGraphs/src/array_api.jl    8 getindex
+    14        14 @Base/essentials.jl     920 getindex
+    16         0 @QuantumHamlets/src/bury.jl  173 best_sqrt_seed(g::SimpleGraph{Int…
+    16         0 @Base/dict.jl           378 setindex!(h::Dict{Any, Any}, v::A…
+    17         0 @QuantumHamlets/src/costs.jl   81 matching_cost_of_partition(land::…
+    17         0 @QuantumHamlets/src/costs.jl   93 matching_cost_of_partition(land::…
+    18         0 @Base/iterators.jl      682 iterate
+    18         0 @Base/dict.jl           337 _setindex!
+    19        19 @Base/int.jl             87 +
+    20         0 @Base/array.jl          986 setindex!
+    20        20 @Base/array.jl          991 _setindex!
+    20         0 @QuantumHamlets/src/bury.jl  291 bury_seeded(g::SimpleGraph{Int64}…
+    25         0 @QuantumHamlets/src/costs.jl  127 matching_cost_of_partition(land::…
+    25         0 @IGraphs/src/wrapccall.jl  211 maximum_bipartite_matching(graph:…
+    25        25 @IGraphs/src/LibIGraph.jl 9169 igraph_maximum_bipartite_matching…
+    26         6 @Base/array.jl         2444 findfirst(testf::Function, A::Vec…
+    27         0 @Base/broadcast.jl      995 macro expansion
+    28         0 @Base/float.jl          640 isless
+    28         0 @Base/float.jl          632 _fpint
+    28        28 @Base/essentials.jl     733 reinterpret
+    31         0 @Base/arraymath.jl       24 *(A::BitVector, B::Float64)
+    31         0 @Base/reduce.jl          54 _foldl_impl
+    31         0 @Base/reduce.jl          92 MappingRF
+    31         0 @Base/reduce.jl          78 BottomRF
+    31         0 @Base/reduce.jl         908 _rf_findmin
+    31         0 @Base/operators.jl      277 isgreater
+    32         0 @Base/broadcast.jl      228 similar
+    34         0 @IGraphs/src/graph_api.jl   28 IGraphs.IGraph(g::SimpleGraph{Int…
+    34         0 @IGraphs/src/wrapccall.jl  211 add_edge(graph::IGraphs.IGraph, f…
+    34        34 @IGraphs/src/LibIGraph.jl 8545 igraph_add_edge(graph::Base.RefVa…
+    35         0 @Base/simdloop.jl        77 macro expansion
+    35         0 @Base/boot.jl           660 Array
+    35         0 @Base/boot.jl           647 Array
+    36         0 @Base/broadcast.jl      227 similar
+    36         0 @Base/abstractarray.jl  866 similar
+    36         0 @Base/abstractarray.jl  867 similar
+    37         0 @QuantumHamlets/src/costs.jl  126 matching_cost_of_partition(land::…
+    39         0 @Base/arraymath.jl       16 +(A::Vector{Float64}, Bs::Vector{…
+    42         0 @Base/broadcast.jl      994 copyto!
+    43        43 @Base/boot.jl           588 GenericMemory
+    49         0 @Base/reducedim.jl     1099 findmin
+    49         0 @Base/reducedim.jl     1099 #findmin#788
+    49         0 @Base/reduce.jl         936 _findmin
+    49         0 @Base/reducedim.jl     1122 findmin
+    49         0 @Base/reducedim.jl     1122 #findmin#789
+    49         0 @Base/reduce.jl         907 _findmin
+    49         0 @Base/reduce.jl         167 mapfoldl
+    49         0 @Base/reduce.jl         167 #mapfoldl#270
+    49         0 @Base/reduce.jl          36 mapfoldl_impl
+    49         0 @Base/reduce.jl          40 foldl_impl
+    52         0 @Base/broadcast.jl      947 copyto!
+    58        32 @QuantumHamlets/src/costs.jl  118 matching_cost_of_partition(land::…
+    69         0 @Base/broadcast.jl      883 broadcast_preserving_zero_d
+    81         0 @Base/broadcast.jl      894 materialize
+    81         0 @Base/broadcast.jl      919 copy
+   131         0 @QuantumHamlets/src/bury.jl  253 bury_seeded(g::SimpleGraph{Int64}…
+   151         0 @QuantumHamlets/src/bury.jl  172 best_sqrt_seed(g::SimpleGraph{Int…
+   198         0 @QuantumHamlets/src/bury.jl  174 best_sqrt_seed(g::SimpleGraph{Int…
+   365         0 @QuantumHamlets/src/bury.jl  164 best_sqrt_seed
+   376         0 …ormance/benchmarks.jl  179 main()
+   376         0 @Base/io.jl             409 open(::Function, ::String, ::Stri…
+   376         0 @Base/io.jl             412 open(::var"#main##26#main##27"{Ve…
+   376         0 …ormance/benchmarks.jl  183 #main##26
+   376         0 @Base/stream.jl        1464 (::Base.RedirectStdStream)(thunk:…
+   376         0 …ormance/benchmarks.jl  185 #main##32
+   376         0 …ormance/benchmarks.jl   92 save_profile(f::var"#main##34#mai…
+   376         0 @Profile/src/Profile.jl   60 macro expansion
+   376         0 …ormance/benchmarks.jl   93 macro expansion
+   376         0 …ormance/benchmarks.jl  185 #main##34
+   376         0 @QuantumHamlets/src/bury.jl  228 bury_seeded
+   385         0 @Base/client.jl         550 _start()
+   385         0 @Base/client.jl         317 exec_options(opts::Base.JLOptions)
+   385         0 @Base/Base.jl           306 include(mod::Module, _path::Strin…
+   385         0 @Base/loading.jl       2934 _include(mapexpr::Function, mod::…
+   385         0 @Base/loading.jl       2874 include_string(mapexpr::typeof(id…
+   385         9 @Base/boot.jl           489 eval(m::Module, e::Any)
+Total snapshots: 1184. Utilization: 50% across all threads and tasks. Use the `groupby` kwarg to break down by thread and/or task.

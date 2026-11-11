@@ -1,0 +1,4 @@
+implementation	elapsed_seconds	bytes	partition_equal	graph_unchanged	balanced	rng_equal
+legacy	3.4458e-5	131616	true	true	true	true
+scan	1.2875e-5	6560	true	true	true	true
+heap	2.1417e-5	12400	true	true	true	true

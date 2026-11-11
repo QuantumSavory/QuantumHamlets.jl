@@ -1,0 +1,4 @@
+job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
+graphml_reduced__qft_4__automatic__43	automatic	87	158	43	1	legacy	1.602584e6	1.588375e6	1.620417e6	1.563417e6	1317840	11143	33
+graphml_reduced__qft_4__automatic__43	automatic	87	158	43	1	scan	1.468e6	1.442417e6	1.489458e6	1.416125e6	433392	5618	33
+graphml_reduced__qft_4__automatic__43	automatic	87	158	43	1	heap	1.522333e6	1.495833e6	1.555333e6	1.466666e6	465600	5684	33

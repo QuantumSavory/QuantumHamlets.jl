@@ -1,0 +1,4 @@
+job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
+graphml_initial__qcla_com_7__automatic__302	automatic	605	755	302	1	legacy	3.6910625e7	3.60933435e7	3.758899e7	3.1606875e7	94467904	237366	18
+graphml_initial__qcla_com_7__automatic__302	automatic	605	755	302	1	scan	1.7883208e7	1.7640542e7	1.8652291e7	1.7389667e7	10122240	93462	33
+graphml_initial__qcla_com_7__automatic__302	automatic	605	755	302	1	heap	1.58835e7	1.565675e7	1.664425e7	1.5447708e7	10643072	93722	33

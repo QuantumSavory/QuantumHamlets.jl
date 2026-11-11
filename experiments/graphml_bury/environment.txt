@@ -1,0 +1,14 @@
+Julia: 1.12.6
+CPU: Apple M1 Pro
+Architecture: aarch64
+Threads: 1
+Memory bytes: 17179869184
+Graphs: 1.13.4
+BenchmarkTools: 1.6.3
+QuantumHamlets: 0.1.0
+RNG seed: 20075163819724108
+Three rotated rounds; evals=1; samples/trial<=101 (automatic<=11); seconds/trial=0.2.
+One untimed full GC per workload group; gctrial=false; automatic GC remains enabled.
+Compilation and loading excluded; result registry and colors included.
+Automatic search includes matching scoring; all improvement output redirected outside timed calls.
+Allocation figures are total allocated bytes/call, not peak memory.

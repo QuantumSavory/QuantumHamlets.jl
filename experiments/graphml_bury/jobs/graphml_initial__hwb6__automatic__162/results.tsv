@@ -1,0 +1,4 @@
+job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
+graphml_initial__hwb6__automatic__162	automatic	325	434	162	1	legacy	1.25625e7	1.2276875e7	1.4055e7	1.1887584e7	23561888	77236	33
+graphml_initial__hwb6__automatic__162	automatic	325	434	162	1	scan	8.337417e6	8.230417e6	8.493708e6	7.982708e6	3525680	29179	33
+graphml_initial__hwb6__automatic__162	automatic	325	434	162	1	heap	8.434416e6	8.190833e6	8.571416e6	8.023583e6	3768560	29379	33

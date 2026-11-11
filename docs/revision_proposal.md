@@ -2,6 +2,8 @@
 
 Draft reviewed on 11 November 2026 against the current working tree, including local edits, based on commit `9b0ad4f`. Source locations below refer to that snapshot.
 
+Implementation update: the source has now been split into focused files and an additive `GraphPartition` API is documented in the [usage guide](usage.md). The original algorithm bodies remain unchanged. Simple tests cover existing behavior and mark five known defects with `@test_broken`; bug fixes, dependency extraction, and performance work below remain deferred. The rest of this proposal records the original review rather than the current file layout.
+
 The most useful first step is a small regression suite around partition validity and cost evaluation, followed by fixes to the confirmed defects below. Then separate the public numerical API from plotting, split the source into focused files, and optimize the measured bottlenecks. This order protects the existing scientific behavior while making the library easier to learn and extend.
 
 The current package has one 682-line source module, eleven direct dependencies including `Random`, and no tracked test suite or CI workflow. Its size does not require a large framework: one module with several included files should be sufficient. The core BURY and cost calculations passed the small valid-input checks described below; the clearest problems concern boundary conditions, inconsistent interfaces, and research-script maintenance.

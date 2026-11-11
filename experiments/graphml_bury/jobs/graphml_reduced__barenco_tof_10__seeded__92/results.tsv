@@ -1,0 +1,4 @@
+job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
+graphml_reduced__barenco_tof_10__seeded__92	seeded	123	341	92	1	legacy	41208.0	39750.0	51916.5	37292.0	230416	1072	303
+graphml_reduced__barenco_tof_10__seeded__92	seeded	123	341	92	1	scan	10583.0	10459.0	10791.0	10083.0	5952	12	303
+graphml_reduced__barenco_tof_10__seeded__92	seeded	123	341	92	1	heap	10791.0	10583.0	11208.0	10167.0	9920	18	303

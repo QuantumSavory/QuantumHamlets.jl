@@ -1,0 +1,4 @@
+job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
+graphml_initial__csla_mux_3__seeded__119	seeded	239	296	119	1	legacy	104625.0	82458.5	111979.5	75917.0	514832	1629	303
+graphml_initial__csla_mux_3__seeded__119	seeded	239	296	119	1	scan	19333.0	19000.0	20291.0	18291.0	11552	12	303
+graphml_initial__csla_mux_3__seeded__119	seeded	239	296	119	1	heap	13417.0	13000.0	14000.0	12500.0	19504	18	303

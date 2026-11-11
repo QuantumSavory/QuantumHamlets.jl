@@ -1,0 +1,59 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+Finished grid6x6 / bury / 18
+Finished grid6x6 / seeded / 18
+Finished grid32x32 / bury / 512
+Finished grid32x32 / seeded / 512
+Finished grid64x64 / bury / 2048
+Finished grid64x64 / seeded / 2048
+Finished grid128x128 / bury / 8192
+Finished grid128x128 / seeded / 8192
+Finished path4096 / bury / 2048
+Finished path4096 / seeded / 2048
+Finished star4096 / bury / 2048
+Finished star4096 / seeded / 2048
+Finished edgeless4096 / bury / 2048
+Finished edgeless4096 / seeded / 2048
+Finished regular3_4096 / bury / 2048
+Finished regular3_4096 / seeded / 2048
+Finished regular12_4096 / bury / 2048
+Finished regular12_4096 / seeded / 2048
+Finished dense512 / bury / 256
+Finished dense512 / seeded / 256
+Finished complete512 / bury / 256
+Finished complete512 / seeded / 256
+Finished qaoa30 / bury / 247
+Finished qaoa30 / seeded / 247
+Finished qaoa60 / bury / 945
+Finished qaoa60 / seeded / 945
+Finished grid64x64 / bury / 1024
+Finished grid64x64 / seeded / 1024
+Finished grid64x64 / bury / 3072
+Finished grid64x64 / seeded / 3072
+Finished grid6x6 / multi / 3
+Finished grid6x6 / multi_seeded / 3
+Finished grid64x64 / multi / 2
+Finished grid64x64 / multi_seeded / 2
+Finished grid64x64 / multi / 4
+Finished grid64x64 / multi_seeded / 4
+Finished grid64x64 / multi / 8
+Finished grid64x64 / multi_seeded / 8
+Finished grid64x64 / multi / 16
+Finished grid64x64 / multi_seeded / 16
+Finished regular3_4096 / multi / 4
+Finished regular3_4096 / multi_seeded / 4
+Finished regular3_4096 / multi / 16
+Finished regular3_4096 / multi_seeded / 16
+Finished qaoa60 / multi / 2
+Finished qaoa60 / multi_seeded / 2
+Finished qaoa60 / multi / 7
+Finished qaoa60 / multi_seeded / 7
+Finished qaoa60 / multi / 14
+Finished qaoa60 / multi_seeded / 14
+Finished grid16x16 / automatic_seed / 128
+Finished grid8x8 / all_seeds / 32
+Finished grid8x8 / range_search / 17
+BENCHMARKS_COMPLETE

@@ -1,0 +1,13 @@
+Status: {'done': 174, 'slow': 1, 'skipped': 4}
+Verified result rows: 522 raw timing samples: 121851
+Validated backend calls: 523
+All 210 pre-existing files and all 45 GraphML inputs unchanged.
+graphml_evolution ordinary fastest median: {'scan': 1, 'heap': 4} over 10% margin: {'scan': 1, 'heap': 4} sum of per-file medians(us): {'legacy': 2328.667, 'scan': 2359.292, 'heap': 337.209}
+graphml_evolution seeded fastest median: {'scan': 2, 'heap': 3} over 10% margin: {'scan': 2, 'heap': 3} sum of per-file medians(us): {'legacy': 8919.0625, 'scan': 1600.4180000000001, 'heap': 593.0}
+graphml_evolution automatic fastest median: {'scan': 2, 'heap': 2} over 10% margin: {} sum of per-file medians(us): {'legacy': 1026524.167, 'scan': 931761.334, 'heap': 908159.124}
+graphml_initial ordinary fastest median: {'heap': 20} over 10% margin: {'heap': 20} sum of per-file medians(us): {'legacy': 1787.9579999999999, 'scan': 1585.6279999999997, 'heap': 316.49700000000007}
+graphml_initial seeded fastest median: {'scan': 3, 'heap': 17} over 10% margin: {'scan': 3, 'heap': 15} sum of per-file medians(us): {'legacy': 4543.499999999999, 'scan': 845.5419999999997, 'heap': 415.58400000000006}
+graphml_initial automatic fastest median: {'scan': 9, 'heap': 11} over 10% margin: {'heap': 2} sum of per-file medians(us): {'legacy': 359139.482, 'scan': 245897.5, 'heap': 238117.05949999997}
+graphml_reduced ordinary fastest median: {'scan': 5, 'heap': 15} over 10% margin: {'scan': 3, 'heap': 14} sum of per-file medians(us): {'legacy': 283.08200000000005, 'scan': 202.919, 'heap': 102.753}
+graphml_reduced seeded fastest median: {'scan': 16, 'heap': 4} over 10% margin: {'scan': 12, 'heap': 3} sum of per-file medians(us): {'legacy': 617.25, 'scan': 141.669, 'heap': 146.709}
+graphml_reduced automatic fastest median: {'heap': 2, 'scan': 18} over 10% margin: {} sum of per-file medians(us): {'legacy': 95775.564, 'scan': 87259.8525, 'heap': 88082.5}

@@ -1,0 +1,4 @@
+job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
+graphml_reduced__gf2^4_mult__seeded__66	seeded	132	415	66	1	legacy	32042.0	30709.0	34375.0	29167.0	179056	772	303
+graphml_reduced__gf2^4_mult__seeded__66	seeded	132	415	66	1	scan	9459.0	9167.0	10020.5	8625.0	6032	12	303
+graphml_reduced__gf2^4_mult__seeded__66	seeded	132	415	66	1	heap	10084.0	9709.0	11500.5	9292.0	10320	18	303

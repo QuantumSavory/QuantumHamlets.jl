@@ -1,0 +1,24 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+KNOWN_ONE_PART_ERROR=MethodError: no method matching zero(::Type{Any})
+This error has been manually thrown, explicitly, so the method may exist but be intentionally marked as unimplemented.
+
+Closest candidates are:
+  zero(::Type{Union{Missing, T}}) where T
+   @ Base missing.jl:105
+  zero(!Matched::Type{Union{}}, Any...)
+   @ Base number.jl:315
+  zero(!Matched::Type{IGraphs.IGraph})
+   @ IGraphs ~/.julia/packages/IGraphs/yjA5a/src/graph_api.jl:35
+  ...
+
+EXHAUSTIVE_FINISHED n=1 fixtures=8
+EXHAUSTIVE_FINISHED n=2 fixtures=34
+EXHAUSTIVE_FINISHED n=3 fixtures=314
+EXHAUSTIVE_FINISHED n=4 fixtures=6522
+Test Summary:            |   Pass   Total  Time
+Independent cost oracles | 127098  127098  1.5s
+COST_ORACLE_COMPLETE fixtures=7122

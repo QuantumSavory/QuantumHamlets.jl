@@ -1,0 +1,66 @@
+Integration and baseline audit (production code read only)
+
+Confirmed existing defects:
+
+1. Saran–Vazirani on SimpleGraph(4), k=2 returns an empty registry and trace.
+   src/baselines.jl:78-88 assigns components only after entering an edge-cut loop.
+   Reproducer/result: probes.jl, results.log saran_edgeless4_k2.
+
+2. sprint(show, Q.villager(1,1)) returns "" and writes the representation to
+   stdout instead of its requested IO. Same missing-IO pattern appears in all
+   three show methods, src/display.jl:1-14.
+   Reproducer/result: probes.jl, results.log show_villager_captured.
+
+3. resources/sandbox.jl:165,172,184,191 collects (rank,nothing) tuples as scores;
+   mean at lines217+ fails. The tiny direct equivalent raises
+   MethodError: no method matching /(::Tuple{Int64, Nothing}, ::Int64).
+   Reproducer/result: probes.jl, results.log sandbox_tuple_mean.
+
+4. resources/grid_plots.jl:46-47 overwrites the scalar matching score with the
+   full cut-rank tuple. Plotting that data raises ArgumentError from
+   ScatterLines conversion in a tiny direct equivalent. In addition, METIS
+   is scored by matching at line59, so merely taking first(tuple) still leaves
+   the comparison using different objectives for the two methods.
+   Reproducer/result: probes.jl, results.log grid_plots_tuple_scatter.
+
+5. visualize_graph_on_land treats the second return of its method as edge
+   colors (src/visualization.jl:26-31). vertex_cover_cost_of_partition returns
+   two numeric costs, and the plot silently accepts the second cost as a
+   scalar color. This is a semantic mismatch, not a construction exception.
+   It is already documented as an incompatible method in its docstring.
+   Reproducer/result: probes.jl, results.log legacy_plot_cover_semantic_mismatch.
+
+Newly confirmed consequence of the existing Saran–Vazirani initialization bug:
+
+6. A disconnected graph can receive a positive-cut partition even though its
+   original components admit an exact balanced zero-cut packing. Use 10 nodes
+   and edges (1,2),(2,3),(4,5),(5,6),(7,8),(9,10); k=2. Component sizes are
+   3,3,2,2. {1,2,3,7,8}/{4,5,6,9,10} is a zero-cut 5+5 partition. The observed
+   output labels [2,1,1,1,1,1,2,2,2,2] cut (1,2), cost1. The function removes
+   an edge before ever checking whether the original graph is partitionable.
+   This should be described as a missed feasible zero-cut packing, without
+   claiming that every suboptimal heuristic partition is itself a bug.
+   Reproducer/result: disconnected.jl, disconnected.log first result.
+
+Passing checks / scope:
+
+- Twelve valid cases (path4, cycle4, complete4, two disjoint edges4; k=1,2,4)
+  returned complete balanced registries and preserved their input graphs.
+- All six disconnected fixtures returned balanced complete results. Five of
+  six achieved zero cut; the counterexample above did not.
+- plot_partition(...;highlight=:none), legacy rank plotting, and no-highlight
+  plotting of an empty graph all constructed successfully.
+- Figure(...,yticks=...) is accepted by the installed plotting stack, so the
+  extra Figure keyword in grid_plots.jl was NOT confirmed as a failure.
+- No complete resource script, benchmark sweep, large graph, or new dependency
+  was run. Julia worker startup and individual probe stages were bounded by
+  an external controller; all calls completed normally, with no timeout.
+- Only new scripts/logs in this integration directory were written. No source
+  or existing tests were modified.
+
+Commands from package root:
+python3 experiments/bug_audit/integration/run.py
+julia --startup-file=no --threads=1 --project=experiments/bury_performance experiments/bug_audit/integration/disconnected.jl
+
+The second command should be run under a timeout when reproducing exploratory
+solver behavior. The saved run used a 90-second external process-group bound.

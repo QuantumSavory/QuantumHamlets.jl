@@ -1,0 +1,4 @@
+job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
+graphml_reduced__vbe_adder_3__automatic__22	automatic	44	98	22	1	legacy	554333.0	549917.0	566583.0	542792.0	398208	4456	33
+graphml_reduced__vbe_adder_3__automatic__22	automatic	44	98	22	1	scan	508833.0	505166.0	536583.0	494042.0	195824	2536	33
+graphml_reduced__vbe_adder_3__automatic__22	automatic	44	98	22	1	heap	527042.0	521208.0	538416.0	510250.0	208752	2584	33

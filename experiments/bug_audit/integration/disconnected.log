@@ -1,0 +1,272 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+READY
+START	[3, 3, 2, 2]
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 6 rows; 10 cols; 20 nonzeros; 10 integer variables (10 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 5 cols, 5 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-6); columns 0(-10); nonzeros 0(-20) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	[3, 3, 2, 2]	cut=1	labels=[2, 1, 1, 1, 1, 1, 2, 2, 2, 2]	zero_cut_labels=[2, 2, 2, 1, 1, 1, 2, 2, 1, 1]	trace_length=1
+END	[3, 3, 2, 2]
+START	[4, 4, 2, 2]
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 6 rows; 10 cols; 20 nonzeros; 10 integer variables (10 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 4e+00]
+  Cost    [1e+00, 4e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 5 cols, 5 nonzeros  0s
+1 rows, 3 cols, 3 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-6); columns 0(-10); nonzeros 0(-20) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	[4, 4, 2, 2]	cut=0	labels=[1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2]	zero_cut_labels=[2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1]	trace_length=1
+END	[4, 4, 2, 2]
+START	[2, 2, 2, 2]
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 6 rows; 10 cols; 20 nonzeros; 10 integer variables (10 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 2e+00]
+  Cost    [1e+00, 2e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 5 cols, 5 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-6); columns 0(-10); nonzeros 0(-20) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	[2, 2, 2, 2]	cut=0	labels=[1, 1, 1, 1, 2, 2, 2, 2]	zero_cut_labels=[2, 2, 2, 2, 1, 1, 1, 1]	trace_length=1
+END	[2, 2, 2, 2]
+START	[3, 3, 3, 3]
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 6 rows; 10 cols; 20 nonzeros; 10 integer variables (10 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 5 cols, 5 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-6); columns 0(-10); nonzeros 0(-20) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	[3, 3, 3, 3]	cut=0	labels=[1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2]	zero_cut_labels=[2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1]	trace_length=1
+END	[3, 3, 3, 3]
+START	[3, 3, 2, 2, 1, 1]
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 8 rows; 14 cols; 28 nonzeros; 14 integer variables (14 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 7 cols, 7 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-8); columns 0(-14); nonzeros 0(-28) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	[3, 3, 2, 2, 1, 1]	cut=0	labels=[1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2]	zero_cut_labels=[2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1]	trace_length=1
+END	[3, 3, 2, 2, 1, 1]
+START	[2, 3, 2, 3]
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 6 rows; 10 cols; 20 nonzeros; 10 integer variables (10 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 5 cols, 5 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-6); columns 0(-10); nonzeros 0(-20) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	[2, 3, 2, 3]	cut=0	labels=[1, 1, 1, 1, 1, 2, 2, 2, 2, 2]	zero_cut_labels=[2, 2, 2, 2, 2, 1, 1, 1, 1, 1]	trace_length=1
+END	[2, 3, 2, 3]
+DISCONNECTED_CHECKS_COMPLETE

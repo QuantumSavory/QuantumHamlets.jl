@@ -1,0 +1,4 @@
+job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
+graphml_reduced__qcla_com_7__seeded__126	seeded	169	402	126	1	legacy	73750.0	66937.5	82792.0	61042.0	419632	1422	303
+graphml_reduced__qcla_com_7__seeded__126	seeded	169	402	126	1	scan	18708.0	18375.0	19229.5	17667.0	6528	12	303
+graphml_reduced__qcla_com_7__seeded__126	seeded	169	402	126	1	heap	14208.0	13833.5	14750.0	13250.0	12368	18	303

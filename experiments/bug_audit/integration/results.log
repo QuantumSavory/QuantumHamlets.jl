@@ -1,0 +1,1046 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+READY
+START	saran_edgeless4_k2
+RESULT	saran_edgeless4_k2	(registry = Dict{Any, Any}(), trace_length = 0)
+END	saran_edgeless4_k2
+START	saran_path4_k1
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 2 rows; 2 cols; 2 nonzeros; 2 integer variables (2 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 1e+00]
+  Cost    [0e+00, 0e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-2); columns 0(-2); nonzeros 0(-2) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	saran_path4_k1	(complete = true, sizes = [4], balanced = true, unchanged = true, trace_length = 1, first_components = [[1], [2, 3, 4]])
+END	saran_path4_k1
+START	saran_path4_k2
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 3 rows; 4 cols; 8 nonzeros; 4 integer variables (4 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-3); columns 0(-4); nonzeros 0(-8) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   2               2                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      2
+  Dual bound        2
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    2 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 4 rows; 6 cols; 12 nonzeros; 6 integer variables (6 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 2e+00]
+  Cost    [1e+00, 2e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 3 cols, 3 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-4); columns 0(-6); nonzeros 0(-12) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	saran_path4_k2	(complete = true, sizes = [2, 2], balanced = true, unchanged = true, trace_length = 2, first_components = [[1], [2, 3, 4]])
+END	saran_path4_k2
+START	saran_path4_k4
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 5 rows; 8 cols; 20 nonzeros; 8 integer variables (8 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+5 rows, 8 cols, 20 nonzeros  0s
+3 rows, 1 cols, 2 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-5); columns 0(-8); nonzeros 0(-20) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   3               3                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      3
+  Dual bound        3
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    3 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 6 rows; 12 cols; 30 nonzeros; 12 integer variables (12 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 2e+00]
+  Cost    [1e+00, 2e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+6 rows, 12 cols, 30 nonzeros  0s
+5 rows, 7 cols, 18 nonzeros  0s
+4 rows, 7 cols, 16 nonzeros  0s
+Presolve reductions: rows 4(-2); columns 7(-5); nonzeros 16(-14) 
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   4 rows
+   7 cols (7 binary, 0 integer, 0 implied int., 0 continuous, 0 domain fixed)
+   16 nonzeros
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+ p       0       0         0 100.00%   -inf            2                  Large        0      0      0         0     0.0s
+         1       0         1 100.00%   2               2                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      2
+  Dual bound        2
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      1.02049671113e-06
+  Solution status   feasible
+                    2 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.01
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 7 rows; 16 cols; 40 nonzeros; 16 integer variables (16 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 1e+00]
+  Cost    [1e+00, 1e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+7 rows, 16 cols, 40 nonzeros  0s
+7 rows, 16 cols, 40 nonzeros  0s
+Presolve reductions: rows 7(-0); columns 16(-0); nonzeros 40(-0) - Not reduced
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   7 rows
+   16 cols (16 binary, 0 integer, 0 implied int., 0 continuous, 0 domain fixed)
+   40 nonzeros
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+ p       0       0         0   0.00%   -inf            4                  Large        0      0      0         0     0.0s
+ J       0       0         0   0.00%   -inf            3                  Large        0      0      0         0     0.0s
+ T       0       0         0   0.00%   -4              0                  Large        0      0      0        14     0.0s
+         1       0         1 100.00%   0               0                  0.00%        0      0      0        14     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.01
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0
+  LP iterations     14
+                    0 (strong br.)
+                    0 (separation)
+                    0 (heuristics)
+RESULT	saran_path4_k4	(complete = true, sizes = [1, 1, 1, 1], balanced = true, unchanged = true, trace_length = 3, first_components = [[1], [2, 3, 4]])
+END	saran_path4_k4
+START	saran_cycle4_k1
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 2 rows; 2 cols; 2 nonzeros; 2 integer variables (2 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 1e+00]
+  Cost    [0e+00, 0e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-2); columns 0(-2); nonzeros 0(-2) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	saran_cycle4_k1	(complete = true, sizes = [4], balanced = true, unchanged = true, trace_length = 1, first_components = [[1], [2, 3, 4]])
+END	saran_cycle4_k1
+START	saran_cycle4_k2
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 3 rows; 4 cols; 8 nonzeros; 4 integer variables (4 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-3); columns 0(-4); nonzeros 0(-8) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   2               2                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      2
+  Dual bound        2
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    2 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 4 rows; 6 cols; 12 nonzeros; 6 integer variables (6 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 2e+00]
+  Cost    [1e+00, 2e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 3 cols, 3 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-4); columns 0(-6); nonzeros 0(-12) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	saran_cycle4_k2	(complete = true, sizes = [2, 2], balanced = true, unchanged = true, trace_length = 2, first_components = [[1], [2, 3, 4]])
+END	saran_cycle4_k2
+START	saran_cycle4_k4
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 5 rows; 8 cols; 20 nonzeros; 8 integer variables (8 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+5 rows, 8 cols, 20 nonzeros  0s
+3 rows, 1 cols, 2 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-5); columns 0(-8); nonzeros 0(-20) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   3               3                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      3
+  Dual bound        3
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    3 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 6 rows; 12 cols; 30 nonzeros; 12 integer variables (12 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 2e+00]
+  Cost    [1e+00, 2e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+6 rows, 12 cols, 30 nonzeros  0s
+5 rows, 7 cols, 18 nonzeros  0s
+4 rows, 7 cols, 16 nonzeros  0s
+Presolve reductions: rows 4(-2); columns 7(-5); nonzeros 16(-14) 
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   4 rows
+   7 cols (7 binary, 0 integer, 0 implied int., 0 continuous, 0 domain fixed)
+   16 nonzeros
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+ p       0       0         0 100.00%   -inf            2                  Large        0      0      0         0     0.0s
+         1       0         1 100.00%   2               2                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      2
+  Dual bound        2
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      5.62518835068e-07
+  Solution status   feasible
+                    2 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.01
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 7 rows; 16 cols; 40 nonzeros; 16 integer variables (16 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 1e+00]
+  Cost    [1e+00, 1e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+7 rows, 16 cols, 40 nonzeros  0s
+7 rows, 16 cols, 40 nonzeros  0s
+Presolve reductions: rows 7(-0); columns 16(-0); nonzeros 40(-0) - Not reduced
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   7 rows
+   16 cols (16 binary, 0 integer, 0 implied int., 0 continuous, 0 domain fixed)
+   40 nonzeros
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+ p       0       0         0   0.00%   -inf            4                  Large        0      0      0         0     0.0s
+ J       0       0         0   0.00%   -inf            3                  Large        0      0      0         0     0.0s
+ T       0       0         0   0.00%   -4              0                  Large        0      0      0        14     0.0s
+         1       0         1 100.00%   0               0                  0.00%        0      0      0        14     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.01
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0
+  LP iterations     14
+                    0 (strong br.)
+                    0 (separation)
+                    0 (heuristics)
+RESULT	saran_cycle4_k4	(complete = true, sizes = [1, 1, 1, 1], balanced = true, unchanged = true, trace_length = 3, first_components = [[1], [2, 3, 4]])
+END	saran_cycle4_k4
+START	saran_complete4_k1
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 2 rows; 2 cols; 2 nonzeros; 2 integer variables (2 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 1e+00]
+  Cost    [0e+00, 0e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-2); columns 0(-2); nonzeros 0(-2) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	saran_complete4_k1	(complete = true, sizes = [4], balanced = true, unchanged = true, trace_length = 1, first_components = [[1], [2, 3, 4]])
+END	saran_complete4_k1
+START	saran_complete4_k2
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 3 rows; 4 cols; 8 nonzeros; 4 integer variables (4 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-3); columns 0(-4); nonzeros 0(-8) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   2               2                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      2
+  Dual bound        2
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    2 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 4 rows; 6 cols; 12 nonzeros; 6 integer variables (6 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 2e+00]
+  Cost    [1e+00, 2e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 3 cols, 3 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-4); columns 0(-6); nonzeros 0(-12) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	saran_complete4_k2	(complete = true, sizes = [2, 2], balanced = true, unchanged = true, trace_length = 2, first_components = [[1], [2, 3, 4]])
+END	saran_complete4_k2
+START	saran_complete4_k4
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 5 rows; 8 cols; 20 nonzeros; 8 integer variables (8 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 3e+00]
+  Cost    [1e+00, 3e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+5 rows, 8 cols, 20 nonzeros  0s
+3 rows, 1 cols, 2 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-5); columns 0(-8); nonzeros 0(-20) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   3               3                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      3
+  Dual bound        3
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    3 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 6 rows; 12 cols; 30 nonzeros; 12 integer variables (12 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 2e+00]
+  Cost    [1e+00, 2e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+6 rows, 12 cols, 30 nonzeros  0s
+5 rows, 7 cols, 18 nonzeros  0s
+4 rows, 7 cols, 16 nonzeros  0s
+Presolve reductions: rows 4(-2); columns 7(-5); nonzeros 16(-14) 
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   4 rows
+   7 cols (7 binary, 0 integer, 0 implied int., 0 continuous, 0 domain fixed)
+   16 nonzeros
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+ p       0       0         0 100.00%   -inf            2                  Large        0      0      0         0     0.0s
+         1       0         1 100.00%   2               2                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      2
+  Dual bound        2
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      9.16887074709e-07
+  Solution status   feasible
+                    2 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.01
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 7 rows; 16 cols; 40 nonzeros; 16 integer variables (16 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 1e+00]
+  Cost    [1e+00, 1e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+7 rows, 16 cols, 40 nonzeros  0s
+7 rows, 16 cols, 40 nonzeros  0s
+Presolve reductions: rows 7(-0); columns 16(-0); nonzeros 40(-0) - Not reduced
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   7 rows
+   16 cols (16 binary, 0 integer, 0 implied int., 0 continuous, 0 domain fixed)
+   40 nonzeros
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+ p       0       0         0   0.00%   -inf            4                  Large        0      0      0         0     0.0s
+ J       0       0         0   0.00%   -inf            3                  Large        0      0      0         0     0.0s
+ T       0       0         0   0.00%   -4              0                  Large        0      0      0        14     0.0s
+         1       0         1 100.00%   0               0                  0.00%        0      0      0        14     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.01
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0
+  LP iterations     14
+                    0 (strong br.)
+                    0 (separation)
+                    0 (heuristics)
+RESULT	saran_complete4_k4	(complete = true, sizes = [1, 1, 1, 1], balanced = true, unchanged = true, trace_length = 3, first_components = [[1], [2, 3, 4]])
+END	saran_complete4_k4
+START	saran_two_edges4_k1
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 3 rows; 3 cols; 3 nonzeros; 3 integer variables (3 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 1e+00]
+  Cost    [0e+00, 0e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-3); columns 0(-3); nonzeros 0(-3) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	saran_two_edges4_k1	(complete = true, sizes = [4], balanced = true, unchanged = true, trace_length = 1, first_components = [[1], [2], [3, 4]])
+END	saran_two_edges4_k1
+START	saran_two_edges4_k2
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 4 rows; 6 cols; 12 nonzeros; 6 integer variables (6 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 2e+00]
+  Cost    [1e+00, 2e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+1 rows, 3 cols, 3 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+0 rows, 0 cols, 0 nonzeros  0s
+Presolve reductions: rows 0(-4); columns 0(-6); nonzeros 0(-12) - Reduced to empty
+Presolve: Optimal
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   0               0                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.00
+  Max sub-MIP depth 0
+  Nodes             0
+  Repair LPs        0
+  LP iterations     0
+RESULT	saran_two_edges4_k2	(complete = true, sizes = [2, 2], balanced = true, unchanged = true, trace_length = 1, first_components = [[1], [2], [3, 4]])
+END	saran_two_edges4_k2
+START	saran_two_edges4_k4
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 6 rows; 12 cols; 30 nonzeros; 12 integer variables (12 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 2e+00]
+  Cost    [1e+00, 2e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+6 rows, 12 cols, 30 nonzeros  0s
+5 rows, 7 cols, 18 nonzeros  0s
+4 rows, 7 cols, 16 nonzeros  0s
+Presolve reductions: rows 4(-2); columns 7(-5); nonzeros 16(-14) 
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   4 rows
+   7 cols (7 binary, 0 integer, 0 implied int., 0 continuous, 0 domain fixed)
+   16 nonzeros
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+ p       0       0         0 100.00%   -inf            2                  Large        0      0      0         0     0.0s
+         1       0         1 100.00%   2               2                  0.00%        0      0      0         0     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      2
+  Dual bound        2
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      4.16534021497e-07
+  Solution status   feasible
+                    2 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.01
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0
+  LP iterations     0
+Running HiGHS 1.13.1 (git hash: 1d267d97c): Copyright (c) 2026 under Apache 2.0 license terms
+Using BLAS: blastrampoline 
+MIP has 7 rows; 16 cols; 40 nonzeros; 16 integer variables (16 binary)
+Coefficient ranges:
+  Matrix  [1e+00, 1e+00]
+  Cost    [1e+00, 1e+00]
+  Bound   [1e+00, 1e+00]
+  RHS     [1e+00, 1e+00]
+Presolving model
+7 rows, 16 cols, 40 nonzeros  0s
+7 rows, 16 cols, 40 nonzeros  0s
+Presolve reductions: rows 7(-0); columns 16(-0); nonzeros 40(-0) - Not reduced
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   7 rows
+   16 cols (16 binary, 0 integer, 0 implied int., 0 continuous, 0 domain fixed)
+   40 nonzeros
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic;
+     I => Shifting; J => Feasibility jump; L => Sub-MIP; P => Empty MIP; R => Randomized rounding;
+     S => Solve LP; T => Evaluate node; U => Unbounded; X => User solution; Y => HiGHS solution;
+     Z => ZI Round; l => Trivial lower; p => Trivial point; u => Trivial upper; z => Trivial zero
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+ p       0       0         0   0.00%   -inf            4                  Large        0      0      0         0     0.0s
+ J       0       0         0   0.00%   -inf            3                  Large        0      0      0         0     0.0s
+ T       0       0         0   0.00%   -4              0                  Large        0      0      0        14     0.0s
+         1       0         1 100.00%   0               0                  0.00%        0      0      0        14     0.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      0
+  Dual bound        0
+  Gap               0% (tolerance: 0.01%)
+  P-D integral      0
+  Solution status   feasible
+                    0 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.01
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0
+  LP iterations     14
+                    0 (strong br.)
+                    0 (separation)
+                    0 (heuristics)
+RESULT	saran_two_edges4_k4	(complete = true, sizes = [1, 1, 1, 1], balanced = true, unchanged = true, trace_length = 2, first_components = [[1], [2], [3, 4]])
+END	saran_two_edges4_k4
+START	show_villager_captured
+RESULT	show_villager_captured	(requested_io = "", stdout = "Qubit 1, who lives in hamlet 1")
+END	show_villager_captured
+START	plot_none
+RESULT	plot_none	(figure_type = "Figure", cost = nothing)
+END	plot_none
+START	legacy_plot_rank
+RESULT	legacy_plot_rank	(figure_type = "Figure", cost = 1)
+END	legacy_plot_rank
+START	legacy_plot_cover_semantic_mismatch
+RESULT	legacy_plot_cover_semantic_mismatch	(cover_returns = (1, 1), second_value_type = "Int64", figure_type = "Figure", returned_cost = 1)
+END	legacy_plot_cover_semantic_mismatch
+START	figure_with_yticks_from_grid_plots
+RESULT	figure_with_yticks_from_grid_plots	"Figure"
+END	figure_with_yticks_from_grid_plots
+START	sandbox_tuple_mean
+ERROR	sandbox_tuple_mean	MethodError	MethodError: no method matching /(::Tuple{Int64, Nothing}, ::Int64)
+The function `/` exists, but no method is defined for this combination of argument types.
+
+Closest candidates are:
+  /(!Matched::Nemo.AcbFieldElem, ::Integer)
+   @ Nemo ~/.julia/packages/Nemo/MT5uH/src/arb/acb.jl:324
+  /(!Matched::ChainRulesCore.NotImplemented, ::Any)
+   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/Vsbj9/src/tangent_types/notimplemented.jl:42
+  /(!Matched::Nemo.AcbPolyRingElem, ::Union{Integer, Rational})
+   @ Nemo ~/.julia/packages/Nemo/MT5uH/src/arb/acb_poly.jl:285
+  ...
+
+END	sandbox_tuple_mean
+START	grid_plots_tuple_scatter
+ERROR	grid_plots_tuple_scatter	ArgumentError	ArgumentError: 
+    Conversion failed for ScatterLines (With conversion trait PointBased()) with args:
+        Tuple{Vector{Int64}, Vector{Tuple{Int64, Nothing}}} 
+    Got converted to: Tuple{Vector{Int64}, Vector{Tuple{Int64, Nothing}}}
+    ScatterLines requires to convert to argument types Tuple{AbstractVector{<:Union{Point2, Point3}}}, which convert_arguments didn't succeed in.
+    To fix this overload convert_arguments(P, args...) for ScatterLines or PointBased() and return an object of type Tuple{AbstractVector{<:Union{Point2, Point3}}}.`
+
+END	grid_plots_tuple_scatter
+START	empty_plot_none
+RESULT	empty_plot_none	(figure_type = "Figure", cost = nothing)
+END	empty_plot_none
+INTEGRATION_PROBES_COMPLETE
