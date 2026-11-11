@@ -59,7 +59,7 @@ From the package directory:
 julia --project=. -e 'using Pkg; Pkg.test()'
 ```
 
-The tests compare all BURY backends with a frozen original implementation, including exhaustive small graphs, seeded behavior, RNG consumption, and verbose output. They also check partition and cost results and the simpler API. Known defects are recorded with `@test_broken` so they remain visible while fixes are deferred. See [known limitations](docs/usage.md#known-limitations).
+The tests compare all BURY backends with a frozen original implementation, including exhaustive small graphs, seeded behavior, RNG consumption, and verbose output. They also check partition and cost results and the simpler API. The confirmed audit defects now have passing regressions, including validation, matching witnesses, component packing, and constructor/display behavior. See [known limitations](docs/usage.md#known-limitations).
 
 The [BURY performance study](docs/bury_performance_findings.md) and [GraphML study](docs/graphml_backend_findings.md) record the prototype measurements behind the backend choice. Their figures describe the measured workloads, rather than a universal speedup.
 

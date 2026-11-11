@@ -23,7 +23,7 @@ The algorithm is selected with a keyword:
 | `partition_graph(g, k; algorithm=:random)` | Balanced random assignment using Julia's default RNG |
 | `partition_graph(g, k; algorithm=:saran_vazirani)` | The existing Saran–Vazirani baseline, including its optimization solver |
 
-`verbose=true` forwards BURY's progress output. The random method retains the existing default-RNG behavior and has no `rng` keyword. Use `Random.seed!(seed)` before a call when reproducing a run in the same Julia environment. The Saran–Vazirani baseline is experimental; the new interface raises an error if it returns an incomplete assignment.
+`verbose=true` forwards BURY's progress output. The random method retains the existing default-RNG behavior and has no `rng` keyword. Use `Random.seed!(seed)` before a call when reproducing a run in the same Julia environment. The Saran–Vazirani baseline is experimental. It attempts to pack the original connected components before removing edges, so feasible zero-cut component assignments are retained. Its trace includes that initial attempt. Solver failure or exhaustion without a complete balanced assignment raises an error.
 
 ### Choose a BURY backend
 
@@ -67,7 +67,15 @@ custom = (graph, target) -> Q.bury(graph, target; backend=:scan)
 reg, colored = Q.bury_not_balanced_bipartition(g, 10, 18; bury_v=custom)
 ```
 
-Use integer single-partition targets in `0:nv(g)` and explicit seeds in `1:nv(g)`. Heap and scan reject unsupported targets and seeds with `ArgumentError`; legacy keeps its original input behavior, including the oversized-target limitation below. The balanced `partition_graph` interface validates `k` before calling a backend.
+Every backend follows the same input policy, with `ArgumentError` checks before sampling, callbacks, or solver execution:
+
+- Single-partition targets must have an integer type and lie in `0:nv(g)`. Integral floating-point targets such as `2.0` are rejected, including by legacy.
+- Explicit seeds must have an integer type and lie in `1:nv(g)`. All seeded calls and seed searches require a nonempty graph, even for target zero.
+- Ordinary `bury(SimpleGraph(0), 0)` remains supported and returns an empty registry and color vector.
+- Target ranges require integer bounds `0 ≤ min_v ≤ max_v ≤ nv(g)`. Ordinary range search supports the empty graph with `0:0`. Scores are initialized from the first candidate, so arbitrary score scales work; equal scores retain the last candidate.
+- Balanced calls (`partition_graph`, `bury_k`, `bury_k_seeded`, `k_partition_random`, and `k_partition_saran_vazirani`) require a nonempty graph, integer `k` in `1:nv(g)`, and exact divisibility of `nv(g)` by `k`.
+
+Validation failures consume no RNG draws. Supported integer representations, valid-call RNG consumption, and the legacy algorithm's partition choices are preserved.
 
 ### Supply your own partition
 
@@ -104,6 +112,12 @@ All scalar cost calls take the graph first and partition second:
 | `matching_cost(g, p)` | Integer sum of maximum matching sizes over unordered pairs of partitions |
 | `pairwise_cut_rank(g, p)` | Integer sum of GF(2) biadjacency ranks over unordered pairs of partitions |
 | `vertex_cover_costs(g, p)` | Named tuple `(ghz_free=..., ghz_n_minus_one=...)` calculated from the existing greedy vertex cover |
+
+One declared part has matching cost zero, an empty matching witness, and no highlighted edges. Empty graphs and declared empty parts are supported by the cost APIs. Matching derives bipartite sides directly from part labels, without recursive graph traversal.
+
+Scalar costs operate directly on `GraphPartition` membership, without constructing a legacy `quantumLand` or unused edge-color arrays. Matching groups cross edges by part pair, builds each native graph in bulk, and uses unweighted maximum-cardinality matching. Rank uses exact packed GF(2) elimination on biadjacency matrices, omitting isolated endpoints. The cover method keeps the existing greedy selection and counts neighboring part labels with reusable scratch storage. Legacy tuple-returning functions retain their formats.
+
+The [cost performance experiment](../experiments/cost_performance/README.md) records bounded before/after timings and allocations against the implementation saved after the bug fixes. No graph partitioning or seed-selection policy changed.
 
 The matching and rank values are exact for a fixed partition and their stated objectives. BURY is a heuristic for selecting the partition; it does not guarantee an optimal assignment. The cover routine uses a greedy cover, so its two estimates need not be minimum costs.
 
@@ -205,7 +219,7 @@ reg = registry(p)
 
 The original cost functions keep their return formats: edge-cut and matching return `(cost, edge_colors)`, rank returns `(cost, nothing)`, and cover returns two numerical costs. In particular, the cover tuple is not a score plus plotting colors. The new plotting interface uses explicit overlays instead of accepting an arbitrary cost function.
 
-The simpler interface adds input checks at its boundary. Known algorithm and cost defects remain relevant regardless of the selected BURY backend.
+The legacy `quantumLand(reg, k, n)` constructor copies its dictionary, requires positive integer `k`, nonnegative integer `n`, exactly the integer keys `1:n`, and integer labels in `1:k`. Declared empty parts and an empty registry with positive `k` are supported. Conversions from `GraphPartition` preserve them. Treat legacy fields and nested membership objects as read-only: directly mutating one representation can still make it disagree with the others. All legacy display methods honor the supplied IO stream.
 
 ### Compare an external partitioner
 
@@ -234,7 +248,7 @@ Run the suite from the package directory:
 julia --project=. -e 'using Pkg; Pkg.test()'
 ```
 
-The tests cover deterministic fixtures, exhaustive small graphs, valid partition sizes, numerical costs, input graph preservation, conversions, and equivalence against a frozen original BURY implementation. Backend checks also cover automatic seed selection, RNG consumption, custom callbacks, return types, and verbose traces. Known failures use `@test_broken` with explanatory comments. When one is fixed, change its assertion to `@test`; an unexpected pass is deliberately reported so the known-failure list cannot silently become stale. The legacy oversized-target hang is not invoked in the ordinary test process.
+The tests cover deterministic fixtures, exhaustive small graphs, valid partition sizes, numerical costs, input graph preservation, conversions, and equivalence against a frozen original BURY implementation. Backend checks also cover automatic seed selection, RNG consumption, custom callbacks, return types, and verbose traces. The five originally deferred failures are now ordinary passing regressions. Additional tests cover independent matching cardinalities and witnesses, one-part plots, validation before RNG/callbacks, disconnected zero-cut packing, constructor ownership, captured display output, and scalar research scores. Large matching checks run separately in disposable subprocesses with external time limits (`python3 test/run_matching_stress.py`). The suite with cost optimizations passed 457,209 assertions with no broken tests; see the [validation record](bug_audit.md#validation-and-limits).
 
 The source is organized within one module:
 
@@ -248,7 +262,7 @@ The source is organized within one module:
 | `src/bury/scan.jl` | Optimized scan color kernel |
 | `src/bury/legacy.jl` | Original ordinary and seeded implementations |
 | `src/baselines.jl` | Random and Saran–Vazirani partitioning |
-| `src/costs.jl` | Original cost implementations |
+| `src/costs.jl` | Shared cost kernels and legacy tuple adapters |
 | `src/visualization.jl` | Original graph plotting |
 | `src/display.jl` | Original text display methods |
 | `src/partition.jl` | `GraphPartition` and conversions |
@@ -258,13 +272,12 @@ Research scripts and data remain under `resources/`. The [revision proposal](rev
 
 ## Known limitations
 
-The backend change preserves BURY's supported-input choices and the existing scoring and seed policies. Broader bug fixes remain a separate task. In particular:
+The repairs preserve valid-input BURY partition choices and scoring/seed policies across all backends. Matching witnesses may choose different optimal edges; their cardinality and validity define the contract.
 
-- Matching evaluation with only one declared partition still raises an error; this also affects `matching_cost`, `matching_details`, and the matching plot overlay.
-- With `backend=:legacy`, `bury` and `bury_seeded` retain the original incomplete target validation: a target greater than the number of vertices can hang. Heap and scan reject invalid targets; use integer targets between zero and `nv(g)` for every backend.
-- `bury_not_balanced_bipartition` can return no candidate when the supplied objective exceeds its initial bound.
-- The original Saran–Vazirani baseline returns an incomplete registry for an edgeless graph. `partition_graph` reports that failure instead of constructing an incomplete partition.
-- Original `quantumLand` objects can retain an input dictionary by reference, and their text display methods ignore the requested output stream. The new partition constructor copies its input; this does not change legacy object behavior.
-- Some research comparison scripts still consume the old cost tuples incorrectly. They are not the runnable quickstart and are left for the later bug-fix pass.
+- BURY and Saran–Vazirani remain heuristics; neither guarantees globally optimal balanced partitions. Saran–Vazirani depends on an optimization solver and reports failures explicitly.
+- The greedy vertex-cover estimates need not be minimum costs. The legacy cover callback returns two numeric estimates and remains incompatible with the old plot callback's `(score, edge_colors)` convention; use the explicit `plot_partition` overlays.
+- Copying constructor inputs prevents input aliasing, but legacy nested objects remain mutable. Construct a new partition rather than mutating their fields independently.
+- Matching no longer has a recursive traversal limit, but large solver workloads can still be expensive. Plotting dependencies still load with the package.
+- The grid and sandbox partitioner comparisons now use scalar pairwise GF(2) cut rank for every competitor and label that objective. Their defaults are full research sweeps, not quickstarts; only tiny equivalents were tested. Historical results and audit logs were not regenerated.
 
-See the regression tests and [review findings](revision_proposal.md#confirmed-defects-and-regression-targets) for concrete cases.
+See the [resolved audit and validation record](bug_audit.md) for the implemented fixes and remaining test limits.

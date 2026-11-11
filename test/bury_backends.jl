@@ -220,7 +220,7 @@ end
         @test g == original
     end
 
-    @testset "Backend and optimized-input validation" begin
+    @testset "Backend and input validation" begin
         g = path_graph(6)
         unknown_calls = (
             () -> Q.bury(g, 3; backend=:unknown),
@@ -240,7 +240,7 @@ end
             @test_throws ArgumentError f()
             @test rand(UInt64) == expected_next
         end
-        for backend in (:heap, :scan)
+        for backend in BURY_BACKENDS
             for target in (-1, nv(g) + 1, 2.0, 2.5)
                 @test_throws ArgumentError Q.bury(g, target; backend)
                 @test_throws ArgumentError Q.bury_seeded(g, target, 1; backend)
@@ -255,23 +255,18 @@ end
                 @test_throws ArgumentError Q.bury_seeded(g, 3, seed; backend)
             end
         end
-        # This distinguishes the optimized default from the permissive legacy
-        # path without risking the legacy oversized-target hang.
-        @test_throws ArgumentError Q.bury(g, 2.0)
-        @test Q.bury(g, 2.0; backend=:legacy) == OriginalBury.bury(g, 2.0)
-        # A floating-point representation of an integral target is accepted by
-        # the original functions. It makes incorrect nested backend forwarding
-        # observable: an accidental optimized call would reject this target.
-        for (actual, reference) in (
-                (() -> Q.bury_seeded(g, 2.0; backend=:legacy),
-                 () -> OriginalBury.bury_seeded(g, 2.0)),
-                (() -> Q.best_seed(g, 2.0; backend=:legacy),
-                 () -> OriginalBury.best_seed(g, 2.0)),
-                (() -> Q.best_sqrt_seed(g, 2.0; backend=:legacy),
-                 () -> OriginalBury.best_sqrt_seed(g, 2.0)),
-                (() -> Q.bury_not_balanced_bipartition(g, 2.0, 3.0; backend=:legacy),
-                 () -> OriginalBury.bury_not_balanced_bipartition(g, 2.0, 3.0)))
-            @test capture_bury_rng(actual, 812) == capture_bury_rng(reference, 812)
+        # All backends now reject Float64 targets, even integral ones. The
+        # frozen original remains unchanged; its permissive invalid-input
+        # behavior is intentionally no longer a compatibility requirement.
+        for backend in BURY_BACKENDS
+            for f in (
+                    () -> Q.bury(g, 2.0; backend),
+                    () -> Q.bury_seeded(g, 2.0; backend),
+                    () -> Q.best_seed(g, 2.0; backend),
+                    () -> Q.best_sqrt_seed(g, 2.0; backend),
+                    () -> Q.bury_not_balanced_bipartition(g, 2.0, 3.0; backend))
+                @test_throws ArgumentError f()
+            end
         end
         for backend in (:scan, :legacy), algorithm in (:random, :saran_vazirani)
             @test_throws ArgumentError Q.partition_graph(g, 2; algorithm, backend)

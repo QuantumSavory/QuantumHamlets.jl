@@ -44,11 +44,11 @@ end
     @test Q.partition_sizes(random_partition) == [3, 3]
     @test Q.partition_sizes(Q.partition_graph(g, 1)) == [6]
     @test Q.partition_sizes(Q.partition_graph(g, 6)) == ones(Int, 6)
-    for k in (0, -1, 4, 7)
+    for k in (0, -1, 4, 7, 2.0, 2.5)
         @test_throws ArgumentError Q.partition_graph(g, k)
     end
     @test_throws ArgumentError Q.partition_graph(g, 2; algorithm=:unknown)
-    @test_throws ErrorException Q.partition_graph(SimpleGraph(4), 2; algorithm=:saran_vazirani)
+    @test Q.partition_sizes(Q.partition_graph(SimpleGraph(4), 2; algorithm=:saran_vazirani)) == [2, 2]
 
     g = complete_bipartite_graph(2, 2)
     p = Q.GraphPartition([1, 1, 2, 2])

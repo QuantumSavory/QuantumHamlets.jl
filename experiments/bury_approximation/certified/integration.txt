@@ -1,0 +1,17 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+Test Summary:                             | Pass  Total  Time
+Component guard repairs zero-cost packing |   29     29  1.9s
+Test Summary:                                                       | Pass  Total  Time
+Component guard boundaries and validation before successful prepass |   22     22  0.1s
+Test Summary:                                  | Pass  Total  Time
+Fallback is exactly the requested BURY variant |   75     75  0.0s
+r	n	original_matching	repaired_matching	lower_bound	examined
+3	30	5	1	1	4
+4	40	8	1	1	5
+8	80	14	1	1	9
+Test Summary:                                                  | Pass  Total  Time
+One-vertex certification repairs bounded-degree counterexample |   30     30  0.3s

@@ -1,9 +1,14 @@
 # These adapters expose partition values and forward BURY backend selection.
-# Cost routines retain their existing behavior and known numerical defects.
+# Cost routines retain the legacy tuple formats behind scalar adapters.
 
-function _land_for(g::Graphs.Graph, p::GraphPartition)
+function _labels_for(g::Graphs.Graph, p::GraphPartition)
     nv(g) == length(p) ||
         throw(ArgumentError("partition has $(length(p)) vertices, but graph has $(nv(g))"))
+    return p.labels
+end
+
+function _land_for(g::Graphs.Graph, p::GraphPartition)
+    _labels_for(g, p)
     return quantumLand(p)
 end
 
@@ -25,14 +30,13 @@ BURY accepts `backend=:heap` (default), `:scan`, or `:legacy`, forwarded through
 every partition round. Seed and partition policies are unchanged. `verbose`
 is forwarded to BURY. Other algorithms only accept the default backend value,
 which does not apply to them, and retain their existing output behavior.
-An incomplete registry raises an error; known scoring and baseline algorithm
-limitations are not repaired by this adapter.
+An incomplete registry raises an error. The Saran–Vazirani baseline first
+tries to pack the original components and reports failure explicitly.
 """
-function partition_graph(g::Graphs.Graph, k::Integer;
+function partition_graph(g::Graphs.Graph, k;
                          algorithm::Symbol=:bury, backend::Symbol=:heap,
                          verbose::Bool=false)
-    1 <= k <= nv(g) || throw(ArgumentError("k must satisfy 1 <= k <= nv(g)"))
-    nv(g) % k == 0 || throw(ArgumentError("k must divide the number of vertices"))
+    k = _check_partition_count(g, k)
     _bury_check_backend(backend)
     if algorithm in (:random, :saran_vazirani) && backend !== :heap
         throw(ArgumentError("backend selection applies only to :bury and :bury_seeded"))
@@ -51,7 +55,7 @@ function partition_graph(g::Graphs.Graph, k::Integer;
     end
 
     length(reg) == nv(g) ||
-        error("$algorithm returned an incomplete registry; see the documented known limitations")
+        error("$algorithm returned an incomplete registry")
     return GraphPartition(reg; nparts=k)
 end
 
@@ -62,18 +66,18 @@ Count edges with endpoints in different parts. This is the scalar form of
 [`naive_cost_of_partition`](@ref).
 """
 edge_cut_cost(g::Graphs.Graph, p::GraphPartition) =
-    first(naive_cost_of_partition(_land_for(g, p), g))
+    _edge_cut_cost(_labels_for(g, p), g)
 
 """
     matching_cost(g, p::GraphPartition) -> Int
 
-Sum maximum matching sizes over unordered pairs of parts. Delegates to
-[`matching_cost_of_partition`](@ref), including its currently known failure
-for a partition with only one declared part. Use [`matching_details`](@ref)
-when the matching edges are also needed.
+Sum maximum matching sizes over unordered pairs of parts. One declared part
+has cost zero. Uses the same unweighted matching kernel as
+[`matching_cost_of_partition`](@ref), without constructing edge colors. Use
+[`matching_details`](@ref) when the matching edges are also needed.
 """
 matching_cost(g::Graphs.Graph, p::GraphPartition) =
-    first(matching_cost_of_partition(_land_for(g, p), g))
+    _matching_cost(_labels_for(g, p), g)
 
 """
     pairwise_cut_rank(g, p::GraphPartition) -> Int
@@ -83,7 +87,7 @@ parts. This is the scalar form of [`cut_rank_cost`](@ref). For more than two
 parts this is a sum of pairwise ranks, not a single bipartite cut rank.
 """
 pairwise_cut_rank(g::Graphs.Graph, p::GraphPartition) =
-    first(cut_rank_cost(_land_for(g, p), g))
+    _pairwise_cut_rank(_labels_for(g, p), p.nparts, g)
 
 """
     vertex_cover_costs(g, p::GraphPartition)
@@ -94,20 +98,22 @@ not necessarily minimum. The second model charges `m-1` for an `m`-partite
 GHZ state. Both estimates retain the original implementation's semantics.
 """
 function vertex_cover_costs(g::Graphs.Graph, p::GraphPartition)
-    free, paid = vertex_cover_cost_of_partition(_land_for(g, p), g)
+    free, paid = _vertex_cover_costs(_labels_for(g, p), p.nparts, g)
     return (ghz_free=free, ghz_n_minus_one=paid)
 end
 
 """
     matching_details(g, p::GraphPartition)
 
-Return `(cost=..., edges=...)` from one evaluation of the original matching
+Return `(cost=..., edges=...)` from one evaluation of the matching
 routine. Edges use the original graph's vertex IDs and follow `edges(g)`
 order. They form a maximum matching within each pair of parts; their union
 need not be a single matching across the whole graph.
 """
 function matching_details(g::Graphs.Graph, p::GraphPartition)
-    cost, colors = matching_cost_of_partition(_land_for(g, p), g)
+    labels = _labels_for(g, p)
+    colors = fill(:black, ne(g))
+    cost = _matching_cost(labels, g, colors)
     selected = [e for (e, color) in zip(edges(g), colors) if color === :red]
     return (cost=cost, edges=selected)
 end

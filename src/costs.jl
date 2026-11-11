@@ -1,7 +1,20 @@
-"""Calculates the edges cut to establish a graph state on the given quantumLand\n
-Input: a quantum land object which specifies how nodes are distributed, and a graph from Graphs.jl\n
-Output: First the number edges cut, then a vector of colors (cut edges are set to red and others black). 
-The vector of colors is used by "visualize_graph_on_land" to illustrate the partition and cost.
+# Cost kernels work on dense labels. Legacy wrappers copy dictionary values
+# once; the GraphPartition scalar API can use its already-dense membership.
+_cost_labels(land::quantumLand, g) = Int[land.registry[v] for v in vertices(g)]
+
+function _edge_cut_cost(labels, g, edgecolors=nothing)
+    cost = 0
+    for (index, e) in enumerate(edges(g))
+        if labels[src(e)] != labels[dst(e)]
+            cost += 1
+            isnothing(edgecolors) || (edgecolors[index] = :red)
+        end
+    end
+    return cost
+end
+
+"""Return `(cut_edge_count, edge_colors)` for a legacy partition.
+Cross-partition edges are red and all other edges are black.
 """
 function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph) 
     edgecolors = [:black for _ in 1:ne(graph)]
@@ -17,130 +30,181 @@ function naive_cost_of_partition(land::quantumLand, graph::Graphs.Graph)
     return cost, edgecolors
 end
 
-"""Returns first the size of the vertex cover, corresponding to GHZ states being 100% free.
-Second returns the cost if an m partite GHZ states has cost m-1."""
-function vertex_cover_cost_of_partition(land::quantumLand, g::Graphs.Graph)
-    k = land.numHamlets
-    local_removed_g = QuantumHamlets.remove_local_edges(land, g)
-    cover = vertex_cover(local_removed_g, DegreeVertexCover())
-    ghz_free_cost = length(cover)
-
+function _vertex_cover_costs(labels, k, g)
+    # Construct the same sorted adjacency as copy-and-remove, without copying
+    # internal edges. Keep Graphs' greedy algorithm and its tie order intact.
+    cut_graph = SimpleGraph{eltype(g)}(nv(g))
+    for e in edges(g)
+        labels[src(e)] == labels[dst(e)] || add_edge!(cut_graph, e)
+    end
+    cover = vertex_cover(cut_graph, DegreeVertexCover())
     ghz_n_minus_one_cost = 0
-    partite_counter = [false for _ in 1:k]
-    for v in cover
-        partite_counter[land.registry[v]] = true
-        for n in neighbors(local_removed_g, v)
-            partite_counter[land.registry[n]] = true
+    seen = zeros(Int, k)
+    for (stamp, v) in enumerate(cover)
+        seen[labels[v]] = stamp
+        for u in neighbors(cut_graph, v)
+            label = labels[u]
+            if seen[label] != stamp
+                seen[label] = stamp
+                ghz_n_minus_one_cost += 1
+            end
         end
-        ghz_n_minus_one_cost += (sum(partite_counter) - 1)
-        partite_counter = [false for _ in 1:k]
     end
-    return ghz_free_cost, ghz_n_minus_one_cost
+    return length(cover), ghz_n_minus_one_cost
 end
 
-"""Calculates the cost of a k-partition as a sum of pairwise GF(2) cut ranks.\n
-Input: a quantum land object, a graph from Graphs.jl\n
-Output: `(cost, nothing)`, where cost is an integer. For a scalar result use `pairwise_cut_rank(g, p)`.
+"""Return the existing greedy vertex-cover estimates `(ghz_free, ghz_n_minus_one)`.
+The second model charges `m-1` for an `m`-partite GHZ state. These are greedy
+estimates, not minimum vertex-cover costs.
 """
-function cut_rank_cost(land::quantumLand, g::Graphs.Graph)
-    k = land.numHamlets
-    local_removed_g = QuantumHamlets.remove_local_edges(land, g)
+vertex_cover_cost_of_partition(land::quantumLand, g::Graphs.Graph) =
+    _vertex_cover_costs(_cost_labels(land, g), land.numHamlets, g)
 
-    bipartite_decomposition = []
-    maps = []
-    for i in 1:k
-        for j in (i+1):k
-            subgraph_vertices = Array{Int64}([])
-            for v in vertices(local_removed_g)
-                if land.registry[v] == i || land.registry[v] == j
-                    push!(subgraph_vertices,v)
-                end
-            end
-            g_bi, map = induced_subgraph(local_removed_g, subgraph_vertices)
-            push!(bipartite_decomposition, g_bi)
-            push!(maps, map)
+# Store only nonempty pairs. Orient endpoints by part label and retain each
+# original edge index for optional plotting colors. Each graph edge is read once.
+function _cut_edge_groups(labels, g)
+    groups = Dict{Tuple{Int,Int},Vector{NTuple{3,Int}}}()
+    for (index, e) in enumerate(edges(g))
+        u, v = Int(src(e)), Int(dst(e))
+        a, b = labels[u], labels[v]
+        a == b && continue
+        if a > b
+            a, b = b, a
+            u, v = v, u
         end
+        push!(get!(Vector{NTuple{3,Int}}, groups, (a, b)), (u, v, index))
     end
-
-    R, = residue_ring(ZZ, 2)
-    sum_ranks = 0
-    for graph in bipartite_decomposition
-        sum_ranks += rank(matrix(R, adjacency_matrix(graph)))
-    end    
-
-    return sum_ranks÷2, nothing
+    return groups
 end
 
-"""Calculates the cost of generating a given graph state by only using bell pairs and Y measurements.\n
-Input: a quantum land object, a graph from Graphs.jl\n
-Output: First the sum of the matching sizes between each pair of partitions,
-then a vector of colors (selected matching edges are red and others black). 
-The vector of colors is used by "visualize_graph_on_land" to illustrate the partition and cost."""
+# Each Julia matrix column stores one packed binary row, keeping wordwise XOR
+# contiguous in memory. Only this private work matrix is modified.
+function _gf2_packed_rank!(rows::Matrix{UInt64}, ncols::Int)
+    nwords, nrows = size(rows)
+    pivots = zeros(Int, ncols)
+    result = 0
+    @inbounds for row in 1:nrows
+        word = 1
+        while word <= nwords
+            if iszero(rows[word, row])
+                word += 1
+                continue
+            end
+            col = 64 * (word - 1) + trailing_zeros(rows[word, row]) + 1
+            pivot = pivots[col]
+            if iszero(pivot)
+                pivots[col] = row
+                result += 1
+                result == ncols && return result
+                break
+            end
+            for w in word:nwords
+                rows[w, row] ⊻= rows[w, pivot]
+            end
+        end
+    end
+    return result
+end
+
+function _pairwise_cut_rank(labels::AbstractVector{<:Integer}, nparts::Int,
+                            g::Graphs.Graph)
+    nparts <= 1 && return 0
+    pairs = _cut_edge_groups(labels, g)
+    isempty(pairs) && return 0
+    positions = zeros(Int, nv(g))
+    touched = Int[]
+    result = 0
+    for pair_edges in values(pairs)
+        nleft = nright = 0
+        empty!(touched)
+        # Omit isolated vertices of both parts: they contribute only zero rows
+        # or columns, which cannot affect rank.
+        for (u, v, _) in pair_edges
+            if iszero(positions[u])
+                nleft += 1
+                positions[u] = nleft
+                push!(touched, u)
+            end
+            if iszero(positions[v])
+                nright += 1
+                positions[v] = nright
+                push!(touched, v)
+            end
+        end
+        # Rank is invariant under transpose. Pack the smaller side into bits.
+        ncols, nrows = minmax(nleft, nright)
+        packed = zeros(UInt64, cld(ncols, 64), nrows)
+        for (u, v, _) in pair_edges
+            row, col = nleft <= nright ? (positions[v], positions[u] - 1) :
+                                        (positions[u], positions[v] - 1)
+            packed[(col >>> 6) + 1, row] |= UInt64(1) << (col & 63)
+        end
+        result += _gf2_packed_rank!(packed, ncols)
+        for v in touched
+            positions[v] = 0
+        end
+    end
+    return result
+end
+
+"""Return `(pairwise_cut_rank, nothing)` for a legacy partition.
+Compute exact GF(2) ranks of the cross-part biadjacency matrices, using packed
+binary elimination. Empty parts contribute zero.
+"""
+cut_rank_cost(land::quantumLand, g::Graphs.Graph) =
+    (_pairwise_cut_rank(_cost_labels(land, g), land.numHamlets, g), nothing)
+
+function _matching_cost(labels, g, edgecolors=nothing)
+    groups = _cut_edge_groups(labels, g)
+    isempty(groups) && return 0
+    local_ids = zeros(Int, nv(g))
+    total_cost = 0
+    for pair_edges in values(groups)
+        # Isolated vertices cannot affect a matching. Number only incident
+        # vertices, avoiding a graph copy and a full vertex scan for every pair.
+        types = Bool[]
+        endpoints = Vector{Int}(undef, 2length(pair_edges))
+        for (i, (u, v, _)) in enumerate(pair_edges)
+            if local_ids[u] == 0
+                push!(types, false)
+                local_ids[u] = length(types)
+            end
+            if local_ids[v] == 0
+                push!(types, true)
+                local_ids[v] = length(types)
+            end
+            endpoints[2i - 1] = local_ids[u] - 1
+            endpoints[2i] = local_ids[v] - 1
+        end
+        # IGraph(g) inserts edges one at a time. Bulk construction avoids
+        # repeated rebuilding of igraph's edge indices.
+        ig = IGraphs.IGraph(_uninitialized=Val(true))
+        IGraphs.LibIGraph.create(ig, IGraphs.IGVectorInt(endpoints), length(types), false)
+        matching = isnothing(edgecolors) ? IGraphs.IGNull() : IGraphs.IGVectorInt()
+        # NULL weights request maximum cardinality directly. Unit weights
+        # unnecessarily select the more expensive weighted algorithm.
+        cardinality, _ = IGraphs.LibIGraph.maximum_bipartite_matching(
+            ig, IGraphs.IGVectorBool(types), matching, IGraphs.IGNull(), 0.0)
+        total_cost += cardinality
+        if !isnothing(edgecolors)
+            for (u, v, index) in pair_edges
+                matching[local_ids[u]] == local_ids[v] - 1 && (edgecolors[index] = :red)
+            end
+        end
+        for (u, v, _) in pair_edges
+            local_ids[u] = 0
+            local_ids[v] = 0
+        end
+    end
+    return total_cost
+end
+
+"""Return `(matching_cost, edge_colors)` for a legacy partition.
+The cost sums maximum matching cardinalities over unordered pairs of parts.
+Selected matching edges are red, all others black. One declared part costs zero.
+Alternative maximum matching witnesses may be selected by the unweighted solver.
+"""
 function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
-    k = land.numHamlets
-    local_removed_g = QuantumHamlets.remove_local_edges(land, g)
-
-    bipartite_decomposition = []
-    maps = []
-    for i in 1:k
-        for j in (i+1):k
-            subgraph_vertices = Array{Int64}([])
-            for v in vertices(local_removed_g)
-                if land.registry[v] == i || land.registry[v] == j
-                    push!(subgraph_vertices,v)
-                end
-            end
-            g_bi, map = induced_subgraph(local_removed_g, subgraph_vertices)
-            push!(bipartite_decomposition, g_bi)
-            push!(maps, map)
-        end
-    end
-
-    function flip_nodes(v::Int, g::Graphs.Graph, visted::Vector{Bool}, vtypes::Vector{Bool})
-        for neighbor in neighbors(g,v)
-            if !visted[neighbor]
-                visted[neighbor] = true
-                vtypes[neighbor] = !vtypes[v]
-                flip_nodes(neighbor, g, visted, vtypes)
-            end
-        end
-    end
-
-    edgecolors = [:black for _ in 1:ne(g)]
-    cost_all = []
-    matchings = []
-    for (index, bi_g) in enumerate(bipartite_decomposition)
-        cost = 0
-
-        vtypes = [false for _ in 1:nv(bi_g)]
-        visited = [false for _ in 1:nv(bi_g)]
-        while sum(visited) < length(visited)
-            node = findfirst(==(false),visited)  
-            visited[node] = true      
-            flip_nodes(node, bi_g, visited, vtypes)
-        end
-
-        vtypes = IGraphs.IGVectorBool(vtypes)
-        matching = IGraphs.IGVectorInt()
-        weights = IGraphs.IGVectorFloat(ones(Graphs.ne(bi_g)))
-        ig = IGraphs.IGraph(bi_g)
-        IGraphs.LibIGraph.maximum_bipartite_matching(ig, vtypes, matching, weights, 1e-8)
-
-        matching .+= 1
-       
-        inv_map = inverse_map(maps[index],nv(g))
-
-        for (index, e) in enumerate(edges(g))
-            if inv_map[src(e)]!= 0 && inv_map[dst(e)] != 0
-                if matching[inv_map[src(e)]] == inv_map[dst(e)] 
-                    cost += 1
-                    edgecolors[index] = :red
-                end
-            end
-        end
-        push!(cost_all, cost)
-        push!(matchings, matching)
-    end
-
-    return sum(cost_all), edgecolors
+    colors = fill(:black, ne(g))
+    return _matching_cost(_cost_labels(land, g), g, colors), colors
 end

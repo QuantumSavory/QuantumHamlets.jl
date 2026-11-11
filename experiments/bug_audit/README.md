@@ -1,11 +1,21 @@
 # Bug audit reproductions
 
-These scripts audit the post-integration code without modifying production
-source or the existing package test suite. The [current bug review](../../docs/bug_audit.md)
-distinguishes confirmed defects, newly tested scenarios, and documented limits.
+These scripts and logs are historical evidence from the pre-fix,
+post-backend-integration snapshot. The confirmed defects have now been repaired;
+see the [current audit status](../../docs/bug_audit.md). Desired behavior is tested
+in `test/known_bugs.jl`, `test/bury_validation.jl`,
+`test/baseline_legacy_regressions.jl`, `test/cost_regressions.jl`, and
+`test/research_scores.jl`. The bounded large-path regression is
+`python3 test/run_matching_stress.py`.
 
-From the package root, run the small probes with the existing experiment
-environment:
+Do not run the old scripts expecting all observation assertions to pass after
+these fixes. In particular, `known.jl` asserts erroneous outputs. The historical
+fingerprint verifier is expected to report the intentional source/test/doc
+changes. Preserve existing logs and fingerprints; redirect any new probe output
+to a new location.
+
+For reference, the original audit commands were (their runners overwrite
+saved logs, so copy them or change output paths before reusing):
 
 ```sh
 julia --startup-file=no --project=experiments/bury_performance experiments/bug_audit/known.jl
@@ -16,13 +26,13 @@ python3 experiments/bug_audit/integration/run.py
 
 The numerical sweep passed 127,098 assertions on 7,122 fixtures; API boundary
 checks passed 407 assertions; the earlier-findings probes passed 26 observation
-assertions. The latter deliberately verify the current erroneous outputs as
+assertions. The latter deliberately verify the then-erroneous outputs as
 evidence. These are standalone audit scripts, not new production regressions
 that mark known bugs as acceptable behavior.
 
 | Files | Purpose |
 | --- | --- |
-| `known.jl`, `known.log` | Current status of score-bound, one-part matching, aliasing, display, and validation findings |
+| `known.jl`, `known.log` | Pre-fix status of score-bound, one-part matching, aliasing, display, and validation findings |
 | `api/probes.jl`, `api/probes.log` | Empty seed helpers, failed-call RNG effects, supported input types and conversions |
 | `costs/oracles.jl`, `costs/oracles.log` | Independent exhaustive matching and GF(2) rank checks, with cover/witness invariants |
 | `costs/README.md` | Numerical coverage and bounded recursion confirmation instructions |

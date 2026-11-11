@@ -59,14 +59,14 @@ end
 """
     bury_k(g, k; backend=:heap, verbose=false)
 
-Partition `g` into `k` equal parts with repeated ordinary BURY calls. Assume
-positive `k` dividing `nv(g)`. Forward `backend` and `verbose` to every round;
-return the original dictionary mapping vertices to parts. Graph extraction
-and vertex mapping retain their existing behavior.
+Partition nonempty `g` into `k` equal parts with repeated ordinary BURY calls.
+Require integer `k` in `1:nv(g)` dividing `nv(g)`. Forward `backend` and `verbose`
+to every round; return the original dictionary mapping vertices to parts.
+Graph extraction and vertex mapping retain their existing behavior.
 """
 function bury_k(g::Graphs.Graph, k; backend::Symbol=:heap, verbose=false)
     _bury_check_backend(backend)
-    @assert nv(g)%k ==0
+    k = _check_partition_count(g, k)
 
     current_graph = copy(g)
     new_reg = Dict()
@@ -104,14 +104,14 @@ Choose `:heap` (default indexed heap), `:scan` (optimized linear scan), or
 choices and smallest-vertex-ID ties. Heap favors larger sparse workloads;
 scan can help small or dense workloads, particularly seeded calls.
 
-Optimized backends require an integer target in `0:nv(g)`. Legacy retains its
-original input behavior; an oversized target can hang. `verbose=true` prints
-the original round-by-round trace with every backend.
+Every backend requires an integer target in `0:nv(g)`; an empty graph supports
+target zero. Invalid inputs raise `ArgumentError` before starting the algorithm.
+`verbose=true` prints the original round-by-round trace with every backend.
 """
 function bury(g::Graphs.Graph, r0=nv(g)÷2; backend::Symbol=:heap, verbose=false)
     _bury_check_backend(backend)
-    backend === :legacy && return _bury_legacy(g, r0; verbose=verbose)
     target = _bury_check_target(g, r0)
+    backend === :legacy && return _bury_legacy(g, target; verbose=verbose)
     colored = _bury_color_kernel(backend)(g, target; verbose=verbose)
     return _bury_registry(colored), colored
 end
@@ -125,12 +125,15 @@ the best `(registry, colored)` produced by `bury_v`. `cost_f(land, g)` must
 return a tuple whose first element is the score to minimize. Ties retain
 the last candidate. Built-in `bury_v=bury` or `bury_seeded` receives the
 selected backend for every candidate. Custom callbacks keep the two-argument
-call `bury_v(g, target)` and control their own backend choice. The original
-score-bound and range-input limitations remain unchanged.
+call `bury_v(g, target)` and control their own backend choice. Require integer
+bounds satisfying `0 <= min_v <= max_v <= nv(g)`, checked before any callback.
 """
 function bury_not_balanced_bipartition(g, min_v, max_v; backend::Symbol=:heap,
                                       bury_v=bury, cost_f=matching_cost_of_partition)
     _bury_check_backend(backend)
+    min_v = _bury_check_target(g, min_v)
+    max_v = _bury_check_target(g, max_v)
+    min_v <= max_v || throw(ArgumentError("minimum target must not exceed maximum target"))
     partitioner = if bury_v === bury
         (g, target) -> bury(g, target; backend=backend)
     elseif bury_v === bury_seeded
@@ -139,14 +142,14 @@ function bury_not_balanced_bipartition(g, min_v, max_v; backend::Symbol=:heap,
         bury_v
     end
     n = nv(g)
-    lowest_cost = n
+    lowest_cost = nothing
     best_reg = nothing
     best_colors = nothing
     for v in min_v:max_v
         bury_reg, colors = partitioner(g, v)
         buryLand = quantumLand(bury_reg, 2, n)
         cost, _ = cost_f(buryLand, g)
-        if cost <= lowest_cost
+        if best_reg === nothing || cost <= lowest_cost
             best_reg = bury_reg
             best_colors = colors
             lowest_cost = cost
@@ -173,16 +176,19 @@ end
 Evaluate every vertex as a seed using the selected BURY backend and original
 matching score. Return the first seed achieving the lowest score. Improvement
 messages are printed regardless of `verbose`, as in the original function.
+Require a nonempty graph and an integer target in `0:nv(g)`.
 """
 function best_seed(g::Graphs.Graph, r0; backend::Symbol=:heap, verbose=false)
     _bury_check_backend(backend)
+    target = _bury_check_target(g, r0)
+    nv(g) > 0 || throw(ArgumentError("seed search requires a nonempty graph"))
     best_score = Inf
     best_seed = 1
     for seed in 1:nv(g)
         if verbose
             println("Trying seed ", seed, " out of ", nv(g))
         end
-        reg, _ = bury_seeded(g, r0, seed; backend=backend)
+        reg, _ = bury_seeded(g, target, seed; backend=backend)
         land = quantumLand(reg, 2, nv(g))
         cost, _ = matching_cost_of_partition(land, g)
         #cost, _ = cut_rank_cost(land, g)
@@ -202,9 +208,13 @@ end
 Evaluate `ceil(sqrt(nv(g)))` sampled seeds using the selected BURY backend.
 Sampling uses the default RNG with replacement. Matching scores, first-best
 ties, and improvement messages retain their original behavior.
+Require a nonempty graph and an integer target in `0:nv(g)`; validate before
+sampling so invalid calls leave the RNG unchanged.
 """
 function best_sqrt_seed(g::Graphs.Graph, r0; backend::Symbol=:heap, verbose=false)
     _bury_check_backend(backend)
+    target = _bury_check_target(g, r0)
+    nv(g) > 0 || throw(ArgumentError("seed search requires a nonempty graph"))
     best_score = Inf
     best_seed = 1
     for i in 1:ceil(Int,sqrt(nv(g)))
@@ -212,7 +222,7 @@ function best_sqrt_seed(g::Graphs.Graph, r0; backend::Symbol=:heap, verbose=fals
         if verbose
             println("Trying seed ", i, " out of ", ceil(Int,sqrt(nv(g))))
         end
-        reg, _ = bury_seeded(g, r0, seed; backend=backend)
+        reg, _ = bury_seeded(g, target, seed; backend=backend)
         land = quantumLand(reg, 2, nv(g))
         cost, _ = matching_cost_of_partition(land, g)
         #cost, _ = cut_rank_cost(land, g)
@@ -242,13 +252,13 @@ end
 """
     bury_k_seeded(g, k; backend=:heap, verbose=false)
 
-Partition `g` into `k` equal parts using seeded BURY. Assume positive `k`
-dividing `nv(g)`. Every round uses the original minimum-degree seed rule
-and the selected backend. Return the original registry dictionary.
+Partition nonempty `g` into `k` equal parts using seeded BURY. Require integer
+`k` in `1:nv(g)` dividing `nv(g)`. Every round uses the original minimum-degree
+seed rule and the selected backend. Return the original registry dictionary.
 """
 function bury_k_seeded(g::Graphs.Graph, k; backend::Symbol=:heap, verbose=false)
     _bury_check_backend(backend)
-    @assert nv(g)%k ==0
+    k = _check_partition_count(g, k)
 
     current_graph = copy(g)
     new_reg = Dict()
@@ -282,26 +292,27 @@ selected first. Omit the seed to run [`best_sqrt_seed`](@ref), using the chosen
 backend for every candidate and the final partition. Sampling order, duplicate
 samples, scoring, and tie policies are unchanged.
 
-Optimized backends require an integer target in `0:nv(g)` and an explicit seed
-in `1:nv(g)`. Legacy retains its original input behavior. Automatic search's
-improvement messages are preserved, including when `verbose=false`.
+Every backend requires a nonempty graph, an integer target in `0:nv(g)`, and
+an explicit integer seed in `1:nv(g)`. Invalid inputs raise `ArgumentError`
+before sampling or running the algorithm. Automatic search's improvement
+messages are preserved, including when `verbose=false`.
 """
 function bury_seeded(g::Graphs.Graph, r0=nv(g)÷2;
                      backend::Symbol=:heap, verbose=false)
     _bury_check_backend(backend)
-    backend === :legacy || _bury_check_target(g, r0)
+    target = _bury_check_target(g, r0)
     # Resolve omitted seeds here so trial calls receive the selected backend.
     # Outer verbose still controls only the final trace, as in the original.
-    seed = best_sqrt_seed(g, r0; backend=backend)
-    return bury_seeded(g, r0, seed; backend=backend, verbose=verbose)
+    seed = best_sqrt_seed(g, target; backend=backend)
+    return bury_seeded(g, target, seed; backend=backend, verbose=verbose)
 end
 
 function bury_seeded(g::Graphs.Graph, r0, seed;
                      backend::Symbol=:heap, verbose=false)
     _bury_check_backend(backend)
-    backend === :legacy && return _bury_seeded_legacy(g, r0, seed; verbose=verbose)
     target = _bury_check_target(g, r0)
     selected_seed = _bury_check_seed(g, seed)
+    backend === :legacy && return _bury_seeded_legacy(g, target, selected_seed; verbose=verbose)
     colored = _bury_color_kernel(backend)(g, target; seed=selected_seed, verbose=verbose)
     return _bury_registry(colored), colored
 end

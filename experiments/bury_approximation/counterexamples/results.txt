@@ -1,0 +1,13 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+t	n	m	maxdegree	bury_matching	bury_rank	bury_cut	opt_witness	seed_min	seed_max
+1	32	41	5	8	8	24	1	1	2
+2	64	83	5	16	16	48	1	1	2
+3	96	125	6	24	24	72	1	1	4
+4	128	167	6	32	32	96	1	not_run	not_run
+8	256	335	6	64	64	192	1	not_run	not_run
+Test Summary:                             | Pass  Total  Time
+Connected bounded-degree BURY obstruction |  135    135  0.9s

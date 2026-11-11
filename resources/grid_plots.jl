@@ -12,6 +12,8 @@ using Metis
 using GraphIO.GraphML
 using EzXML
 
+include("comparison_scores.jl")
+
 function grid_graph(numVertices)
     a = sqrt(numVertices)
     b = floor(a) |> Int
@@ -27,7 +29,7 @@ end
 function deterministic_comparison(graph_generator; name="", maxHamlets=8)
     pt = 4/3
     f = Figure(size=(900, 700),px_per_unit = 6.0, fontsize = 21pt, yticks = [0, 20, 100, 200, 300, 400])
-    ax = f[1,1] = Axis(f[1,1],  xlabel="Vertices in Graph", ylabel="VCG Required Bell Pairs",title="METIS vs BURY on "*name)
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Vertices in Graph", ylabel=COMPARISON_OBJECTIVE_LABEL,title="METIS vs BURY on "*name)
     
     bury_costs = [[] for _ in 1:maxHamlets]
     metis_costs = [[] for _ in 1:maxHamlets]
@@ -41,10 +43,7 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=8)
             end
 
             bury_reg = QuantumHamlets.bury_k(g, k)
-            buryLand = quantumLand(bury_reg, k, n)
-            #bury_cost, _ = QuantumHamlets.naive_cost_of_partition(buryLand, g)
-            bury_cost, _ = QuantumHamlets.matching_cost_of_partition(buryLand, g)
-            bury_cost = QuantumHamlets.cut_rank_cost(buryLand,g)
+            bury_cost = comparison_score(g, bury_reg, k)
 
             push!(bury_costs[k], [n,bury_cost])
 
@@ -54,10 +53,7 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=8)
                 metis_reg[a] = metis_part[a]
             end
 
-            metisLand = quantumLand(metis_reg, k, n)
-            #metis_cost, _ = QuantumHamlets.naive_cost_of_partition(metisLand, g)
-            metis_cost, _ = QuantumHamlets.matching_cost_of_partition(metisLand, g)
-            #metis_cost = QuantumHamlets.cut_rank_cost(metisLand,g)
+            metis_cost = comparison_score(g, metis_reg, k)
             push!(metis_costs[k], [n,metis_cost])
         end
     end
@@ -85,4 +81,4 @@ function deterministic_comparison(graph_generator; name="", maxHamlets=8)
     return f, bury_costs, metis_costs
 end
 
-f_grid, bury_costs, metis_costs = deterministic_comparison(grid_graph, name="Grid Graphs")
+#f_grid, bury_costs, metis_costs = deterministic_comparison(grid_graph, name="Grid Graphs")

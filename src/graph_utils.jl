@@ -1,3 +1,12 @@
+"""Validate the common nonempty, exactly balanced partitioning boundary."""
+function _check_partition_count(g, k)
+    k isa Integer && 1 <= k <= nv(g) ||
+        throw(ArgumentError("k must be an integer satisfying 1 <= k <= nv(g)"))
+    nv(g) % k == 0 ||
+        throw(ArgumentError("k must divide the number of vertices"))
+    return Int(k)
+end
+
 """Helper function to some of the other methods"""
 function inverse_map(map, size=maximum(map))
     inv_map = [0 for _ in 1:size]

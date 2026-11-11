@@ -1,0 +1,8 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+Test Summary:                               |   Pass   Total  Time
+BURY maximum-degree-two crossing-edge bound | 202652  202652  4.1s
+graphs=2164; partitions=101326

@@ -2,7 +2,7 @@
 
 Draft reviewed on 11 November 2026 against the current working tree, including local edits, based on commit `9b0ad4f`. Source locations below refer to that snapshot.
 
-Implementation update: the source has now been split into focused files and an additive `GraphPartition` API is documented in the [usage guide](usage.md). The original algorithm bodies remain unchanged. Simple tests cover existing behavior and mark five known defects with `@test_broken`; bug fixes, dependency extraction, and performance work below remain deferred. The rest of this proposal records the original review rather than the current file layout.
+Implementation update (11 November 2026): source reorganization, the additive `GraphPartition` API, and all three BURY backends are implemented. The confirmed defects below have now been repaired, and all five former `@test_broken` cases are passing regressions. See the [current audit status](bug_audit.md) and [usage guide](usage.md) for implemented behavior and validation. This proposal is retained as a historical review: source line numbers, observed failures, and suggested priorities below describe the earlier snapshot, not outstanding bugs. Dependency extraction and broader performance work remain follow-ups.
 
 The most useful first step is a small regression suite around partition validity and cost evaluation, followed by fixes to the confirmed defects below. Then separate the public numerical API from plotting, split the source into focused files, and optimize the measured bottlenecks. This order protects the existing scientific behavior while making the library easier to learn and extend.
 
@@ -253,7 +253,7 @@ Observed passing results:
 
 All 64 simple graphs on four vertices and all 16 assignments to two hamlets were checked: 1,024 cases passed comparison against an independent exhaustive matching enumerator and independent Boolean XOR rank calculation. This included the metric inequality and highlighted-edge count checks. A separate exhaustive BURY probe over simple graphs with 1–5 vertices, all valid targets, explicit seeds, and valid divisors for `k` passed 43,136 cardinality/coverage checks. These finite checks support the tested properties; they do not prove heuristic optimality.
 
-The following small examples use the current API. They are diagnostic observations, not assertions to preserve after fixing the defects:
+The following small examples recorded the pre-fix API behavior. They are historical diagnostic observations; current expected behavior is documented in the audit status:
 
 ```julia
 using QuantumHamlets, Graphs

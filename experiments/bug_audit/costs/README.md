@@ -1,3 +1,8 @@
+> Historical pre-fix audit record. One-part matching and recursive traversal have
+> now been repaired; see [current status](../../../docs/bug_audit.md) and use
+> `python3 test/run_matching_stress.py` for the current bounded stress regression.
+> Preserve the original saved logs when rerunning numerical probes.
+
 # Independent numerical cost audit
 
 The audit passed **127,098 assertions on 7,122 fixtures** with no additional

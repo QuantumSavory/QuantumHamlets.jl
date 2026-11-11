@@ -87,7 +87,7 @@ Base.length(p::GraphPartition) = length(p.labels)
 """
     quantumLand(p::GraphPartition)
 
-Create an independent legacy `quantumLand` from `p`. Existing constructors
-and their behavior are unchanged.
+Create an independent legacy `quantumLand` from `p`, preserving declared
+empty parts. The resulting registry and membership objects do not alias `p`.
 """
 quantumLand(p::GraphPartition) = quantumLand(registry(p), p.nparts, length(p))

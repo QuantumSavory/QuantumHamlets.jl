@@ -1,10 +1,11 @@
 """Randomly partitions the graph into k pieces\n
-Input: a graph from Graphs.jl, and integer k denoting the number of pieces\n
+Input: a nonempty graph from Graphs.jl, and integer k in 1:nv(g) dividing nv(g).\n
 Output: a registry (dictionary mapping villager ids to hamlet ids)"""
 function k_partition_random(g::Graphs.Graph, k)
+    k = _check_partition_count(g, k)
     nodes = shuffle(collect(1:nv(g)))
     new_reg = Dict()
-    cap = Int(nv(g)/k) # Assuming the graph can be equally partitioned
+    cap = nv(g) ÷ k
     for i in 1:k
         for j in 1:cap
             new_reg[nodes[(i-1)*cap+j]] = i
@@ -16,23 +17,39 @@ end
 """Implementation of the n/2 balanced partitioning algorithm from https://ics.uci.edu/~vazirani/k-cut.pdf \n
 Input: a graph and number of pices to partition into.\n
 Output: `(registry, trace)`, with component snapshots and balance checks in the trace.
-This experimental implementation can return an incomplete registry; see the usage guide.
+The first snapshot checks the original connected components before removing edges.
+Require a nonempty graph and integer `k` in `1:nv(g)` dividing `nv(g)`.
+Solver failure or failure to find a complete balanced assignment raises an error.
 """
 function k_partition_saran_vazirani(g::Graphs.Graph, k)
-    # Takes an input to multipartion S, and indices returned by the optimizer, inds. 
-    # This function returns a bool stating whether the partiion is perfectly balanced or not.
-    function partitionable(S, inds, k)
-        ans = true
-        val = sum(S[inds .== 1])
-        for i in 2:k
-            val_prime = sum(S[inds .== i])
-            if val_prime != val
-                ans = false
-                break
-            end
+    k = _check_partition_count(g, k)
+    dump = []
+    function pack_components(graph)
+        components = Graphs.connected_components(graph)
+        sizes = length.(components)
+        inds = try
+            partition(sizes, k; optimizer=HiGHS.Optimizer, strict=true)
+        catch err
+            err isa InterruptException && rethrow()
+            error("Saran–Vazirani component packing failed: $(sprint(showerror, err))")
         end
-        return ans
+        length(inds) == length(components) && all(i -> i isa Integer && 1 <= i <= k, inds) ||
+            error("Saran–Vazirani component packing returned invalid labels")
+        balanced = all(i -> sum(sizes[inds .== i]) == nv(g) ÷ k, 1:k)
+        push!(dump, (copy(components), balanced))
+        balanced || return nothing
+
+        new_reg = Dict()
+        for (component, label) in zip(components, inds), node in component
+            new_reg[node] = label
+        end
+        return new_reg
     end
+
+    # A disconnected input may already admit a balanced zero-cut partition.
+    initial = pack_components(g)
+    initial === nothing || return initial, dump
+
     # Given a graph g, and two vectors corresponding the vertices within that graph, returns the set of edges the crosses the partition
     function edges_spanning_partition(g::Graphs.Graph, v1, v2)
         if length(v1) > length(v2)
@@ -75,37 +92,15 @@ function k_partition_saran_vazirani(g::Graphs.Graph, k)
         push!(edge_set, edges_spanning_partition(g,c[1],c[2]))
     end
 
-    dump = []
     g_prime = copy(g)
-    new_reg = Dict()
     for cut in edge_set
         for e in cut
             rem_edge!(g_prime, e)
         end
     
-        components = Graphs.connected_components(g_prime)
-        S = [length(x) for x in components]
-        inds = partition(S, k; optimizer = HiGHS.Optimizer);
-        ans = partitionable(S, inds, k)
-        push!(dump, (copy(components), ans))
-
-        
-        if ans == true
-            # Turn the found solution into a dictionary/ vector of vectors (i.e. [[Nodes 1 4 5], [Nodes 2 3 6]])
-            for i in 1:k
-                for j in S[inds .== i]
-                    index = findfirst(length.(components).==j)
-                    chosen_nodes = components[index]
-                    deleteat!(components, index)
-                    for node in chosen_nodes
-                        new_reg[node] = i
-                    end
-                end
-            end 
-
-            break
-        end
+        new_reg = pack_components(g_prime)
+        new_reg === nothing || return new_reg, dump
     end
 
-    return new_reg, dump
+    error("Saran–Vazirani did not find a complete balanced partition")
 end

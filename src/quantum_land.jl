@@ -45,8 +45,10 @@ vertex-to-hamlet dictionary and explicit counts. Existing cost and plotting
 functions accept this object. For the simpler graph-first API, use
 [`GraphPartition`](@ref), with `quantumLand(p)` available for conversion.
 
-This constructor retains its original ownership and validation behavior;
-see the usage guide's known limitations.
+The dictionary is copied. Counts must be integers, with positive `numHamlets`
+and nonnegative `numVillagers`; keys must cover exactly `1:numVillagers` and
+labels must be integers in `1:numHamlets`. Empty hamlets are supported.
+Treat the registry and stored membership objects as read-only after construction.
 """
 struct quantumLand
     hamlets::Vector{hamlet}
@@ -54,11 +56,23 @@ struct quantumLand
     numHamlets::Int
     numVillagers::Int
 end
-function quantumLand(citizenRegistry::Dict, numHamlets::Int, numVillagers::Int)
-    land = quantumLand([hamlet(i) for i in 1:numHamlets],citizenRegistry, numHamlets, numVillagers)
+function quantumLand(citizenRegistry::AbstractDict, numHamlets, numVillagers)
+    numHamlets isa Integer && 1 <= numHamlets <= typemax(Int) ||
+        throw(ArgumentError("numHamlets must be a positive integer representable as Int"))
+    numVillagers isa Integer && 0 <= numVillagers <= typemax(Int) ||
+        throw(ArgumentError("numVillagers must be a nonnegative integer representable as Int"))
+    n, k = Int(numVillagers), Int(numHamlets)
+    length(citizenRegistry) == n &&
+        all(v -> v isa Integer && 1 <= v <= n, keys(citizenRegistry)) &&
+        all(v -> haskey(citizenRegistry, v), 1:n) ||
+        throw(ArgumentError("registry must contain exactly the vertex keys 1:numVillagers"))
+    all(label -> label isa Integer && 1 <= label <= k, values(citizenRegistry)) ||
+        throw(ArgumentError("registry labels must be integers in 1:numHamlets"))
+    owned_registry = Dict{Int,Int}(citizenRegistry)
+    land = quantumLand([hamlet(i) for i in 1:k], owned_registry, k, n)
 
-    for i in 1:numVillagers
-        hamlet_id = citizenRegistry[i]
+    for i in 1:n
+        hamlet_id = owned_registry[i]
         add_villager!(land.hamlets[hamlet_id],villager(hamlet_id,i))
     end
 

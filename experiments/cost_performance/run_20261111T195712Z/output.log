@@ -1,0 +1,31 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+META	julia	1.12.6
+META	threads	1
+META	operations	edge_cut_legacy
+META	cpu	apple-m1
+META	reference_sha256	0932a6ebe59db1a46a8fe7586b772d6600b89663f67b663d25373ea6a7f52211
+META	current_costs_sha256	00723ccd55117ba5ca8d40bc30422aec0de93629b293ce6d726bd7fdad53bf30
+META	current_api_sha256	43361113c854c4badf5469e14d4677566112e38707868fbea30b3199ccd28a24
+HEADER	fixture	vertices	edges	parts	operation	before_ns	after_ns	speedup	before_bytes	after_bytes	before_allocs	after_allocs	before_evals	after_evals
+READY
+STAGE	tiny_path6	edge_cut_legacy
+RESULT	tiny_path6	6	5	2	edge_cut_legacy	46.708	46.542	1.0035666709638604	96.0	96.0	2.0	2.0	1000	1000
+STAGE	path1000_alternating	edge_cut_legacy
+RESULT	path1000_alternating	1000	999	2	edge_cut_legacy	9280.854430379746	9317.901234567902	0.9960241256850074	8256.0	8256.0	3.0	3.0	158	162
+STAGE	grid400_stripes4	edge_cut_legacy
+RESULT	grid400_stripes4	400	760	4	edge_cut_legacy	6077.544401544402	6167.586715867159	0.9854007217942946	6208.0	6208.0	3.0	3.0	259	271
+STAGE	grid400_interleaved4	edge_cut_legacy
+RESULT	grid400_interleaved4	400	760	4	edge_cut_legacy	6205.4790874524715	6350.030821917808	0.9772360578209478	6208.0	6208.0	3.0	3.0	263	292
+STAGE	sparse300_parts4	edge_cut_legacy
+RESULT	sparse300_parts4	300	887	4	edge_cut_legacy	8129.988023952096	7532.50622406639	1.0793204521991298	7232.0	7232.0	3.0	3.0	167	241
+STAGE	dense120_parts2	edge_cut_legacy
+RESULT	dense120_parts2	120	3640	2	edge_cut_legacy	26113.756756756757	32290.690476190477	0.808708527803446	29248.0	29248.0	3.0	3.0	37	42
+STAGE	empty_parts12_of16	edge_cut_legacy
+RESULT	empty_parts12_of16	12	11	16	edge_cut_legacy	95.708	96.834	0.9883718528615981	144.0	144.0	2.0	2.0	1000	1000
+STAGE	empty_graph_parts3	edge_cut_legacy
+RESULT	empty_graph_parts3	0	0	3	edge_cut_legacy	10.5	10.25	1.024390243902439	32.0	32.0	1.0	1.0	1000	1000
+COMPLETE

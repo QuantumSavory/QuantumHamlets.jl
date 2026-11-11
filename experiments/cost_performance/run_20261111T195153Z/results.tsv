@@ -1,0 +1,6 @@
+fixture	vertices	edges	parts	operation	before_ns	after_ns	speedup	before_bytes	after_bytes	before_allocs	after_allocs	before_evals	after_evals
+tiny_path6	6	5	2	edge_cut_legacy	51.291	50.667	1.0123157084492864	96.0	96.0	2.0	2.0	1000	1000
+tiny_path6	6	5	2	cover_legacy	499.541	403.333	1.238532428539197	1600.0	1504.0	32.0	28.0	1000	1000
+tiny_path6	6	5	2	rank_legacy	4401.363934426229	208.334	21.126479280512203	5424.0	1120.0	153.0	15.0	305	1000
+tiny_path6	6	5	2	matching_legacy	9008.254716981131	2511.8711433756807	3.586272624190037	3184.0	1568.0	71.0	27.0	106	551
+tiny_path6	6	5	2	edge_cut_scalar	395.5	26.875	14.716279069767442	1520.0	0.0	24.0	0.0	1000	1000

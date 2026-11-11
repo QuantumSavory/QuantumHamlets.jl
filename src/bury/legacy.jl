@@ -1,5 +1,5 @@
 # Original algorithm bodies retained as an independent compatibility backend.
-# Input validation and diagnostic behavior intentionally remain unchanged.
+# Public wrappers validate inputs before entering these unchanged bodies.
 
 function _bury_legacy(g::Graphs.Graph, r0; verbose=false)
     r = r0

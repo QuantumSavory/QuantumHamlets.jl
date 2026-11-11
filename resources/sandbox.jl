@@ -11,6 +11,8 @@ using Metis
 using GraphIO
 using GraphIO.GraphML
 using EzXML
+
+include("comparison_scores.jl")
 #### Init
 # numHamlets = 2
 # hamletSize = 98
@@ -40,7 +42,7 @@ function random_sample(g::Graphs.Graph, numHamlets, numVillagers; method=Quantum
     best_cost =  [10000000]
     f_random_best = [Figure()]
     random_costs = []
-    best_land = [quantumLand(Dict(), 0, 0)]
+    best_land = Union{Nothing,quantumLand}[nothing]
 
     for _ in 1:samples
         random_reg = QuantumHamlets.k_partition_random(g, numHamlets)
@@ -123,7 +125,7 @@ function compare_partition_methods(graph_generator, numHamlets; name=string(grap
     pt = 4/3
     f = Figure(size=(900, 700),px_per_unit = 5.0, fontsize = 21pt)
 
-    ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Hamlet",ylabel="Cut Rank",title=string(numHamlets)*" Hamlets partitioning "*name)
+    ax = f[1,1] = Axis(f[1,1],  xlabel="Logical Qubits per Hamlet",ylabel=COMPARISON_OBJECTIVE_LABEL,title=string(numHamlets)*" Hamlets partitioning "*name)
     
     # Should maybe make this less hardcoded
     colors = Makie.wong_colors()
@@ -160,16 +162,12 @@ function compare_partition_methods(graph_generator, numHamlets; name=string(grap
             g = graph_generator(numHamlets*hamletSize)
 
             bury_reg = QuantumHamlets.bury_k(g, numHamlets)
-            buryLand = quantumLand(bury_reg, numHamlets, numHamlets*hamletSize)
-            #bury_cost, _ = QuantumHamlets.matching_cost_of_partition(buryLand, g)
-            bury_cost = QuantumHamlets.cut_rank_cost(buryLand, g)
+            bury_cost = comparison_score(g, bury_reg, numHamlets)
 
             push!(bury_sample_arr, bury_cost)
 
             bury_reg_local = QuantumHamlets.bury_k_seeded(g, numHamlets)
-            buryLand_local = quantumLand(bury_reg_local, numHamlets, numHamlets*hamletSize)
-            #bury_cost_local, _ = QuantumHamlets.matching_cost_of_partition(buryLand_local, g)
-            bury_cost_local = QuantumHamlets.cut_rank_cost(buryLand_local, g)
+            bury_cost_local = comparison_score(g, bury_reg_local, numHamlets)
 
             push!(bury_sample_arr_local, bury_cost_local)
 
@@ -179,16 +177,12 @@ function compare_partition_methods(graph_generator, numHamlets; name=string(grap
                 metis_reg[a] = metis_part[a]
             end
 
-            metisLand = quantumLand(metis_reg, numHamlets, numHamlets*hamletSize)
-            #metis_cost, _ = QuantumHamlets.matching_cost_of_partition(metisLand, g)
-            metis_cost = QuantumHamlets.cut_rank_cost(metisLand, g)
+            metis_cost = comparison_score(g, metis_reg, numHamlets)
 
             push!(metis_sample_arr, metis_cost)
 
             saran_reg, _ = QuantumHamlets.k_partition_saran_vazirani(g, numHamlets)
-            saranLand = quantumLand(saran_reg, numHamlets, numHamlets*hamletSize)
-            #saran_cost, _ = QuantumHamlets.matching_cost_of_partition(saranLand, g)
-            saran_cost = QuantumHamlets.cut_rank_cost(saranLand, g)
+            saran_cost = comparison_score(g, saran_reg, numHamlets)
 
             push!(saran_sample_arr, saran_cost)
 
@@ -206,7 +200,7 @@ function compare_partition_methods(graph_generator, numHamlets; name=string(grap
             #     end
             #     klLand = quantumLand(kl_reg, numHamlets, numHamlets*hamletSize)
             #     #kl_cost, _ = QuantumHamlets.matching_cost_of_partition(klLand, g)
-            #     kl_cost = cut_rank_cost(klLand, g)
+            #     kl_cost = comparison_score(g, kl_reg, numHamlets)
 
             #     push!(kl_sample_arr, kl_cost)
             # end
