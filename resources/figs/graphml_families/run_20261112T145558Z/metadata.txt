@@ -1,0 +1,32 @@
+UTC start: 2026-11-12T14:56:12.119
+Julia: 1.12.6
+Threads: 1
+QuantumHamlets: 0.1.0
+Graphs: 1.14.0
+Metis: 1.5.0
+Parts: 2,3,4,5,6,7,8
+Fixed replicate seeds: 0,1,2,3,4,5,6,7,8,9
+BURY backend: heap
+Objectives: matching,rank
+Ordinary k=2: floor/ceil target search selected separately by each objective; last-target ties.
+Seeded k=2: existing sampled matching-selected inner seeds, outer matching/rank target selection; RNG reset per objective and replicate.
+Seeded k>=3: deterministic minimum-degree residual seeds, one observation; not sampled seed search.
+METIS: KWAY edge-cut, native fixed seeds, equal target weights, UFACTOR=30 (3%); each membership reused for both scores.
+Deterministic rows: replicate=0, empty seed; sampled rows: replicate=1:length(seeds), seed=specified seed.
+Family classification uses filenames before observing costs; all supported cases retained.
+Empty-part raw scores retained but excluded from summaries; balance-matched METIS summaries also reported.
+Ranges are observed replicate min/max, not confidence intervals; family cases share graphs and are not independent trials.
+GraphML: simple undirected unweighted topology; node phase/type/layout and edge-type attributes ignored.
+Established seeded improvement messages suppressed. Timing includes scoring and data writing; not a partitioner benchmark.
+sha256	graphml_family_analysis.jl	8836ece5563de112a853cc350d5605b9c6caf4f4a0984184c79547ee20b4fd93
+sha256	graphml_plots.jl	3afc4c5609bc0d8f9f9257c8f6776338f98f2e3ba846e7a04a4bb5eccfad9008
+sha256	../src/bury.jl	3e71d277f48004539927d1cdb596ab872a7818b46e974d753fd4e250d5fb981d
+sha256	../src/api.jl	ff24205abbbe21ec4874570c3f8bd82306dc93636e183ce65da17351ca4d5f4d
+sha256	../src/costs.jl	00723ccd55117ba5ca8d40bc30422aec0de93629b293ce6d726bd7fdad53bf30
+sha256	../src/bury/heap.jl	2e9ea3dd6b9505955e67cb58153494b8962e0cbce3bea8518a4271ea08d1838e
+sha256	../src/bury/scan.jl	c04dbc6825b2d2012d65c8e63f7195b918a1ea55280f7df50ef15b1564b57747
+sha256	../src/bury/legacy.jl	a56da8895c2fcac8738b8a9502a3a3628335265125668a50ac442e15e1793ae2
+Data collection complete: true
+Result rows: 2706
+Per-case summary rows: 158
+Elapsed data collection seconds (not benchmark): 9.899582459

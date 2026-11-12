@@ -25,6 +25,45 @@ The algorithm is selected with a keyword:
 
 `verbose=true` forwards BURY's progress output. The random method retains the existing default-RNG behavior and has no `rng` keyword. Use `Random.seed!(seed)` before a call when reproducing a run in the same Julia environment. The Saran–Vazirani baseline is experimental. It attempts to pack the original connected components before removing edges, so feasible zero-cut component assignments are retained. Its trace includes that initial attempt. Solver failure or exhaustion without a complete balanced assignment raises an error.
 
+### Near-balanced bipartitions, including odd graphs
+
+Use `bipartition_graph` to search ordinary BURY target sizes and return a
+`GraphPartition` with two nonempty parts:
+
+```julia
+odd_graph = path_graph(11)
+p = bipartition_graph(odd_graph; backend=:heap)
+partition_sizes(p)  # [5, 6]
+p = bipartition_graph(odd_graph; targets=4:7, objective=pairwise_cut_rank)
+```
+
+The default targets are `fld(nv(g),2):cld(nv(g),2)`: one candidate for an even
+graph, both nearest-balanced candidates for an odd graph. A target is the size
+of label 2. Every target gets an independent BURY run, in ascending order;
+equal scores retain the last target. Complementary sizes can produce different
+quality partitions, and their colored sets need not be nested.
+
+The graph must have at least two vertices. Explicit `targets` must be a nonempty
+contiguous ascending integer range within `1:nv(g)-1`, such as `4:7` or `5:5`.
+Empty, reversed, floating-point, and non-unit-step ranges are rejected before
+the objective runs. To require at least `m` vertices on each side, use
+`m:nv(g)-m`. Wider intervals allow more imbalance and can favor smaller cuts;
+this remains a heuristic search among BURY's candidates.
+
+The default objective is `matching_cost`; `edge_cut_cost` and
+`pairwise_cut_rank` are also supported directly. A custom scalar objective
+uses the same graph-first contract and is invoked once for every target:
+
+```julia
+objective = (graph, part) -> edge_cut_cost(graph, part)
+p = bipartition_graph(odd_graph; targets=4:7, objective, backend=:scan)
+```
+
+All three backends are supported. This helper uses ordinary BURY. Seeded and
+custom partitioners remain available through the qualified range function
+below. `partition_graph(g, k)` continues to require exact divisibility and
+equal-sized parts, including when `k=2`.
+
 ### Choose a BURY backend
 
 The algorithm determines the partitioning procedure; the backend determines how BURY selects and updates its candidates:
@@ -67,12 +106,33 @@ custom = (graph, target) -> Q.bury(graph, target; backend=:scan)
 reg, colored = Q.bury_not_balanced_bipartition(g, 10, 18; bury_v=custom)
 ```
 
+The legacy range function minimizes the first element of the tuple returned by
+`cost_f(land, graph)`, retaining the last target on ties. It copies retained
+registries and color vectors, so callbacks may reuse their output buffers or
+mutate them after return without changing the winner. Custom callbacks retain
+the existing `quantumLand` validation and are never inferred to be built-ins.
+Ordinary BURY with the exact built-in matching, edge-cut, or rank function uses
+the scalar cost kernels; heap/scan construct only the winning registry. The
+legacy backend keeps its original algorithm. The [range performance
+experiment](../experiments/bipartition_range_performance/README.md) includes
+scoring and returned representations in its before/after measurements.
+
+For example, `bury_v=Q.bury_seeded, cost_f=Q.cut_rank_cost` invokes a sampled
+seed search at each target that **always selects by matching cost**. The outer
+search then selects the lowest rank among those matching-selected candidates.
+An edge-cut outer objective behaves analogously. This preserves sampled order,
+RNG consumption, first-best seed ties, and last-best target ties. Objective-aware
+seed selection, common or unique seed pools, and reuse of the chosen inner
+partition/score are deferred compatibility decisions. The seeded multipartition
+driver separately uses a minimum-degree seed per residual graph.
+
 Every backend follows the same input policy, with `ArgumentError` checks before sampling, callbacks, or solver execution:
 
 - Single-partition targets must have an integer type and lie in `0:nv(g)`. Integral floating-point targets such as `2.0` are rejected, including by legacy.
 - Explicit seeds must have an integer type and lie in `1:nv(g)`. All seeded calls and seed searches require a nonempty graph, even for target zero.
 - Ordinary `bury(SimpleGraph(0), 0)` remains supported and returns an empty registry and color vector.
 - Target ranges require integer bounds `0 ≤ min_v ≤ max_v ≤ nv(g)`. Ordinary range search supports the empty graph with `0:0`. Scores are initialized from the first candidate, so arbitrary score scales work; equal scores retain the last candidate.
+- The low-level range still permits empty sides. Default matching search over `0:nv(g)` returns target `nv(g)` under last-target ties. `bipartition_graph` excludes these endpoints and requires two nonempty parts.
 - Balanced calls (`partition_graph`, `bury_k`, `bury_k_seeded`, `k_partition_random`, and `k_partition_saran_vazirani`) require a nonempty graph, integer `k` in `1:nv(g)`, and exact divisibility of `nv(g)` by `k`.
 
 Validation failures consume no RNG draws. Supported integer representations, valid-call RNG consumption, and the legacy algorithm's partition choices are preserved.
@@ -208,6 +268,7 @@ reg = registry(p)
 | Original expression | Simpler interface |
 | --- | --- |
 | `Q.bury_k(g, k)` | `partition_graph(g, k)` |
+| Ordinary BURY range with two nonempty parts | `bipartition_graph(g; targets=lo:hi, objective=matching_cost)` |
 | `Q.bury_k_seeded(g, k)` | `partition_graph(g, k; algorithm=:bury_seeded)` |
 | `Q.k_partition_random(g, k)` | `partition_graph(g, k; algorithm=:random)` |
 | `Q.quantumLand(reg, k, nv(g))` | `GraphPartition(reg; nparts=k)` |
@@ -248,7 +309,7 @@ Run the suite from the package directory:
 julia --project=. -e 'using Pkg; Pkg.test()'
 ```
 
-The tests cover deterministic fixtures, exhaustive small graphs, valid partition sizes, numerical costs, input graph preservation, conversions, and equivalence against a frozen original BURY implementation. Backend checks also cover automatic seed selection, RNG consumption, custom callbacks, return types, and verbose traces. The five originally deferred failures are now ordinary passing regressions. Additional tests cover independent matching cardinalities and witnesses, one-part plots, validation before RNG/callbacks, disconnected zero-cut packing, constructor ownership, captured display output, and scalar research scores. Large matching checks run separately in disposable subprocesses with external time limits (`python3 test/run_matching_stress.py`). The suite with cost optimizations passed 457,209 assertions with no broken tests; see the [validation record](bug_audit.md#validation-and-limits).
+The tests cover deterministic fixtures, exhaustive small graphs, valid partition sizes, numerical costs, input graph preservation, conversions, and equivalence against a frozen original BURY implementation. Backend checks also cover automatic seed selection, RNG consumption, custom callbacks, return types, and verbose traces. The five originally deferred failures are now ordinary passing regressions. Additional tests cover independent matching cardinalities and witnesses, one-part plots, validation before RNG/callbacks, disconnected zero-cut packing, constructor ownership, captured display output, and scalar research scores. Large matching checks run separately in disposable subprocesses with external time limits (`python3 test/run_matching_stress.py`). The full suite after the target-range improvements passed 459,086 assertions with no broken tests, including 1,877 new range assertions; see the [validation record](bug_audit.md#target-range-follow-up).
 
 The source is organized within one module:
 

@@ -1,0 +1,19 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+STAGE	load	graphml_evolution	singleton
+STAGE	load	graphml_initial	odd
+STAGE	compare	graphml_initial	odd	2
+STAGE	load	graphml_reduced	even
+STAGE	compare	graphml_reduced	even	2
+STAGE	compare	graphml_reduced	even	3
+STAGE	load	graphml_evolution	k1
+STAGE	compare	graphml_evolution	k1	5
+┌ Warning: Skipping unknown XML element 'key' - further warnings will be suppressed
+└ @ GraphIOXML ~/.julia/packages/GraphIO/yl1V9/ext/GraphIOXML.jl:107
+┌ Warning: Skipping unknown node 'data' - further warnings will be suppressed
+└ @ GraphIOXML ~/.julia/packages/GraphIO/yl1V9/ext/GraphIOXML.jl:68
+Test Summary:                          | Pass  Total  Time
+GraphML comparison plotting validation | 1379   1379  7.7s

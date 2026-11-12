@@ -59,6 +59,52 @@ function partition_graph(g::Graphs.Graph, k;
     return GraphPartition(reg; nparts=k)
 end
 
+function _bipartition_targets(g, targets)
+    n = nv(g)
+    n >= 2 || throw(ArgumentError("bipartition_graph requires at least two vertices"))
+    targets isa AbstractRange{<:Integer} && !isempty(targets) && step(targets) == 1 ||
+        throw(ArgumentError("targets must be a nonempty contiguous ascending integer range"))
+    1 <= first(targets) <= last(targets) < n ||
+        throw(ArgumentError("targets must lie in 1:nv(g)-1 for two nonempty parts"))
+    return Int(first(targets)):Int(last(targets))
+end
+
+function _bipartition_cost(objective)
+    objective === matching_cost && return _matching_cost
+    objective === edge_cut_cost && return _edge_cut_cost
+    objective === pairwise_cut_rank && return _bury_cut_rank
+    # Arbitrary callbacks must run once per target, with their public contract.
+    return (colors, g) -> objective(g, GraphPartition(Int.(colors) .+ 1; nparts=2))
+end
+
+"""
+    bipartition_graph(g; targets=fld(nv(g),2):cld(nv(g),2),
+                     objective=matching_cost, backend=:heap) -> GraphPartition
+
+Run ordinary BURY independently for each target and minimize the scalar
+`objective(g, p)`. Targets specify the size of label 2, are evaluated in
+ascending order, and ties retain the last target. The default evaluates one
+target for even graphs and both nearest-balanced targets for odd graphs.
+
+Require at least two vertices and a nonempty contiguous ascending integer
+range within `1:nv(g)-1`, validated before invoking the objective. Return two
+nonempty declared parts without modifying the graph. Built-in matching,
+edge-cut, and pairwise-rank objectives use the scalar membership kernels.
+All BURY backends (`:heap`, `:scan`, `:legacy`) are supported.
+
+This helper uses ordinary BURY; seeded/custom partitioners remain available
+through [`bury_not_balanced_bipartition`](@ref). [`partition_graph`](@ref)
+continues to require exactly equal-sized parts and divisibility.
+"""
+function bipartition_graph(g::Graphs.Graph;
+                           targets=fld(nv(g), 2):cld(nv(g), 2),
+                           objective=matching_cost, backend::Symbol=:heap)
+    _bury_check_backend(backend)
+    targets = _bipartition_targets(g, targets)
+    colors = _bury_select_colors(g, targets, backend, _bipartition_cost(objective))
+    return GraphPartition(Int.(colors) .+ 1; nparts=2)
+end
+
 """
     edge_cut_cost(g, p::GraphPartition) -> Int
 

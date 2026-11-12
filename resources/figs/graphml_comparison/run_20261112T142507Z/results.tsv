@@ -1,0 +1,5 @@
+collection	graph	vertices	edges	parts	objective	algorithm	cost	part_sizes	matches_bury_balance	max_size_over_mean
+graphml_evolution	k1	25	42	2	matching	BURY	3	12,13	true	1.04
+graphml_evolution	k1	25	42	2	matching	METIS	5	12,13	true	1.04
+graphml_evolution	k1	25	42	2	rank	BURY	2	12,13	true	1.04
+graphml_evolution	k1	25	42	2	rank	METIS	5	12,13	true	1.04

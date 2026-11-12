@@ -56,6 +56,37 @@ function _bury_registry(colored)
     return reg
 end
 
+# These kernels depend on equality/order of the two labels, so Bool membership
+# is equivalent to labels 1/2 and needs no intermediate dense Int vector.
+_bury_cut_rank(colored, g) = _pairwise_cut_rank(colored, 2, g)
+
+function _bury_range_cost(cost_f)
+    cost_f === matching_cost_of_partition && return _matching_cost
+    cost_f === naive_cost_of_partition && return _edge_cut_cost
+    cost_f === cut_rank_cost && return _bury_cut_rank
+    return nothing
+end
+
+# Ordinary BURY only. Each target needs its own run: target results need not
+# be nested. The legacy algorithm retains its original registry construction.
+function _bury_select_colors(g, targets, backend, score)
+    lowest_cost = nothing
+    best_colors = nothing
+    for target in targets
+        colors = if backend === :legacy
+            last(_bury_legacy(g, target))
+        else
+            _bury_color_kernel(backend)(g, target)
+        end
+        cost = score(colors, g)
+        if best_colors === nothing || cost <= lowest_cost
+            best_colors = copy(colors)
+            lowest_cost = cost
+        end
+    end
+    return best_colors
+end
+
 """
     bury_k(g, k; backend=:heap, verbose=false)
 
@@ -127,6 +158,14 @@ the last candidate. Built-in `bury_v=bury` or `bury_seeded` receives the
 selected backend for every candidate. Custom callbacks keep the two-argument
 call `bury_v(g, target)` and control their own backend choice. Require integer
 bounds satisfying `0 <= min_v <= max_v <= nv(g)`, checked before any callback.
+Retained callback outputs are copied, so later buffer reuse does not change
+the winner. Ordinary BURY with the built-in matching, edge-cut, or rank cost
+uses scalar kernels without constructing a legacy land for each target.
+
+With `bury_v=bury_seeded`, each target's sampled seed search always selects
+by matching cost. The outer `cost_f` therefore selects among matching-selected
+candidates, even when it scores rank or edge cut. Use [`bipartition_graph`](@ref)
+for ordinary BURY with a graph-first scalar objective and nonempty parts.
 """
 function bury_not_balanced_bipartition(g, min_v, max_v; backend::Symbol=:heap,
                                       bury_v=bury, cost_f=matching_cost_of_partition)
@@ -134,6 +173,11 @@ function bury_not_balanced_bipartition(g, min_v, max_v; backend::Symbol=:heap,
     min_v = _bury_check_target(g, min_v)
     max_v = _bury_check_target(g, max_v)
     min_v <= max_v || throw(ArgumentError("minimum target must not exceed maximum target"))
+    score = _bury_range_cost(cost_f)
+    if bury_v === bury && score !== nothing
+        colors = _bury_select_colors(g, min_v:max_v, backend, score)
+        return _bury_registry(colors), colors
+    end
     partitioner = if bury_v === bury
         (g, target) -> bury(g, target; backend=backend)
     elseif bury_v === bury_seeded
@@ -150,8 +194,8 @@ function bury_not_balanced_bipartition(g, min_v, max_v; backend::Symbol=:heap,
         buryLand = quantumLand(bury_reg, 2, n)
         cost, _ = cost_f(buryLand, g)
         if best_reg === nothing || cost <= lowest_cost
-            best_reg = bury_reg
-            best_colors = colors
+            best_reg = copy(bury_reg)
+            best_colors = copy(colors)
             lowest_cost = cost
         end
     end

@@ -1,0 +1,316 @@
+collection	graph	n	parts	status	metis_valid_replicates	metis_total_replicates	reason
+graphml_evolution	k1	25	2	completed	10	10	
+graphml_evolution	k1	25	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k1	25	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k1	25	5	metis_empty_part	0	10	empty parts at native seeds=0,1,2,3,4,5,6,7,8,9
+graphml_evolution	k1	25	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k1	25	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k1	25	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k2	159	2	completed	10	10	
+graphml_evolution	k2	159	3	completed	10	10	
+graphml_evolution	k2	159	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k2	159	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k2	159	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k2	159	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k2	159	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k3	562	2	completed	10	10	
+graphml_evolution	k3	562	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k3	562	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k3	562	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k3	562	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k3	562	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k3	562	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k4	1159	2	completed	10	10	
+graphml_evolution	k4	1159	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k4	1159	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k4	1159	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k4	1159	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k4	1159	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k4	1159	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k5	1772	2	completed	10	10	
+graphml_evolution	k5	1772	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k5	1772	4	completed	10	10	
+graphml_evolution	k5	1772	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k5	1772	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k5	1772	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_evolution	k5	1772	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_10	571	2	completed	10	10	
+graphml_initial	barenco_tof_10	571	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_10	571	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_10	571	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_10	571	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_10	571	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_10	571	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_3	83	2	completed	10	10	
+graphml_initial	barenco_tof_3	83	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_3	83	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_3	83	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_3	83	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_3	83	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_3	83	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_4	151	2	completed	10	10	
+graphml_initial	barenco_tof_4	151	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_4	151	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_4	151	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_4	151	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_4	151	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_4	151	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_5	221	2	completed	10	10	
+graphml_initial	barenco_tof_5	221	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_5	221	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_5	221	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_5	221	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_5	221	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	barenco_tof_5	221	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csla_mux_3	239	2	completed	10	10	
+graphml_initial	csla_mux_3	239	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csla_mux_3	239	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csla_mux_3	239	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csla_mux_3	239	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csla_mux_3	239	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csla_mux_3	239	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csum_mux_9	622	2	completed	10	10	
+graphml_initial	csum_mux_9	622	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csum_mux_9	622	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csum_mux_9	622	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csum_mux_9	622	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csum_mux_9	622	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	csum_mux_9	622	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^4_mult	306	2	completed	10	10	
+graphml_initial	gf2^4_mult	306	3	completed	10	10	
+graphml_initial	gf2^4_mult	306	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^4_mult	306	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^4_mult	306	6	completed	10	10	
+graphml_initial	gf2^4_mult	306	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^4_mult	306	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^5_mult	465	2	completed	10	10	
+graphml_initial	gf2^5_mult	465	3	completed	10	10	
+graphml_initial	gf2^5_mult	465	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^5_mult	465	5	completed	10	10	
+graphml_initial	gf2^5_mult	465	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^5_mult	465	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^5_mult	465	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^6_mult	652	2	completed	10	10	
+graphml_initial	gf2^6_mult	652	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^6_mult	652	4	completed	10	10	
+graphml_initial	gf2^6_mult	652	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^6_mult	652	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^6_mult	652	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	gf2^6_mult	652	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	hwb6	325	2	completed	10	10	
+graphml_initial	hwb6	325	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	hwb6	325	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	hwb6	325	5	completed	10	10	
+graphml_initial	hwb6	325	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	hwb6	325	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	hwb6	325	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_mult_55	167	2	completed	10	10	
+graphml_initial	mod_mult_55	167	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_mult_55	167	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_mult_55	167	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_mult_55	167	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_mult_55	167	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_mult_55	167	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_red_21	355	2	completed	10	10	
+graphml_initial	mod_red_21	355	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_red_21	355	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_red_21	355	5	completed	10	10	
+graphml_initial	mod_red_21	355	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_red_21	355	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	mod_red_21	355	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qcla_com_7	605	2	completed	10	10	
+graphml_initial	qcla_com_7	605	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qcla_com_7	605	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qcla_com_7	605	5	completed	10	10	
+graphml_initial	qcla_com_7	605	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qcla_com_7	605	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qcla_com_7	605	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qft_4	143	2	completed	10	10	
+graphml_initial	qft_4	143	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qft_4	143	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qft_4	143	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qft_4	143	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qft_4	143	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	qft_4	143	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	rc_adder_6	262	2	completed	10	10	
+graphml_initial	rc_adder_6	262	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	rc_adder_6	262	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	rc_adder_6	262	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	rc_adder_6	262	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	rc_adder_6	262	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	rc_adder_6	262	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_10	347	2	completed	10	10	
+graphml_initial	tof_10	347	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_10	347	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_10	347	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_10	347	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_10	347	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_10	347	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_3	67	2	completed	10	10	
+graphml_initial	tof_3	67	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_3	67	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_3	67	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_3	67	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_3	67	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_3	67	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_4	107	2	completed	10	10	
+graphml_initial	tof_4	107	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_4	107	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_4	107	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_4	107	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_4	107	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_4	107	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_5	147	2	completed	10	10	
+graphml_initial	tof_5	147	3	completed	10	10	
+graphml_initial	tof_5	147	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_5	147	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_5	147	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	tof_5	147	7	completed	10	10	
+graphml_initial	tof_5	147	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	vbe_adder_3	200	2	completed	10	10	
+graphml_initial	vbe_adder_3	200	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	vbe_adder_3	200	4	completed	10	10	
+graphml_initial	vbe_adder_3	200	5	completed	10	10	
+graphml_initial	vbe_adder_3	200	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	vbe_adder_3	200	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_initial	vbe_adder_3	200	8	completed	10	10	
+graphml_reduced	barenco_tof_10	123	2	completed	10	10	
+graphml_reduced	barenco_tof_10	123	3	completed	10	10	
+graphml_reduced	barenco_tof_10	123	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_10	123	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_10	123	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_10	123	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_10	123	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_3	25	2	completed	10	10	
+graphml_reduced	barenco_tof_3	25	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_3	25	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_3	25	5	completed	10	10	
+graphml_reduced	barenco_tof_3	25	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_3	25	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_3	25	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_4	39	2	completed	10	10	
+graphml_reduced	barenco_tof_4	39	3	completed	10	10	
+graphml_reduced	barenco_tof_4	39	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_4	39	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_4	39	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_4	39	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_4	39	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_5	53	2	completed	10	10	
+graphml_reduced	barenco_tof_5	53	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_5	53	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_5	53	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_5	53	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_5	53	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	barenco_tof_5	53	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csla_mux_3	111	2	completed	10	10	
+graphml_reduced	csla_mux_3	111	3	completed	10	10	
+graphml_reduced	csla_mux_3	111	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csla_mux_3	111	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csla_mux_3	111	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csla_mux_3	111	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csla_mux_3	111	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csum_mux_9	166	2	completed	10	10	
+graphml_reduced	csum_mux_9	166	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csum_mux_9	166	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csum_mux_9	166	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csum_mux_9	166	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csum_mux_9	166	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	csum_mux_9	166	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^4_mult	132	2	completed	10	10	
+graphml_reduced	gf2^4_mult	132	3	completed	10	10	
+graphml_reduced	gf2^4_mult	132	4	completed	10	10	
+graphml_reduced	gf2^4_mult	132	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^4_mult	132	6	completed	10	10	
+graphml_reduced	gf2^4_mult	132	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^4_mult	132	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^5_mult	225	2	completed	10	10	
+graphml_reduced	gf2^5_mult	225	3	completed	10	10	
+graphml_reduced	gf2^5_mult	225	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^5_mult	225	5	completed	10	10	
+graphml_reduced	gf2^5_mult	225	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^5_mult	225	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^5_mult	225	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^6_mult	294	2	completed	10	10	
+graphml_reduced	gf2^6_mult	294	3	completed	10	10	
+graphml_reduced	gf2^6_mult	294	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^6_mult	294	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	gf2^6_mult	294	6	completed	10	10	
+graphml_reduced	gf2^6_mult	294	7	metis_empty_part	9	10	empty parts at native seeds=3
+graphml_reduced	gf2^6_mult	294	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	hwb6	137	2	completed	10	10	
+graphml_reduced	hwb6	137	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	hwb6	137	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	hwb6	137	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	hwb6	137	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	hwb6	137	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	hwb6	137	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_mult_55	73	2	completed	10	10	
+graphml_reduced	mod_mult_55	73	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_mult_55	73	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_mult_55	73	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_mult_55	73	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_mult_55	73	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_mult_55	73	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_red_21	133	2	completed	10	10	
+graphml_reduced	mod_red_21	133	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_red_21	133	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_red_21	133	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_red_21	133	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	mod_red_21	133	7	completed	10	10	
+graphml_reduced	mod_red_21	133	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qcla_com_7	169	2	completed	10	10	
+graphml_reduced	qcla_com_7	169	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qcla_com_7	169	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qcla_com_7	169	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qcla_com_7	169	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qcla_com_7	169	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qcla_com_7	169	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qft_4	87	2	completed	10	10	
+graphml_reduced	qft_4	87	3	completed	10	10	
+graphml_reduced	qft_4	87	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qft_4	87	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qft_4	87	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qft_4	87	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	qft_4	87	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	rc_adder_6	106	2	completed	10	10	
+graphml_reduced	rc_adder_6	106	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	rc_adder_6	106	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	rc_adder_6	106	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	rc_adder_6	106	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	rc_adder_6	106	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	rc_adder_6	106	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_10	125	2	completed	10	10	
+graphml_reduced	tof_10	125	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_10	125	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_10	125	5	completed	10	10	
+graphml_reduced	tof_10	125	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_10	125	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_10	125	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_3	27	2	completed	10	10	
+graphml_reduced	tof_3	27	3	completed	10	10	
+graphml_reduced	tof_3	27	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_3	27	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_3	27	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_3	27	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_3	27	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_4	41	2	completed	10	10	
+graphml_reduced	tof_4	41	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_4	41	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_4	41	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_4	41	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_4	41	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_4	41	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_5	55	2	completed	10	10	
+graphml_reduced	tof_5	55	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_5	55	4	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_5	55	5	completed	10	10	
+graphml_reduced	tof_5	55	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_5	55	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	tof_5	55	8	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	vbe_adder_3	44	2	completed	10	10	
+graphml_reduced	vbe_adder_3	44	3	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	vbe_adder_3	44	4	completed	10	10	
+graphml_reduced	vbe_adder_3	44	5	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	vbe_adder_3	44	6	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	vbe_adder_3	44	7	unsupported_balance	0	0	exact multipartition requires n divisible by k
+graphml_reduced	vbe_adder_3	44	8	unsupported_balance	0	0	exact multipartition requires n divisible by k

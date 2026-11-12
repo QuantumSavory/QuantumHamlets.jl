@@ -1,0 +1,45 @@
+The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
+
+  juliaup update
+
+to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
+STAGE	graphml_evolution	k1		load		
+STAGE	graphml_initial	tof_3		load		
+STAGE	graphml_initial	tof_3	2	matching	BURY	0
+STAGE	graphml_initial	tof_3	2	matching	BURY_seeded	1
+STAGE	graphml_initial	tof_3	2	matching	BURY_seeded	2
+STAGE	graphml_initial	tof_3	2	rank	BURY	0
+STAGE	graphml_initial	tof_3	2	rank	BURY_seeded	1
+STAGE	graphml_initial	tof_3	2	rank	BURY_seeded	2
+STAGE	graphml_initial	tof_3	2	both	METIS	1
+STAGE	graphml_initial	tof_3	2	both	METIS	2
+STAGE	graphml_reduced	gf2^4_mult		load		
+STAGE	graphml_reduced	gf2^4_mult	2	matching	BURY	0
+STAGE	graphml_reduced	gf2^4_mult	2	matching	BURY_seeded	1
+STAGE	graphml_reduced	gf2^4_mult	2	matching	BURY_seeded	2
+STAGE	graphml_reduced	gf2^4_mult	2	rank	BURY	0
+STAGE	graphml_reduced	gf2^4_mult	2	rank	BURY_seeded	1
+STAGE	graphml_reduced	gf2^4_mult	2	rank	BURY_seeded	2
+STAGE	graphml_reduced	gf2^4_mult	2	both	METIS	1
+STAGE	graphml_reduced	gf2^4_mult	2	both	METIS	2
+STAGE	graphml_reduced	gf2^4_mult	3	both	BURY	0
+STAGE	graphml_reduced	gf2^4_mult	3	both	BURY_seeded	0
+STAGE	graphml_reduced	gf2^4_mult	3	matching	BURY	0
+STAGE	graphml_reduced	gf2^4_mult	3	rank	BURY	0
+STAGE	graphml_reduced	gf2^4_mult	3	both	METIS	1
+STAGE	graphml_reduced	gf2^4_mult	3	both	METIS	2
+STAGE	all	all		summary		
+STAGE	graphml_evolution	k1		load		
+STAGE	graphml_evolution	k1	5	both	BURY	0
+STAGE	graphml_evolution	k1	5	both	BURY_seeded	0
+STAGE	graphml_evolution	k1	5	matching	BURY	0
+STAGE	graphml_evolution	k1	5	rank	BURY	0
+STAGE	graphml_evolution	k1	5	both	METIS	1
+STAGE	graphml_evolution	k1	5	both	METIS	2
+STAGE	all	all		summary		
+┌ Warning: Skipping unknown XML element 'key' - further warnings will be suppressed
+└ @ GraphIOXML ~/.julia/packages/GraphIO/yl1V9/ext/GraphIOXML.jl:107
+┌ Warning: Skipping unknown node 'data' - further warnings will be suppressed
+└ @ GraphIOXML ~/.julia/packages/GraphIO/yl1V9/ext/GraphIOXML.jl:68
+Test Summary:                      | Pass  Total   Time
+GraphML family analysis validation |  344    344  10.2s

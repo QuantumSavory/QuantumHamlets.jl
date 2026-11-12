@@ -117,3 +117,30 @@ The subsequent [cost performance experiment](../experiments/cost_performance/REA
 records the optimized evaluator measurements against a separate, unchanged
 post-bug-fix snapshot. This preserves the distinction between correctness
 repairs and later performance changes.
+
+## Target-range follow-up
+
+The later [target-range review](bipartition_range_review.md) identified a separate
+ownership defect: a custom partitioner could reuse its dictionary and colors,
+overwriting an earlier winning result. The range function now copies retained
+outputs, including independence from mutations after return. Its generic
+callback signatures, validation, call order, and last-target tie policy remain
+unchanged.
+
+The same pass adds exported `bipartition_graph` for ordinary BURY over nonempty
+target ranges, defaulting to both nearest-balanced sizes for odd graphs.
+Recognized ordinary matching/edge-cut/rank searches use the existing scalar
+kernels; the algorithms, cost kernels, sampled seed policy, and exactly balanced
+multipartition driver are unchanged. See the new
+[range measurements](../experiments/bipartition_range_performance/README.md)
+for full-workflow time and allocation comparisons, including regressions.
+
+The new `test/bipartition_range.jl` adds 1,877 assertions covering ownership,
+both target counterexamples, explicit exhaustive target comparisons, all three
+backends, callback contracts, validation, and seeded output/log/RNG equivalence.
+
+The required `julia --startup-file=no --project=. -e 'using Pkg;
+Pkg.test(; allow_reresolve=false)'` command passed **459,086 assertions** with
+no failures or broken tests on Julia 1.12.6. The
+[full test log](../experiments/bipartition_range_performance/validation_pkg_test.log)
+is new evidence; the previous audit logs and frozen reference are unchanged.

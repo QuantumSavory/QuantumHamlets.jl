@@ -10,7 +10,7 @@ using IGraphs
 using Makie
 using Nemo
 
-export GraphPartition, partition_graph, membership, registry, partition_sizes,
+export GraphPartition, partition_graph, bipartition_graph, membership, registry, partition_sizes,
        edge_cut_cost, matching_cost, pairwise_cut_rank, vertex_cover_costs,
        matching_details, plot_partition
 
