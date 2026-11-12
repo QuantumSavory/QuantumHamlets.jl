@@ -9,7 +9,7 @@ Two positive results remain useful:
 - A small component-packing modification gives a **2-approximation on graphs of maximum degree at most two**.
 - A separator-search wrapper gives **rigorous instance-specific approximation certificates**, repairs every nonempty instance with optimum zero or one when its search cap is one, and never worsens ordinary BURY's matching cost. A fixed cap does not give a constant guarantee on arbitrary graphs.
 
-The proofs below concern a single bipartition. The negative result already rules out a universal guarantee for the multipartition API because that API includes two parts. The positive results do not establish an approximation factor for the sum of pairwise matchings with three or more parts. All implementation additions are separate [research prototypes](../experiments/bury_approximation/README.md); production code is unchanged by this study.
+The proofs below concern a single bipartition. The negative result already rules out a universal guarantee for the multipartition API because that API includes two parts. The positive results do not establish an approximation factor for the sum of pairwise matchings with three or more parts. All implementation additions are separate [archived research prototypes](../archive/README.md#bury-approximation); production code is unchanged by this study.
 
 ## Objective and selection rule
 
@@ -50,7 +50,7 @@ The first `r` hubs together with their cliques contain exactly `5r` vertices. Se
 \boxed{\mathrm{OPT}_{5r}=1.}
 \]
 
-![BURY and an optimal balanced partition on the same graph](../experiments/bury_approximation/figures/bury_obstruction.png)
+![BURY and an optimal balanced partition on the same graph](results/bury_approximation/bury_obstruction.png)
 
 ### Why BURY colors the backbone first
 
@@ -115,7 +115,7 @@ Conversely, take a qualifying union of components of size `t`, and add any `R−
 
 ### The experimental wrapper
 
-The [certified prototype](../experiments/bury_approximation/certified/certified_bury.jl) first obtains BURY's matching cost `U`. If `U=0`, it is optimal. Otherwise it enumerates vertex sets in increasing size through
+The [archived certified prototype](../archive/README.md#bury-approximation), at `experiments/bury_approximation/certified/certified_bury.jl` after restoration, first obtains BURY's matching cost `U`. If `U=0`, it is optimal. Otherwise it enumerates vertex sets in increasing size through
 
 \[
 q'=\min(q,U-1),
@@ -131,6 +131,10 @@ using component sizes and a subset-sum dynamic program for each set.
 \]
 
 This never worsens BURY's matching cost. With `q=0`, it repairs every zero-optimum input. With `q=1`, it additionally solves every optimum-one input, including the entire counterexample family above. For example, the measured 80-vertex instance improves from matching cost **14 to 1**. The prototype requires an integer cap in `0:n`; use `max_cover=0` for an empty graph.
+
+Restore the approximation study and its required context as described in the
+[archive index](../archive/README.md#bury-approximation), then run this example
+from the restored package root:
 
 ```julia
 include("experiments/bury_approximation/certified/certified_bury.jl")
@@ -185,7 +189,7 @@ For this library, the practical next step is to retain BURY as a fast candidate 
 
 ## Tests and reproducibility
 
-The [experiment directory](../experiments/bury_approximation/README.md) contains constructors, standalone prototypes, independent tiny-instance oracles, and saved logs. The mathematical proofs cover the infinite families; finite checks confirm that the proof's selection invariants match the implemented algorithm.
+The [complete study archive](../archive/README.md#bury-approximation) contains constructors, standalone prototypes, independent tiny-instance oracles, and saved logs. The mathematical proofs cover the infinite families; finite checks confirm that the proof's selection invariants match the implemented algorithm.
 
 | Check | Scope | Result |
 | --- | --- | --- |

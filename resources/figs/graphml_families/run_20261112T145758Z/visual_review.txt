@@ -1,5 +1,0 @@
-All six final PNGs were visually inspected. Axes, values, legends, and captions are readable without clipping.
-Three consistent algorithm colors; sampled and minimum-degree seeded variants appear in separate figures.
-GF(2) rank field, requested multipartition range 3:8, valid-run ranges, and balance/exclusion notes verified.
-Independent review also recomputed 117 plotted series from the frozen source table; no mismatches.
-All six SVGs parse as XML; numerical inputs and plotting-source fingerprints match figure_provenance.txt.

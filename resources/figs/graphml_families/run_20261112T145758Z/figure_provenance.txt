@@ -1,7 +1,0 @@
-Input results: /Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets.jl/resources/figs/graphml_families/run_20261112T145558Z/results.tsv
-Input SHA-256: 3659aa66ca673f98f7c2c4937f01fccc211542cf8033da593b604e2ad6e72b68
-Plot source SHA-256: 19ae164beaea834aa919724623c04246db39dab656b8369646133e2374a910ab
-Figures use all available sizes within their named families; full tables cover every input family.
-Bars are medians of valid runs; whiskers are observed min/max, not confidence intervals.
-Bipartition seeded BURY samples seeds and selects internally by matching, even for rank panels.
-Multipartition seeded BURY uses the deterministic minimum-degree residual seeder.

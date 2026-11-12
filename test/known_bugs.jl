@@ -1,5 +1,5 @@
 # Regressions for the five originally deferred defects.
-# See docs/bug_audit.md for fixes and additional boundary coverage.
+# See archive/README.md#historical-docs for the original audit and fixes.
 @testset "Originally reported bugs" begin
     @testset "One-hamlet matching should cost zero" begin
         land = Q.quantumLand(Dict(1 => 1, 2 => 1, 3 => 1), 1, 3)

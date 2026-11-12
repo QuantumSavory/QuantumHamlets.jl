@@ -1,6 +1,10 @@
 # BURY performance findings
 
-Measured on 11 November 2026 against the current working tree.
+Measured on 11 November 2026 against the working tree at that time. This is a
+historical prototype study: references to “current” code, source line numbers,
+and proposed changes describe that snapshot. See the [usage guide](usage.md)
+for the maintained implementation and the [archive index](../archive/README.md#bury-performance)
+for the complete study and restoration instructions.
 
 Yes: the BURY implementations can be substantially faster while preserving the tested partitions. The strongest result is an indexed-heap implementation for larger sparse graphs. On a 4,096-vertex grid it reduced ordinary BURY from **9.44 ms to 0.350 ms** and explicitly seeded BURY from **29.4 ms to 0.444 ms**. A simpler scan implementation is also useful, particularly for seeded BURY and dense graphs. The heap is not uniformly better: it was more than twice as slow as the current code on the tested dense random graph.
 
@@ -65,9 +69,9 @@ Large single-kernel speedups do not automatically carry over to many-part or sea
 
 ### Avoid repeated counting and temporary vectors
 
-In [src/bury.jl](../src/bury.jl), ordinary BURY repeatedly calls `sum(colored)` and `findmin(weights)` at lines 62–63. Seeded BURY does this at lines 252–255 and additionally constructs `.!region * Inf + weights` before selecting a vertex. Those full-size temporary arrays are especially expensive when many rounds are needed.
+In the measured `src/bury.jl` snapshot, ordinary BURY repeatedly calls `sum(colored)` and `findmin(weights)` at lines 62–63. Seeded BURY does this at lines 252–255 and additionally constructs `.!region * Inf + weights` before selecting a vertex. Those full-size temporary arrays are especially expensive when many rounds are needed.
 
-The [scan prototype](../experiments/bury_performance/scan.jl) maintains the colored count incrementally, scans eligible vertices directly, visits the chosen vertex and neighbors without `vcat`, and uses explicit neighbor-update loops. It also uses typed, pre-sized registries. The remaining budget stays separate from the colored count, as in the reference implementation.
+The [archived scan prototype](../archive/README.md#bury-performance) (`experiments/bury_performance/scan.jl`) maintains the colored count incrementally, scans eligible vertices directly, visits the chosen vertex and neighbors without `vcat`, and uses explicit neighbor-update loops. It also uses typed, pre-sized registries. The remaining budget stays separate from the colored count, as in the reference implementation.
 
 The sampling profiles support this diagnosis: the ordinary 128×128-grid run spends nearly all its sampled BURY frames under the minimum-search line, while the seeded run concentrates at the masked-selection expression, including array arithmetic and allocation. The profiles are supporting evidence; the timing tables come from separate unprofiled runs.
 
@@ -75,7 +79,7 @@ On the 4,096-vertex seeded grid, allocation traffic falls from **132.5 MB per ca
 
 ### Replace repeated global searches with indexed heaps
 
-The [heap prototype](../experiments/bury_performance/heap.jl) keeps the next candidate in an indexed binary min-heap ordered by **weight, then vertex ID**. Weight decreases update the heap incrementally. Seeded BURY uses a second heap for regional candidates and falls back to the global heap only when no unprocessed regional candidate remains.
+The [archived heap prototype](../archive/README.md#bury-performance) (`experiments/bury_performance/heap.jl`) keeps the next candidate in an indexed binary min-heap ordered by **weight, then vertex ID**. Weight decreases update the heap incrementally. Seeded BURY uses a second heap for regional candidates and falls back to the global heap only when no unprocessed regional candidate remains.
 
 For a single valid bipartition, repeated full scans give the current implementation O(n²+m) worst-case work. A vertex can be processed at most once, and each newly colored vertex updates its own weight and its neighbors. An indexed heap changes this to O((n+m) log n), with O(n) additional storage. The asymptotic advantage is compelling for large sparse graphs, but dense graphs pay for many logarithmic updates. The measured dense-graph slowdown is consistent with that tradeoff.
 
@@ -83,7 +87,7 @@ Two details are essential to correctness. First, **colored does not mean process
 
 ### Avoid unnecessary multipartition work
 
-The [multipartition driver](../experiments/bury_performance/multi.jl) uses a color-only kernel, so intermediate rounds do not construct registries that `bury_k` immediately discards. It carries the active-to-original vertex map directly, extracts the next graph from the current remainder, and assigns the last remainder without another BURY call or another graph rebuild.
+The [archived multipartition driver](../archive/README.md#bury-performance) (`experiments/bury_performance/multi.jl`) uses a color-only kernel, so intermediate rounds do not construct registries that `bury_k` immediately discards. It carries the active-to-original vertex map directly, extracts the next graph from the current remainder, and assigns the last remainder without another BURY call or another graph rebuild.
 
 Vertices remain in ascending original order, preserving the reference tie behavior after relabeling. The scan and heap rows for multipartitioning include both this driver and their respective kernel; they are not isolated measurements of the heap alone.
 
@@ -112,13 +116,13 @@ Further ideas remain unmeasured here: reusable workspace across seed trials, act
 
 ## Files and reproduction
 
-The [experiment README](../experiments/bury_performance/README.md) gives the commands and environment setup. The main artifacts are:
+The [complete study archive](../archive/README.md#bury-performance) preserves
+the experiment README, commands, environment setup, prototypes, scripts,
+validation and package-test logs, individual timing samples, sampling profiles,
+and original-file verification script. Restore it before running the historical
+commands. Two summary tables remain directly available:
 
-- [Prototypes and scripts](../experiments/bury_performance/README.md), including the scan, heap, multipartition, and search implementations.
-- [Validation log](../experiments/bury_performance/validation.txt) and [existing-package test log](../experiments/bury_performance/package_tests.txt).
-- [Broad benchmark results](../experiments/bury_performance/results.tsv) and [individual timing samples](../experiments/bury_performance/samples.tsv).
-- [Longer-trial results](../experiments/bury_performance/slow_results.tsv) for the largest grid, with separate raw samples.
-- [Environment details](../experiments/bury_performance/environment.txt) and [sampling profiles](../experiments/bury_performance/profiles.txt).
-- [Original-file verification script](../experiments/bury_performance/verify_preservation.py).
+- [Broad benchmark results](results/bury_performance/results.tsv).
+- [Longer-trial results](results/bury_performance/slow_results.tsv) for the largest grid.
 
 Run measurements serially after correctness checks. The isolated environment adds BenchmarkTools only within the experiment; it does not change the library's dependencies. The allocation and type-specialization improvements are consistent with [Julia's performance guidance](https://docs.julialang.org/en/v1/manual/performance-tips/). The measured results determine which prototype is useful for a workload.

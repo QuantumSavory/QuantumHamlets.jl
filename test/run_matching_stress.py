@@ -3,7 +3,8 @@
 
 Run from any directory: python3 test/run_matching_stress.py [--project=...]
 The default project is the package root. The existing experiment environment
-can be selected with --project=experiments/bury_performance.
+can be selected with --project=experiments/bury_performance after restoring
+that historical study (see archive/README.md#bury-performance).
 """
 import argparse
 import os

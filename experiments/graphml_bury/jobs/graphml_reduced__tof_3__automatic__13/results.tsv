@@ -1,4 +1,0 @@
-job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
-graphml_reduced__tof_3__automatic__13	automatic	27	48	13	1	legacy	312125.0	305083.0	319958.0	280667.0	156800	2377	33
-graphml_reduced__tof_3__automatic__13	automatic	27	48	13	1	scan	282084.0	274209.0	291792.0	265166.0	91344	1547	33
-graphml_reduced__tof_3__automatic__13	automatic	27	48	13	1	heap	286083.0	284875.0	288208.0	274584.0	98288	1589	33

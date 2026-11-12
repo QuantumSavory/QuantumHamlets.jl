@@ -1,0 +1,449 @@
+{
+  "timestamp_utc": "20261112T212343Z",
+  "source_head": "3513432ff18f26148aa7248f1d7cbb00d0f9174a",
+  "backup_directory": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z",
+  "archives": [
+    {
+      "study": "bipartition_range_performance",
+      "archive": "bipartition_range_performance_20261112T212343Z.zip",
+      "files": 8,
+      "original_bytes": 610099,
+      "archive_bytes": 104350,
+      "sha256": "962ba3ab114dc156d65c83b0fcedabce1134d299e32403a640ee2a2fcd87c4d0",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/bipartition_range_performance_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/bipartition_range_performance",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "experiments/bipartition_range_performance"
+      ],
+      "excluded_paths": []
+    },
+    {
+      "study": "bug_audit",
+      "archive": "bug_audit_20261112T212343Z.zip",
+      "files": 21,
+      "original_bytes": 218929,
+      "archive_bytes": 66443,
+      "sha256": "776bcd5d55893f65fc606898c678ddc7c07f59c9850ee823c80787730b6fd302",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/bug_audit_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/bug_audit",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "experiments/bug_audit"
+      ],
+      "excluded_paths": []
+    },
+    {
+      "study": "bury_approximation",
+      "archive": "bury_approximation_20261112T212343Z.zip",
+      "files": 22,
+      "original_bytes": 250058,
+      "archive_bytes": 173885,
+      "sha256": "ddfa175bbf63bfe1cad636efd6e1ef1432c965e378c84993b01607b0feba25b3",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/bury_approximation_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/bury_approximation",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "experiments/bury_approximation"
+      ],
+      "excluded_paths": []
+    },
+    {
+      "study": "bury_backends",
+      "archive": "bury_backends_20261112T212343Z.zip",
+      "files": 9,
+      "original_bytes": 235086,
+      "archive_bytes": 32564,
+      "sha256": "9cd62f0f4019298fa4c00c35b9cefaad8f365283dce568fce92ef0dea2b3a1b4",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/bury_backends_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/bury_backends",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "experiments/bury_backends"
+      ],
+      "excluded_paths": []
+    },
+    {
+      "study": "bury_performance",
+      "archive": "bury_performance_20261112T212343Z.zip",
+      "files": 22,
+      "original_bytes": 1564381,
+      "archive_bytes": 202736,
+      "sha256": "f21e1fbb2bfbdc13385bbcd80c7a7dd6e7f2261d01e187e513f3ec3c93d95399",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/bury_performance_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/bury_performance",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "experiments/bury_performance"
+      ],
+      "excluded_paths": []
+    },
+    {
+      "study": "cost_performance",
+      "archive": "cost_performance_20261112T212343Z.zip",
+      "files": 12,
+      "original_bytes": 49375,
+      "archive_bytes": 22834,
+      "sha256": "e7f783901907b931e69338ac3c7ec678f291c63360eefa63f5ff6633569e2cc1",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/cost_performance_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/cost_performance",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "experiments/cost_performance"
+      ],
+      "excluded_paths": []
+    },
+    {
+      "study": "graphml_bury",
+      "archive": "graphml_bury_20261112T212343Z.zip",
+      "files": 640,
+      "original_bytes": 15018809,
+      "archive_bytes": 1399398,
+      "sha256": "b196481e1f672146e2a612f63c964afee3b8f9aa54b148b851bd3037485ec93f",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/graphml_bury_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/graphml_bury",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "experiments/graphml_bury"
+      ],
+      "excluded_paths": []
+    },
+    {
+      "study": "min_cutrank_comparison",
+      "archive": "min_cutrank_comparison_20261112T212343Z.zip",
+      "files": 2520,
+      "original_bytes": 95896811,
+      "archive_bytes": 37738547,
+      "sha256": "57ea22ce923cec8a7a779d9fd0f4c86174118698770e44e076901cba1c564630",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/min_cutrank_comparison_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/min_cutrank_comparison",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "experiments/min_cutrank_comparison"
+      ],
+      "excluded_paths": [
+        "experiments/min_cutrank_comparison/__pycache__",
+        "experiments/min_cutrank_comparison/__pycache__/assemble_results.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/__pycache__/build_report.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/__pycache__/derive_report_findings.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/__pycache__/figures.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/__pycache__/run_annealing.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/__pycache__/run_sensitivity.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/__pycache__/validate_upstream.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/upstream/src/min-cutrank/__pycache__",
+        "experiments/min_cutrank_comparison/upstream/src/min-cutrank/__pycache__/cut_rank_annealing.cpython-310.pyc",
+        "experiments/min_cutrank_comparison/upstream/src/min-cutrank/__pycache__/cut_rank_annealing.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/upstream/src/min-cutrank/__pycache__/graph_partition.cpython-310.pyc",
+        "experiments/min_cutrank_comparison/upstream/src/min-cutrank/__pycache__/graph_partition.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/upstream/src/min-cutrank/__pycache__/matrix_tools.cpython-310.pyc",
+        "experiments/min_cutrank_comparison/upstream/src/min-cutrank/__pycache__/matrix_tools.cpython-312.pyc",
+        "experiments/min_cutrank_comparison/upstream/src/min-cutrank/__pycache__/swap_rank_calculator.cpython-310.pyc",
+        "experiments/min_cutrank_comparison/upstream/src/min-cutrank/__pycache__/swap_rank_calculator.cpython-312.pyc"
+      ]
+    },
+    {
+      "study": "graphml_comparisons",
+      "archive": "graphml_comparisons_20261112T212343Z.zip",
+      "files": 66,
+      "original_bytes": 9202021,
+      "archive_bytes": 4293537,
+      "sha256": "b442115d2b3911b5211c523f152fbade512eaaf355965ebbaa473e3b18263642",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/graphml_comparisons_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/graphml_comparisons",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "resources/graphml_plots.jl",
+        "resources/graphml_plots_validation.jl",
+        "resources/graphml_plots_README.md",
+        "resources/run_graphml_plots.py",
+        "resources/graphml_family_analysis.jl",
+        "resources/graphml_family_analysis_validation.jl",
+        "resources/graphml_family_plots.jl",
+        "resources/graphml_family_plots_README.md",
+        "resources/run_graphml_family_plots.py",
+        "resources/figs/graphml_comparison",
+        "resources/figs/graphml_families"
+      ],
+      "excluded_paths": []
+    },
+    {
+      "study": "historical_docs",
+      "archive": "historical_docs_20261112T212343Z.zip",
+      "files": 5,
+      "original_bytes": 83129,
+      "archive_bytes": 35912,
+      "sha256": "65737a731820506a3529b61a7b4601b97486deecf4cfa79ed214f497b7c1f280",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/historical_docs_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/historical_docs",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "docs/bipartition_range_handoff.md",
+        "docs/bipartition_range_review.md",
+        "docs/bug_audit.md",
+        "docs/library_experiments_handoff.md",
+        "docs/revision_proposal.md"
+      ],
+      "excluded_paths": []
+    },
+    {
+      "study": "restoration_context",
+      "archive": "restoration_context_20261112T212343Z.zip",
+      "files": 139,
+      "original_bytes": 36839101,
+      "archive_bytes": 29831329,
+      "sha256": "09242b4145a58b7924dc25d4c07dccbf3463409541abf2d88d32bf1fbc6d0f63",
+      "backup": "/Users/micciche/Research/QuantumInfo23/JuliaProjects/QuantumHamlets-archive-backup/20261112T212343Z/restoration_context_20261112T212343Z.zip",
+      "restore_directory": "/private/tmp/quantumhamlets_archive_20261112T212343Z/restored/restoration_context",
+      "full_extraction_hash_check": "passed",
+      "original_roots": [
+        "src",
+        "test",
+        "Project.toml",
+        "Manifest.toml",
+        "CondaPkg.toml",
+        "README.md",
+        ".gitignore",
+        "docs/bipartition_range_handoff.md",
+        "docs/bipartition_range_review.md",
+        "docs/bug_audit.md",
+        "docs/bury_approximation.md",
+        "docs/bury_performance_findings.md",
+        "docs/graphml_backend_findings.md",
+        "docs/library_experiments_handoff.md",
+        "docs/min_cutrank_comparison.md",
+        "docs/revision_proposal.md",
+        "docs/streamlining_plan.md",
+        "docs/usage.md",
+        "resources/graphml_initial",
+        "resources/graphml_reduced",
+        "resources/graphml_evolution",
+        "resources/QAOAgraphs_mini/qaoa_30.graphml",
+        "resources/QAOAgraphs_mini/qaoa_60.graphml",
+        "resources/comparison_scores.jl",
+        "resources/graphml_family_analysis.jl",
+        "resources/graphml_family_analysis_validation.jl",
+        "resources/graphml_family_plots.jl",
+        "resources/graphml_family_plots_README.md",
+        "resources/graphml_plots.jl",
+        "resources/graphml_plots_README.md",
+        "resources/graphml_plots_validation.jl",
+        "resources/grid_plots.jl",
+        "resources/qaoa.py",
+        "resources/qaoa_plots.jl",
+        "resources/run_graphml_family_plots.py",
+        "resources/run_graphml_plots.py",
+        "resources/sandbox.jl",
+        "resources/toffoli_baselines.jl",
+        "resources/figs/bury_naive_6_6_grid.png",
+        "resources/figs/bury_vcg_6_6_grid.png",
+        "resources/figs/grid5_5_5bury.png",
+        "resources/figs/grid6_6_bury.pdf",
+        "resources/figs/grid6_6_bury.png",
+        "resources/figs/grid6_6_dum.pdf",
+        "resources/figs/grid6_6_dum.png",
+        "resources/figs/grid6_6_metis.pdf",
+        "resources/figs/grid6_6_uncolored.pdf",
+        "resources/figs/grid6_6_uncolored.png",
+        "resources/figs/grid_plot.pdf",
+        "resources/figs/grid_plot.png",
+        "resources/figs/metis_vcg_6_6_grid.png",
+        "resources/figs/qaoa_plot.pdf",
+        "resources/figs/qaoa_plot.png",
+        "resources/figs/toffoli_baselines.png",
+        "resources/figs/toffoli_baselines.svg",
+        "resources/figs/unpartioned6_6_grid.png"
+      ],
+      "excluded_paths": [
+        "src/min_cutrank/__pycache__",
+        "src/min_cutrank/__pycache__/__init__.cpython-312.pyc",
+        "src/min_cutrank/__pycache__/cut_rank_annealing.cpython-312.pyc",
+        "src/min_cutrank/__pycache__/graph_partition.cpython-312.pyc",
+        "src/min_cutrank/__pycache__/matrix_tools.cpython-312.pyc",
+        "src/min_cutrank/__pycache__/swap_rank_calculator.cpython-312.pyc"
+      ]
+    }
+  ],
+  "status": "archival_complete",
+  "cleanup": {
+    "status": "verified_loose_copies_removed",
+    "original_payload_files_removed": 3325,
+    "excluded_cache_files_removed": 15,
+    "retained_files": [
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/report/QuantumHamlets_min_cutrank_comparison.pdf",
+        "retained": "docs/results/min_cutrank/QuantumHamlets_min_cutrank_comparison.pdf",
+        "sha256": "c3f6fd88ef665704fb1eecdb2b45edc4c8bcc52697c67b95a0f23d533ebec565",
+        "retained_sha256_after_link_updates": "c3f6fd88ef665704fb1eecdb2b45edc4c8bcc52697c67b95a0f23d533ebec565"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/report/QuantumHamlets_min_cutrank_comparison.docx",
+        "retained": "docs/results/min_cutrank/QuantumHamlets_min_cutrank_comparison.docx",
+        "sha256": "95a92b24a0910f7cf2f52f16ee2a4130b734f679d0a0bf0d995abdc10804d1a7",
+        "retained_sha256_after_link_updates": "95a92b24a0910f7cf2f52f16ee2a4130b734f679d0a0bf0d995abdc10804d1a7"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/circuit_rank_native.png",
+        "retained": "docs/results/min_cutrank/circuit_rank_native.png",
+        "sha256": "ce87671836e2279311a869b0e4daca4dedf1863af251dd94f064dea3b29146ca",
+        "retained_sha256_after_link_updates": "ce87671836e2279311a869b0e4daca4dedf1863af251dd94f064dea3b29146ca"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/circuit_rank_native.svg",
+        "retained": "docs/results/min_cutrank/circuit_rank_native.svg",
+        "sha256": "7b1092756b1a926736385fbeb677bf6c139d3a24996a5a014eab6c6adf2dbdc5",
+        "retained_sha256_after_link_updates": "7b1092756b1a926736385fbeb677bf6c139d3a24996a5a014eab6c6adf2dbdc5"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/hybrid_rank_30s.png",
+        "retained": "docs/results/min_cutrank/hybrid_rank_30s.png",
+        "sha256": "2d6705a45260644c06468c951c3ea1c004a65b1dafc2683bb128e2fffe03e1b8",
+        "retained_sha256_after_link_updates": "2d6705a45260644c06468c951c3ea1c004a65b1dafc2683bb128e2fffe03e1b8"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/hybrid_rank_30s.svg",
+        "retained": "docs/results/min_cutrank/hybrid_rank_30s.svg",
+        "sha256": "547f69ec8f40a6178e1f655178589278385c047168d19f15fbf776dfe6469fe5",
+        "retained_sha256_after_link_updates": "547f69ec8f40a6178e1f655178589278385c047168d19f15fbf776dfe6469fe5"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/evolution_rank.png",
+        "retained": "docs/results/min_cutrank/evolution_rank.png",
+        "sha256": "48cf4e8357a7295ad8874c93b08cb45927a1cfbad97ec63a450f2bb20b59c87c",
+        "retained_sha256_after_link_updates": "48cf4e8357a7295ad8874c93b08cb45927a1cfbad97ec63a450f2bb20b59c87c"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/evolution_rank.svg",
+        "retained": "docs/results/min_cutrank/evolution_rank.svg",
+        "sha256": "771ba37d38fbcb4758abeeb052c1aea5930a3af45abadbfb17043468e1d48f3b",
+        "retained_sha256_after_link_updates": "771ba37d38fbcb4758abeeb052c1aea5930a3af45abadbfb17043468e1d48f3b"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/remaining_circuits_native.png",
+        "retained": "docs/results/min_cutrank/remaining_circuits_native.png",
+        "sha256": "73ec000e2688e030ac98c18e56ca8128973d2cac62c1c4d5df3c6441d75b7f4c",
+        "retained_sha256_after_link_updates": "73ec000e2688e030ac98c18e56ca8128973d2cac62c1c4d5df3c6441d75b7f4c"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/remaining_circuits_native.svg",
+        "retained": "docs/results/min_cutrank/remaining_circuits_native.svg",
+        "sha256": "b8e0647f82de5be9df9051f2ab617c371effd1fa639eb650dc59af2cdd497f5a",
+        "retained_sha256_after_link_updates": "b8e0647f82de5be9df9051f2ab617c371effd1fa639eb650dc59af2cdd497f5a"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/synthetic_rank_native.png",
+        "retained": "docs/results/min_cutrank/synthetic_rank_native.png",
+        "sha256": "2491318e2ba5211df5c88dff9df81ddb7833828334e68d5077d2b74a1c4dbc7c",
+        "retained_sha256_after_link_updates": "2491318e2ba5211df5c88dff9df81ddb7833828334e68d5077d2b74a1c4dbc7c"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/synthetic_rank_native.svg",
+        "retained": "docs/results/min_cutrank/synthetic_rank_native.svg",
+        "sha256": "2c2a1ebad9d5ad3ba73d3e73c52535eccaedc69f0018891b7f7f8ae174020b51",
+        "retained_sha256_after_link_updates": "2c2a1ebad9d5ad3ba73d3e73c52535eccaedc69f0018891b7f7f8ae174020b51"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/quality_vs_time.png",
+        "retained": "docs/results/min_cutrank/quality_vs_time.png",
+        "sha256": "63c2c560fbf696a889c4d1d4f5c435fc1a653f95b8c3865a9a066ef34e284a67",
+        "retained_sha256_after_link_updates": "63c2c560fbf696a889c4d1d4f5c435fc1a653f95b8c3865a9a066ef34e284a67"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/figures_v2/quality_vs_time.svg",
+        "retained": "docs/results/min_cutrank/quality_vs_time.svg",
+        "sha256": "e74f02e4be2571da73c77d1c17dec434c3e49404381acb6551e202075287b3f5",
+        "retained_sha256_after_link_updates": "e74f02e4be2571da73c77d1c17dec434c3e49404381acb6551e202075287b3f5"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/summary.tsv",
+        "retained": "docs/results/min_cutrank/summary.tsv",
+        "sha256": "e94040dc85cb1645b153c67ec849b332ba3bbd287fc2aeca4a55afb3282f1a75",
+        "retained_sha256_after_link_updates": "e94040dc85cb1645b153c67ec849b332ba3bbd287fc2aeca4a55afb3282f1a75"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/family_summary.tsv",
+        "retained": "docs/results/min_cutrank/family_summary.tsv",
+        "sha256": "df454f46940bc3bac485bdc9cfbdf1abd5ddf31a29d666f9711d76665c52fabf",
+        "retained_sha256_after_link_updates": "df454f46940bc3bac485bdc9cfbdf1abd5ddf31a29d666f9711d76665c52fabf"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/protocol.json",
+        "retained": "docs/results/min_cutrank/protocol.json",
+        "sha256": "55cbf9069b02ce11a59040c2b855289630573a4698e69b1fb013f48ce84b8020",
+        "retained_sha256_after_link_updates": "55cbf9069b02ce11a59040c2b855289630573a4698e69b1fb013f48ce84b8020"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/inputs.tsv",
+        "retained": "docs/results/min_cutrank/inputs.tsv",
+        "sha256": "3cdf1c59745349aefc817dd4d5bdf7df9586f1fecaff4fdec28399c0dd22e5e4",
+        "retained_sha256_after_link_updates": "3cdf1c59745349aefc817dd4d5bdf7df9586f1fecaff4fdec28399c0dd22e5e4"
+      },
+      {
+        "original": "experiments/min_cutrank_comparison/run_20261112T161827Z/schedule_sensitivity/schedule_comparison.json",
+        "retained": "docs/results/min_cutrank/schedule_comparison.json",
+        "sha256": "647aee0c9798f0ba9c430640048f8369642e6c605ee762d56147afd98366e4c8",
+        "retained_sha256_after_link_updates": "647aee0c9798f0ba9c430640048f8369642e6c605ee762d56147afd98366e4c8"
+      },
+      {
+        "original": "experiments/bury_approximation/figures/bury_obstruction.png",
+        "retained": "docs/results/bury_approximation/bury_obstruction.png",
+        "sha256": "02e4283172658d833891fdf2997944b42b8818803d3fefbdaca81614142edbd2",
+        "retained_sha256_after_link_updates": "02e4283172658d833891fdf2997944b42b8818803d3fefbdaca81614142edbd2"
+      },
+      {
+        "original": "experiments/bury_performance/results.tsv",
+        "retained": "docs/results/bury_performance/results.tsv",
+        "sha256": "68c69f7303d302ab0172b03fd8299fea0aaca87cf9a359f2d0789d3ac6e7e5ec",
+        "retained_sha256_after_link_updates": "68c69f7303d302ab0172b03fd8299fea0aaca87cf9a359f2d0789d3ac6e7e5ec"
+      },
+      {
+        "original": "experiments/bury_performance/slow_results.tsv",
+        "retained": "docs/results/bury_performance/slow_results.tsv",
+        "sha256": "ba612a8cde17ee5749682e59798610d50d9d4ace5b1f8c625bb22744fdfd37d3",
+        "retained_sha256_after_link_updates": "ba612a8cde17ee5749682e59798610d50d9d4ace5b1f8c625bb22744fdfd37d3"
+      },
+      {
+        "original": "experiments/graphml_bury/backend_comparison.png",
+        "retained": "docs/results/graphml_bury/backend_comparison.png",
+        "sha256": "587ad600b3158ce137fa60b0c8add8a830d21d41fa291bb1f5ccb6f0bf333a6c",
+        "retained_sha256_after_link_updates": "587ad600b3158ce137fa60b0c8add8a830d21d41fa291bb1f5ccb6f0bf333a6c"
+      },
+      {
+        "original": "experiments/graphml_bury/comparison.tsv",
+        "retained": "docs/results/graphml_bury/comparison.tsv",
+        "sha256": "4002b17d3422a1dd4df8d81df5441e45a818d995d62a7241705c7866a0e8d42a",
+        "retained_sha256_after_link_updates": "4002b17d3422a1dd4df8d81df5441e45a818d995d62a7241705c7866a0e8d42a"
+      },
+      {
+        "original": "experiments/graphml_bury/per_graph_guide.md",
+        "retained": "docs/results/graphml_bury/per_graph_guide.md",
+        "sha256": "819f900875092d6c8723f08816588df3b6d571c7e44e92f99e7629f1d01c5a0b",
+        "retained_sha256_after_link_updates": "c0946de60f65eccd6aba30db3c76a6a33e359ac5cb21ed5a6c1be1e5a3282a29"
+      },
+      {
+        "original": "experiments/graphml_bury/inventory/inventory.tsv",
+        "retained": "docs/results/graphml_bury/inventory.tsv",
+        "sha256": "87e0af955d02608dad85e63ceb55e0178fb8cf9f65ed2721fba5c690a6736996",
+        "retained_sha256_after_link_updates": "87e0af955d02608dad85e63ceb55e0178fb8cf9f65ed2721fba5c690a6736996"
+      },
+      {
+        "original": "experiments/cost_performance/reference_costs.jl",
+        "retained": "test/reference/costs_before_optimization.jl",
+        "sha256": "0932a6ebe59db1a46a8fe7586b772d6600b89663f67b663d25373ea6a7f52211",
+        "retained_sha256_after_link_updates": "0932a6ebe59db1a46a8fe7586b772d6600b89663f67b663d25373ea6a7f52211"
+      }
+    ],
+    "note": "Retained per_graph_guide.md has two relative-link updates; its original bytes are preserved in the archive."
+  },
+  "post_migration_validation": {
+    "package_test_command": "julia --startup-file=no --project=. -e 'using Pkg; Pkg.test(; allow_reresolve=false)'",
+    "package_assertions_passed": 459283,
+    "package_test_log_sha256": "f79fac729bf8cb148f4faf400ce84eebb1a5096f232e917d7bae591f03c05127",
+    "restoration_smoke": "Restored 13,735 score rows, 2,010 tasks, 1,675 summaries; nested upstream Git clean at pinned commit; archived Python scripts parse; archived Julia family workflow loads with restored input.",
+    "maintained_example_smoke": "Toffoli parameter 3: all seven methods returned capacities 13/14.",
+    "local_markdown_links_checked": 92,
+    "heading_anchors_checked": 29,
+    "runtime_source_and_original_circuit_inputs": "unchanged from pre-archive snapshot",
+    "independent_archive_review": "passed: 11 archive and backup hashes; 3,464 manifest payload hashes; links and retained assets",
+    "temporary_extractions": "removed after successful verification; persistent recovery copies are the ZIPs and listed local backups"
+  }
+}

@@ -1,4 +1,0 @@
-job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
-graphml_reduced__qft_4__ordinary__43	ordinary	87	158	43	1	legacy	8625.0	8500.0	8833.5	8166.0	16368	226	303
-graphml_reduced__qft_4__ordinary__43	ordinary	87	158	43	1	scan	5084.0	5000.0	5354.5	4875.0	5440	10	303
-graphml_reduced__qft_4__ordinary__43	ordinary	87	158	43	1	heap	3750.0	3625.0	3875.0	3417.0	6976	14	303

@@ -247,22 +247,25 @@ function best_seed(g::Graphs.Graph, r0; backend::Symbol=:heap, verbose=false)
 end
 
 """
-    best_sqrt_seed(g, target; backend=:heap, verbose=false)
+    best_sqrt_seed(g, target; backend=:heap, verbose=false,
+                   rng=Random.default_rng(), log_improvements=true)
 
 Evaluate `ceil(sqrt(nv(g)))` sampled seeds using the selected BURY backend.
-Sampling uses the default RNG with replacement. Matching scores, first-best
-ties, and improvement messages retain their original behavior.
+Sampling uses `rng` with replacement (the default RNG unless supplied).
+Matching scores and first-best ties retain their original behavior.
+Set `log_improvements=false` to suppress improvement messages.
 Require a nonempty graph and an integer target in `0:nv(g)`; validate before
 sampling so invalid calls leave the RNG unchanged.
 """
-function best_sqrt_seed(g::Graphs.Graph, r0; backend::Symbol=:heap, verbose=false)
+function best_sqrt_seed(g::Graphs.Graph, r0; backend::Symbol=:heap, verbose=false,
+                        rng::AbstractRNG=Random.default_rng(), log_improvements::Bool=true)
     _bury_check_backend(backend)
     target = _bury_check_target(g, r0)
     nv(g) > 0 || throw(ArgumentError("seed search requires a nonempty graph"))
     best_score = Inf
     best_seed = 1
     for i in 1:ceil(Int,sqrt(nv(g)))
-        seed = rand(vertices(g))
+        seed = rand(rng, vertices(g))
         if verbose
             println("Trying seed ", i, " out of ", ceil(Int,sqrt(nv(g))))
         end
@@ -274,7 +277,7 @@ function best_sqrt_seed(g::Graphs.Graph, r0; backend::Symbol=:heap, verbose=fals
         if cost< best_score
             best_seed = seed
             best_score = cost
-            println("Found better. Seed: ", best_seed, ". Cost: ", best_score)
+            log_improvements && println("Found better. Seed: ", best_seed, ". Cost: ", best_score)
         end
     end
     return best_seed
@@ -339,15 +342,18 @@ samples, scoring, and tie policies are unchanged.
 Every backend requires a nonempty graph, an integer target in `0:nv(g)`, and
 an explicit integer seed in `1:nv(g)`. Invalid inputs raise `ArgumentError`
 before sampling or running the algorithm. Automatic search's improvement
-messages are preserved, including when `verbose=false`.
+messages are preserved, including when `verbose=false`. Automatic searches
+also accept `rng=Random.default_rng()` and `log_improvements=false` for a
+caller-owned random stream and quiet operation.
 """
 function bury_seeded(g::Graphs.Graph, r0=nv(g)÷2;
-                     backend::Symbol=:heap, verbose=false)
+                     backend::Symbol=:heap, verbose=false,
+                     rng::AbstractRNG=Random.default_rng(), log_improvements::Bool=true)
     _bury_check_backend(backend)
     target = _bury_check_target(g, r0)
     # Resolve omitted seeds here so trial calls receive the selected backend.
     # Outer verbose still controls only the final trace, as in the original.
-    seed = best_sqrt_seed(g, target; backend=backend)
+    seed = best_sqrt_seed(g, target; backend=backend, rng=rng, log_improvements=log_improvements)
     return bury_seeded(g, target, seed; backend=backend, verbose=verbose)
 end
 

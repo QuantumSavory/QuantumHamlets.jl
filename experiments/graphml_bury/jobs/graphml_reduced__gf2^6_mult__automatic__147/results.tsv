@@ -1,4 +1,0 @@
-job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
-graphml_reduced__gf2^6_mult__automatic__147	automatic	294	1186	147	1	legacy	3.6905021e7	3.647864575e7	3.743845825e7	3.5985875e7	19068256	85371	18
-graphml_reduced__gf2^6_mult__automatic__147	automatic	294	1186	147	1	scan	3.37373125e7	3.361801075e7	3.37987815e7	3.3397083e7	3345088	43078	18
-graphml_reduced__gf2^6_mult__automatic__147	automatic	294	1186	147	1	heap	3.3756709e7	3.36096565e7	3.3852927e7	3.3340625e7	3537520	43268	18

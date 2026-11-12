@@ -3,8 +3,9 @@
 module CostSemanticsReference
 using Graphs
 import QuantumHamlets
-using QuantumHamlets: quantumLand, inverse_map, IGraphs, residue_ring, ZZ, rank, matrix
-include(joinpath(@__DIR__, "..", "experiments", "cost_performance", "reference_costs.jl"))
+using QuantumHamlets: quantumLand, inverse_map, IGraphs
+using Nemo: residue_ring, ZZ, rank, matrix
+include(joinpath(@__DIR__, "reference", "costs_before_optimization.jl"))
 end
 
 function cost_with_next_draw(f, land, graph)

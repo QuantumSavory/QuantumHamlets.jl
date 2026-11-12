@@ -1,4 +1,0 @@
-job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
-graphml_reduced__rc_adder_6__automatic__53	automatic	106	226	53	1	legacy	1.699833e6	1.672709e6	1.748125e6	1.622042e6	1813280	13778	33
-graphml_reduced__rc_adder_6__automatic__53	automatic	106	226	53	1	scan	1.493084e6	1.472417e6	1.570541e6	1.431084e6	525360	6779	33
-graphml_reduced__rc_adder_6__automatic__53	automatic	106	226	53	1	heap	1.518292e6	1.472834e6	1.601334e6	1.449833e6	567792	6851	33

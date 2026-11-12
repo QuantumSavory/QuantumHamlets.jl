@@ -1,4 +1,0 @@
-job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
-graphml_initial__barenco_tof_4__automatic__75	automatic	151	192	75	1	legacy	3.961292e6	3.823542e6	4.102834e6	3.468042e6	3660560	22122	33
-graphml_initial__barenco_tof_4__automatic__75	automatic	151	192	75	1	scan	3.308209e6	3.169083e6	3.566125e6	3.021667e6	759632	10321	33
-graphml_initial__barenco_tof_4__automatic__75	automatic	151	192	75	1	heap	3.423833e6	3.324625e6	3.588916e6	3.107667e6	828400	10405	33

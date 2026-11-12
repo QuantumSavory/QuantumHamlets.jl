@@ -1,3 +1,7 @@
 .DS_Store
 *.png
 *.pdf
+!docs/results/**/*.png
+!docs/results/**/*.pdf
+.CondaPkg/
+__pycache__/

@@ -1,6 +1,0 @@
-The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
-
-  juliaup update
-
-to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
-Saved backend_comparison.png and .pdf

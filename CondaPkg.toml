@@ -1,0 +1,3 @@
+# PythonCall manages the interpreter; the bundled annealer uses only stdlib.
+[deps]
+python = ">=3.12,<3.13"

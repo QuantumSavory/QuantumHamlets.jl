@@ -1,9 +1,0 @@
-The latest version of Julia in the `release` channel is 1.13.3+0.aarch64.apple.darwin14. You currently have `1.12.6+0.aarch64.apple.darwin14` installed. Run:
-
-  juliaup update
-
-to install Julia 1.13.3+0.aarch64.apple.darwin14 and update the `release` channel to that version.
-Test Summary:                   |   Pass   Total  Time
-BURY experimental compatibility | 253988  253988  2.4s
-VALIDATION_COUNTS graphs=1113 single_comparisons=78012 multipartition_comparisons=9388 search_graphs=3 search_comparisons=36
-Exact registry and color equivalence passed; no production code was changed.

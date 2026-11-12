@@ -64,6 +64,65 @@ custom partitioners remain available through the qualified range function
 below. `partition_graph(g, k)` continues to require exact divisibility and
 equal-sized parts, including when `k=2`.
 
+### Simulated annealing and METIS baselines
+
+The baseline functions return the same `GraphPartition` values as BURY:
+
+```julia
+using Graphs, QuantumHamlets
+g = grid([6, 6])
+
+p = min_cutrank(g; seed=3)        # random balanced start, then cut-rank SA
+p = bury_sa(g; seed=3)           # ordinary BURY, then SA
+p = bury_seeded_sa(g; seed=3)    # sqrt-sampled BURY, then SA
+p = metis_partition(g)           # native METIS KWAY, 3% imbalance tolerance
+p = metis_sa(g; seed=3)          # explicitly balance METIS, then SA
+
+pairwise_cut_rank(g, p)
+partition_sizes(p)
+registry(p)                      # dictionary for legacy quantumLand calls
+```
+
+SA defaults to ten temperatures from 1.0 to 0.1 and retains the best rank seen,
+including its initializer. Use `temperatures=range(1.0, 0.1; length=100)` to
+change the schedule, or `keep_best=false` for the upstream final-state policy.
+There is no time cap or automatic restart. Supply your own partition with
+`min_cutrank(g; initial=p, seed=3)`: it preserves that partition's two nonempty
+sizes. An empty schedule (`temperatures=[]`) returns the initializer alone.
+All new methods use local seeded RNGs without resetting the caller's streams.
+The seeded BURY initializer samples `ceil(sqrt(n))` seeds with replacement,
+selects inner seeds by matching cost, and selects floor/ceiling targets by rank.
+
+`metis_partition(g, k; balance=true)` explicitly repairs native METIS output to
+floor/ceiling capacities using minimum edge-cut-increase vertex moves. This is
+postprocessing, not a guarantee from the METIS tolerance. The extra capacities
+go to the largest native parts, ties by label. Native output is the default for
+`metis_partition`; repaired output is the default initializer for `metis_sa`.
+Set `metis_sa(...; balance=false)` to preserve native sizes instead. Empty native
+parts are rejected by SA. Both choices leave METIS's caller options unchanged.
+
+The [bundled upstream source and MIT license](../src/min_cutrank/README.md) live
+under `src/min_cutrank/`; PythonCall loads it directly with no separate Python
+package installation. Metis and PythonCall are package dependencies; CondaPkg
+manages a Python 3.12 interpreter. Call SA from the main Julia task unless you
+manage PythonCall's GIL explicitly.
+
+For the Toffoli grouped histogram, use the existing parent research environment
+(`julia --project=..` from the package root), which supplies GraphIO and EzXML:
+
+```julia
+include("resources/toffoli_baselines.jl")
+fig, data = plot_toffoli_baselines()  # reduced Toffoli + Barenco, all four sizes
+display(fig)
+save("toffoli_baselines.svg", fig)
+# plot_toffoli_baselines(; collection="graphml_initial", repeats=20)
+```
+
+The single plotting function returns raw ranks, seeds, and actual sizes as well
+as the figure. Bars show medians, whiskers show observed min–max, and METIS is
+explicitly repaired so all plotted bipartitions have the same capacities.
+Including the file does not run the comparison.
+
 ### Choose a BURY backend
 
 The algorithm determines the partitioning procedure; the backend determines how BURY selects and updates its candidates:
@@ -81,7 +140,7 @@ p = partition_graph(g, 3; backend=:legacy)
 p = partition_graph(g, 3; algorithm=:bury_seeded, backend=:scan)
 ```
 
-Backend selection preserves the greedy rule, smallest-vertex-ID ties, and seeded-region behavior. There is no automatic density threshold: graph size, target size, degree distribution, and seed can all change which backend is fastest. The [GraphML measurements](graphml_backend_findings.md) and [per-graph guide](../experiments/graphml_bury/per_graph_guide.md) give examples.
+Backend selection preserves the greedy rule, smallest-vertex-ID ties, and seeded-region behavior. There is no automatic density threshold: graph size, target size, degree distribution, and seed can all change which backend is fastest. The [GraphML measurements](graphml_backend_findings.md) and [per-graph guide](results/graphml_bury/per_graph_guide.md) give examples.
 
 `backend` applies to BURY. The `:random` and `:saran_vazirani` algorithms accept the default `backend=:heap` without using it; explicitly requesting `:scan` or `:legacy` with either raises `ArgumentError`. An unknown backend name also raises `ArgumentError`.
 
@@ -114,7 +173,7 @@ the existing `quantumLand` validation and are never inferred to be built-ins.
 Ordinary BURY with the exact built-in matching, edge-cut, or rank function uses
 the scalar cost kernels; heap/scan construct only the winning registry. The
 legacy backend keeps its original algorithm. The [range performance
-experiment](../experiments/bipartition_range_performance/README.md) includes
+experiment archive](../archive/README.md#bipartition-range-performance) includes
 scoring and returned representations in its before/after measurements.
 
 For example, `bury_v=Q.bury_seeded, cost_f=Q.cut_rank_cost` invokes a sampled
@@ -177,7 +236,7 @@ One declared part has matching cost zero, an empty matching witness, and no high
 
 Scalar costs operate directly on `GraphPartition` membership, without constructing a legacy `quantumLand` or unused edge-color arrays. Matching groups cross edges by part pair, builds each native graph in bulk, and uses unweighted maximum-cardinality matching. Rank uses exact packed GF(2) elimination on biadjacency matrices, omitting isolated endpoints. The cover method keeps the existing greedy selection and counts neighboring part labels with reusable scratch storage. Legacy tuple-returning functions retain their formats.
 
-The [cost performance experiment](../experiments/cost_performance/README.md) records bounded before/after timings and allocations against the implementation saved after the bug fixes. No graph partitioning or seed-selection policy changed.
+The [cost performance archive](../archive/README.md#cost-performance) preserves bounded before/after timings and allocations against the implementation saved after the bug fixes. No graph partitioning or seed-selection policy changed.
 
 The matching and rank values are exact for a fixed partition and their stated objectives. BURY is a heuristic for selecting the partition; it does not guarantee an optimal assignment. The cover routine uses a greedy cover, so its two estimates need not be minimum costs.
 
@@ -309,7 +368,7 @@ Run the suite from the package directory:
 julia --project=. -e 'using Pkg; Pkg.test()'
 ```
 
-The tests cover deterministic fixtures, exhaustive small graphs, valid partition sizes, numerical costs, input graph preservation, conversions, and equivalence against a frozen original BURY implementation. Backend checks also cover automatic seed selection, RNG consumption, custom callbacks, return types, and verbose traces. The five originally deferred failures are now ordinary passing regressions. Additional tests cover independent matching cardinalities and witnesses, one-part plots, validation before RNG/callbacks, disconnected zero-cut packing, constructor ownership, captured display output, and scalar research scores. Large matching checks run separately in disposable subprocesses with external time limits (`python3 test/run_matching_stress.py`). The full suite after the target-range improvements passed 459,086 assertions with no broken tests, including 1,877 new range assertions; see the [validation record](bug_audit.md#target-range-follow-up).
+The tests cover deterministic fixtures, exhaustive small graphs, valid partition sizes, numerical costs, input graph preservation, conversions, and equivalence against a frozen original BURY implementation. Backend checks also cover automatic seed selection, RNG consumption, custom callbacks, return types, and verbose traces. The five originally deferred failures are now ordinary passing regressions. Additional tests cover independent matching cardinalities and witnesses, one-part plots, validation before RNG/callbacks, disconnected zero-cut packing, constructor ownership, captured display output, and scalar research scores. Large matching checks run separately in disposable subprocesses with external time limits (`python3 test/run_matching_stress.py`). The full suite after the target-range improvements passed 459,086 assertions with no broken tests, including 1,877 new range assertions; its validation log is preserved in the [range-performance archive](../archive/README.md#bipartition-range-performance).
 
 The source is organized within one module:
 
@@ -329,7 +388,7 @@ The source is organized within one module:
 | `src/partition.jl` | `GraphPartition` and conversions |
 | `src/api.jl` | Simpler partition, cost, details, and plotting calls |
 
-Research scripts and data remain under `resources/`. The [revision proposal](revision_proposal.md) describes follow-up work, including performance measurements and separate example/experiment environments.
+Maintained research examples and original graph datasets remain under `resources/`. Completed studies, earlier plotting workflows, and historical design reviews are preserved through the [archive index](../archive/README.md). Reports and selected results remain directly readable under `docs/`.
 
 ## Known limitations
 
@@ -341,4 +400,4 @@ The repairs preserve valid-input BURY partition choices and scoring/seed policie
 - Matching no longer has a recursive traversal limit, but large solver workloads can still be expensive. Plotting dependencies still load with the package.
 - The grid and sandbox partitioner comparisons now use scalar pairwise GF(2) cut rank for every competitor and label that objective. Their defaults are full research sweeps, not quickstarts; only tiny equivalents were tested. Historical results and audit logs were not regenerated.
 
-See the [resolved audit and validation record](bug_audit.md) for the implemented fixes and remaining test limits.
+The resolved audit and validation record is preserved in the [historical documentation archive](../archive/README.md#historical-docs); the limitations above describe the maintained API.

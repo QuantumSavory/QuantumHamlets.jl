@@ -1,0 +1,58 @@
+{
+  "upstream_commit": "86c1d8ff5d9b901983d9ad2254c8df0651e0219d",
+  "quantum_hamlets_commit": "3513432ff18f26148aa7248f1d7cbb00d0f9174a",
+  "graph_count": 67,
+  "methods": [
+    "random_sa",
+    "bury_sa",
+    "sqrt_sa"
+  ],
+  "annealing_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "random_initialization_seeds": [
+    100000,
+    100001,
+    100002,
+    100003,
+    100004,
+    100005,
+    100006,
+    100007,
+    100008,
+    100009
+  ],
+  "sweeps": 10,
+  "temperatures": "numpy.linspace(1.0, 0.1, 10)",
+  "row_side": "exactly floor(n/2), complement BURY labels when needed",
+  "per_run_wall_limit_seconds": 30.0,
+  "subprocess_watchdog_seconds": 75,
+  "budgets_seconds": [
+    0.1,
+    1.0,
+    5.0,
+    30.0
+  ],
+  "max_concurrent_workers": 2,
+  "task_order_seed": 20261112,
+  "time_policy": "Elapsed wall time includes dense conversion, workspace setup, observer overhead, and measured Julia initializer time for hybrids; excludes imports, file IO, and post-solve validation.",
+  "incumbent_policy": "Keep first strictly lowest rank encountered, including initializer. A candidate counts at budget only if its recorded completion time does not exceed budget. Native final outputs require all 10 sweeps completed.",
+  "calibration": "Excluded pilot, seed 271828: n132 ~0.32 CPU s /10 sweeps; n652 ~9.50 CPU s /10; n1772 setup1.43 CPU s, first sweep25.32 CPU s, interrupted at45 CPU s. Used solely to set30s cap; no quality-based tuning.",
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "python_executable": "/Users/micciche/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "numpy": "2.3.5",
+  "platform": "macOS-14.8.9-arm64-arm-64bit",
+  "manifest_sha256": "3cdf1c59745349aefc817dd4d5bdf7df9586f1fecaff4fdec28399c0dd22e5e4",
+  "baselines_sha256": "fb831d49fb0d39f6fb8072a7427bb1622c49199ee61096f5d71114e0c5833598",
+  "runner_sha256": "18272afceb3a733726f26045f46bf2979130b44b2c957a3972a31cd56b2a5cc1",
+  "created_utc": "2026-11-12T16:24:15Z"
+}

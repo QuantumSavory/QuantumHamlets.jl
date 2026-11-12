@@ -1,4 +1,0 @@
-job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
-graphml_initial__mod_mult_55__ordinary__83	ordinary	167	206	83	1	legacy	23958.0	22875.0	25312.0	22167.0	22672	384	303
-graphml_initial__mod_mult_55__ordinary__83	ordinary	167	206	83	1	scan	18625.0	18208.0	20458.5	17875.0	6144	10	303
-graphml_initial__mod_mult_55__ordinary__83	ordinary	167	206	83	1	heap	6709.0	6542.0	7145.5	6167.0	8928	14	303

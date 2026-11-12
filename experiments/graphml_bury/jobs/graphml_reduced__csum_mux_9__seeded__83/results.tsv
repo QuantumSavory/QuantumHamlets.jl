@@ -1,4 +1,0 @@
-job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
-graphml_reduced__csum_mux_9__seeded__83	seeded	166	400	83	1	legacy	43750.0	41209.0	50958.0	37958.0	243264	913	303
-graphml_reduced__csum_mux_9__seeded__83	seeded	166	400	83	1	scan	10708.0	10417.0	11208.0	10125.0	6368	12	303
-graphml_reduced__csum_mux_9__seeded__83	seeded	166	400	83	1	heap	10209.0	10000.0	10562.5	9417.0	11712	18	303

@@ -1,4 +1,0 @@
-job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
-graphml_initial__mod_red_21__automatic__177	automatic	355	449	177	1	legacy	1.2131459e7	1.190325e7	1.3942042e7	1.1490291e7	25646720	83481	33
-graphml_initial__mod_red_21__automatic__177	automatic	355	449	177	1	scan	7.730875e6	7.622042e6	7.921041e6	7.361625e6	2828128	31183	33
-graphml_initial__mod_red_21__automatic__177	automatic	355	449	177	1	heap	7.513417e6	7.44075e6	7.725834e6	7.164125e6	3070368	31383	33

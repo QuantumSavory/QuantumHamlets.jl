@@ -1,5 +1,10 @@
 # BURY backend performance on the GraphML resources
 
+This is the historical prototype study from 11 November 2026. References to
+proposed interfaces and unchanged production code describe that study's
+snapshot; see the [usage guide](usage.md) for the maintained API. The complete
+study is preserved in the [archive](../archive/README.md#graphml-bury).
+
 Measured on 11 November 2026. These results support **heap as the default,
 scan as a useful explicit alternative, and legacy as a reference backend**.
 Heap had the lowest median for ordinary BURY on 39 of 45 graphs. Explicitly
@@ -30,9 +35,9 @@ The reduced version has maximum degree 88. Evolution `k5` has 1,772 vertices,
 12,102 edges, and maximum degree 222. These graphs can have high-degree hubs
 despite low overall density.
 
-The [full inventory](../experiments/graphml_bury/inventory/inventory.tsv) gives
+The [full inventory](results/graphml_bury/inventory.tsv) gives
 each file's size, edge count, degree distribution, density, components, and hash.
-The [per-graph guide](../experiments/graphml_bury/per_graph_guide.md) combines
+The [per-graph guide](results/graphml_bury/per_graph_guide.md) combines
 those properties with the observed backend choices.
 
 ## Half-size partition results
@@ -80,7 +85,7 @@ evolution `k5`, the corresponding gains are **7.6× and 18.5×**. For the tiny
 reduced `barenco_tof_3`, scan is approximately twice as fast as heap when seeded,
 although the absolute difference is only about half a microsecond.
 
-![Scan versus heap timing across the 45 GraphML files](../experiments/graphml_bury/backend_comparison.png)
+![Scan versus heap timing across the 45 GraphML files](results/graphml_bury/backend_comparison.png)
 
 Values above 1 favor heap; values below 1 favor scan. The gray band marks
 differences within 10%, not a statistical confidence interval. The ordinary
@@ -189,8 +194,8 @@ Partitions agree on tested inputs; logging, invalid-input behavior, dictionary
 types, and complete API compatibility still need reconciliation before the
 prototypes become production backends.
 
-The [experiment README](../experiments/graphml_bury/README.md) contains commands,
-watchdog limits, and file descriptions. See [all measured comparisons](../experiments/graphml_bury/comparison.tsv),
-[raw results](../experiments/graphml_bury/results.tsv),
-[timing samples](../experiments/graphml_bury/samples.tsv), and
-[completion/skip records](../experiments/graphml_bury/status.tsv).
+The [complete study archive](../archive/README.md#graphml-bury) contains the
+experiment README, commands, watchdog limits, raw results, timing samples,
+and completion/skip records. The table of
+[all measured comparisons](results/graphml_bury/comparison.tsv) remains
+directly readable alongside this report.

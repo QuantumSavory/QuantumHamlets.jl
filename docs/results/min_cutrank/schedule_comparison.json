@@ -1,0 +1,116 @@
+{
+  "graph_count": 11,
+  "task_count": 99,
+  "statuses": {
+    "completed": 81,
+    "time_limit": 18
+  },
+  "native_available_pairs": 81,
+  "comparisons": [
+    {
+      "method": "bury_sa",
+      "comparison": "incumbent_0.1s",
+      "tied": 32,
+      "higher": 1
+    },
+    {
+      "method": "bury_sa",
+      "comparison": "incumbent_1s",
+      "tied": 25,
+      "higher": 1,
+      "lower": 7
+    },
+    {
+      "method": "bury_sa",
+      "comparison": "incumbent_30s",
+      "tied": 22,
+      "higher": 2,
+      "lower": 9
+    },
+    {
+      "method": "bury_sa",
+      "comparison": "incumbent_5s",
+      "tied": 24,
+      "higher": 1,
+      "lower": 8
+    },
+    {
+      "method": "bury_sa",
+      "comparison": "native_final",
+      "tied": 19,
+      "unavailable": 6,
+      "lower": 8
+    },
+    {
+      "method": "random_sa",
+      "comparison": "incumbent_0.1s",
+      "tied": 25,
+      "higher": 6,
+      "lower": 2
+    },
+    {
+      "method": "random_sa",
+      "comparison": "incumbent_1s",
+      "tied": 22,
+      "lower": 10,
+      "higher": 1
+    },
+    {
+      "method": "random_sa",
+      "comparison": "incumbent_30s",
+      "tied": 13,
+      "lower": 18,
+      "higher": 2
+    },
+    {
+      "method": "random_sa",
+      "comparison": "incumbent_5s",
+      "tied": 14,
+      "lower": 18,
+      "higher": 1
+    },
+    {
+      "method": "random_sa",
+      "comparison": "native_final",
+      "tied": 14,
+      "unavailable": 6,
+      "lower": 13
+    },
+    {
+      "method": "sqrt_sa",
+      "comparison": "incumbent_0.1s",
+      "tied": 33
+    },
+    {
+      "method": "sqrt_sa",
+      "comparison": "incumbent_1s",
+      "tied": 30,
+      "lower": 3
+    },
+    {
+      "method": "sqrt_sa",
+      "comparison": "incumbent_30s",
+      "tied": 25,
+      "higher": 2,
+      "lower": 6
+    },
+    {
+      "method": "sqrt_sa",
+      "comparison": "incumbent_5s",
+      "tied": 27,
+      "higher": 1,
+      "lower": 5
+    },
+    {
+      "method": "sqrt_sa",
+      "comparison": "native_final",
+      "tied": 19,
+      "lower": 7,
+      "unavailable": 6,
+      "higher": 1
+    }
+  ],
+  "interpretation": "Delta is 100-sweep rank minus 10-sweep rank on identical graph/initializer/annealing-seed keys. Negative is lower rank. Native finals require completion of each full schedule; incomplete outputs are unavailable. Incumbents use strict elapsed-time availability. A slower cooling schedule is not a continuation of the 10-sweep trajectory.",
+  "inference_scope": "A separate 11-graph, three-seed sensitivity study. Compare against the main 10-sweep study restricted to the identical graph/method/seed keys. The changed schedule cools more slowly and may be censored by the unchanged 30-second cap.",
+  "protocol_sha256": "ccc02c1e48c4b03bfc71926b7a45c51ccf045a02753bcbc628f4e309d17da214"
+}

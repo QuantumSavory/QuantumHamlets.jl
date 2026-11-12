@@ -1,4 +1,0 @@
-collection	graph	vertices	parts	status	reason
-graphml_evolution	k1	25	2	completed	
-graphml_evolution	k1	25	3	unsupported_balance	exact multipartition requires n divisible by k
-graphml_evolution	k1	25	4	unsupported_balance	exact multipartition requires n divisible by k

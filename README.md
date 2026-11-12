@@ -49,7 +49,7 @@ figure, cost = plot_partition(g, p; highlight=:matching)
 figure
 ```
 
-See the [usage guide](docs/usage.md) for algorithms, metric definitions, custom partitions, plotting, and migration from the original API. The [revision proposal](docs/revision_proposal.md) records the broader review and planned follow-up work.
+See the [usage guide](docs/usage.md) for algorithms, metric definitions, custom partitions, plotting, and migration from the original API. The [archive index](archive/README.md) preserves completed studies and historical design reviews, with restoration instructions.
 
 ## Tests and current scope
 
@@ -63,7 +63,7 @@ The tests compare all BURY backends with a frozen original implementation, inclu
 
 The [BURY performance study](docs/bury_performance_findings.md) and [GraphML study](docs/graphml_backend_findings.md) record the prototype measurements behind the backend choice. Their figures describe the measured workloads, rather than a universal speedup.
 
-The [production backend checks](experiments/bury_backends/README.md) verify the integrated API and record timings with the original public return types.
+The [archived production backend checks](archive/README.md#bury-backends) verify the integrated API and record timings with the original public return types. Readable reports and selected figures and tables remain under `docs/`; the full scripts, raw results, and logs are preserved in the archives.
 
 ## Citing
 

@@ -1,4 +1,0 @@
-job	kind	n	m	target	seed	implementation	median_ns	p25_ns	p75_ns	min_ns	bytes	allocations	samples
-graphml_evolution__k2__seeded__79	seeded	159	498	79	1	legacy	36291.0	35354.0	41062.5	33750.0	216064	815	303
-graphml_evolution__k2__seeded__79	seeded	159	498	79	1	scan	9584.0	9375.0	9959.0	9084.0	6368	12	303
-graphml_evolution__k2__seeded__79	seeded	159	498	79	1	heap	11375.0	11083.0	11792.0	10500.0	11712	18	303
