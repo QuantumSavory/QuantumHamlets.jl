@@ -208,3 +208,63 @@ function matching_cost_of_partition(land::quantumLand, g::Graphs.Graph)
     colors = fill(:black, ne(g))
     return _matching_cost(_cost_labels(land, g), g, colors), colors
 end
+
+# Graph-first scalar costs and matching details.
+"""
+    edge_cut_cost(g, p::GraphPartition) -> Int
+
+Count edges with endpoints in different parts. This is the scalar form of
+[`naive_cost_of_partition`](@ref).
+"""
+edge_cut_cost(g::Graphs.Graph, p::GraphPartition) =
+    _edge_cut_cost(_labels_for(g, p), g)
+
+"""
+    matching_cost(g, p::GraphPartition) -> Int
+
+Sum maximum matching sizes over unordered pairs of parts. One declared part
+has cost zero. Uses the same unweighted matching kernel as
+[`matching_cost_of_partition`](@ref), without constructing edge colors. Use
+[`matching_details`](@ref) when the matching edges are also needed.
+"""
+matching_cost(g::Graphs.Graph, p::GraphPartition) =
+    _matching_cost(_labels_for(g, p), g)
+
+"""
+    pairwise_cut_rank(g, p::GraphPartition) -> Int
+
+Sum the GF(2) ranks of the biadjacency matrices between unordered pairs of
+parts. This is the scalar form of [`cut_rank_cost`](@ref). For more than two
+parts this is a sum of pairwise ranks, not a single bipartite cut rank.
+"""
+pairwise_cut_rank(g::Graphs.Graph, p::GraphPartition) =
+    _pairwise_cut_rank(_labels_for(g, p), p.nparts, g)
+
+"""
+    vertex_cover_costs(g, p::GraphPartition)
+
+Return `(ghz_free=..., ghz_n_minus_one=...)`, the two estimates from
+[`vertex_cover_cost_of_partition`](@ref). The underlying cover is greedy,
+not necessarily minimum. The second model charges `m-1` for an `m`-partite
+GHZ state. Both estimates retain the original implementation's semantics.
+"""
+function vertex_cover_costs(g::Graphs.Graph, p::GraphPartition)
+    free, paid = _vertex_cover_costs(_labels_for(g, p), p.nparts, g)
+    return (ghz_free=free, ghz_n_minus_one=paid)
+end
+
+"""
+    matching_details(g, p::GraphPartition)
+
+Return `(cost=..., edges=...)` from one evaluation of the matching
+routine. Edges use the original graph's vertex IDs and follow `edges(g)`
+order. They form a maximum matching within each pair of parts; their union
+need not be a single matching across the whole graph.
+"""
+function matching_details(g::Graphs.Graph, p::GraphPartition)
+    labels = _labels_for(g, p)
+    colors = fill(:black, ne(g))
+    cost = _matching_cost(labels, g, colors)
+    selected = [e for (e, color) in zip(edges(g), colors) if color === :red]
+    return (cost=cost, edges=selected)
+end

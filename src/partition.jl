@@ -91,3 +91,10 @@ Create an independent legacy `quantumLand` from `p`, preserving declared
 empty parts. The resulting registry and membership objects do not alias `p`.
 """
 quantumLand(p::GraphPartition) = quantumLand(registry(p), p.nparts, length(p))
+
+# Shared graph/partition validation for costs and plotting.
+function _labels_for(g::Graphs.Graph, p::GraphPartition)
+    nv(g) == length(p) ||
+        throw(ArgumentError("partition has $(length(p)) vertices, but graph has $(nv(g))"))
+    return p.labels
+end

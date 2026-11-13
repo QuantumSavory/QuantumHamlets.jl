@@ -26,13 +26,10 @@ public quantumLand, villager, hamlet, defaultVillagerRegistry,
        vertex_cover_cost_of_partition, print_graph, visualize_graph_on_land
 
 include("quantum_land.jl")
-include("graph_utils.jl")
+include("partition.jl")
 include("costs.jl")
 include("bury.jl")
-include("visualization.jl")
-include("display.jl")
-include("partition.jl")
-include("api.jl")
 include("baselines.jl")
+include("visualization.jl")
 
 end # module QuantumHamlets

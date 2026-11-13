@@ -78,3 +78,31 @@ function quantumLand(citizenRegistry::AbstractDict, numHamlets, numVillagers)
 
     return land
 end
+
+# Legacy graph helpers.
+"""Takes a land and a graph, and returns a graph with the intra-hamlet edges removed"""
+function remove_local_edges(land::quantumLand, graph::Graphs.Graph)
+    graph_copy = copy(graph)
+    for e in edges(graph)
+        if land.registry[src(e)] == land.registry[dst(e)]
+            rem_edge!(graph_copy, e)
+        end
+    end
+    return graph_copy
+end
+
+# Text display for the legacy partition objects.
+function Base.show(io::IO, land::quantumLand)
+    for i in land.hamlets
+        println(io, i)
+    end
+end
+function Base.show(io::IO, p::villager)
+    print(io, "Qubit $(p.id), who lives in hamlet $(p.address)")
+end
+function Base.show(io::IO, hamlet::hamlet)
+    print(io, "Village $(hamlet.id) has $(hamlet.numVillagers) villagers, $(hamlet.numFarms) farms, and $(hamlet.numMayors) mayors.\n")
+    for p in hamlet.villagers
+        println(io, p)
+    end
+end

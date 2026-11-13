@@ -283,19 +283,6 @@ function best_sqrt_seed(g::Graphs.Graph, r0; backend::Symbol=:heap, verbose=fals
     return best_seed
 end
 
-"""Finds seeds based on maximum anitpodal vertices of the graphs"""
-function antipode_seeds(g::Graphs.Graph, r0)
-    dists = floyd_warshall_shortest_paths(g).dists
-    antipodes = findall(==(maximum(dists)), dists)
-    seed_list = []
-    for pair in antipodes
-        push!(seed_list, pair[1])
-    end
-    sort!(unique!(seed_list))
-
-    return seed_list
-end
-
 """
     bury_k_seeded(g, k; backend=:heap, verbose=false)
 
@@ -365,4 +352,117 @@ function bury_seeded(g::Graphs.Graph, r0, seed;
     backend === :legacy && return _bury_seeded_legacy(g, target, selected_seed; verbose=verbose)
     colored = _bury_color_kernel(backend)(g, target; seed=selected_seed, verbose=verbose)
     return _bury_registry(colored), colored
+end
+
+# Shared partition validation and vertex mapping.
+"""Validate the common nonempty, exactly balanced partitioning boundary."""
+function _check_partition_count(g, k)
+    k isa Integer && 1 <= k <= nv(g) ||
+        throw(ArgumentError("k must be an integer satisfying 1 <= k <= nv(g)"))
+    nv(g) % k == 0 ||
+        throw(ArgumentError("k must divide the number of vertices"))
+    return Int(k)
+end
+
+"""Helper function to some of the other methods"""
+function inverse_map(map, size=maximum(map))
+    inv_map = [0 for _ in 1:size]
+    for (index, e) in enumerate(map)
+        inv_map[e] = index
+    end
+    return inv_map
+end
+
+# Graph-first partitioning entry points.
+"""
+    partition_graph(g, k; algorithm=:bury, backend=:heap, verbose=false) -> GraphPartition
+
+Partition a nonempty simple undirected graph into `k` equally sized parts.
+Require `1 <= k <= nv(g)` and `nv(g) % k == 0`.
+
+Algorithms delegate to the existing implementations:
+- `:bury` calls [`bury_k`](@ref).
+- `:bury_seeded` calls [`bury_k_seeded`](@ref), with its deterministic
+  minimum-weight seeder for each part.
+- `:random` calls [`k_partition_random`](@ref), using the default Random RNG.
+- `:saran_vazirani` calls [`k_partition_saran_vazirani`](@ref); its trace is
+  available through that legacy function instead.
+
+BURY accepts `backend=:heap` (default), `:scan`, or `:legacy`, forwarded through
+every partition round. Seed and partition policies are unchanged. `verbose`
+is forwarded to BURY. Other algorithms only accept the default backend value,
+which does not apply to them, and retain their existing output behavior.
+An incomplete registry raises an error. The Saran–Vazirani baseline first
+tries to pack the original components and reports failure explicitly.
+"""
+function partition_graph(g::Graphs.Graph, k;
+                         algorithm::Symbol=:bury, backend::Symbol=:heap,
+                         verbose::Bool=false)
+    k = _check_partition_count(g, k)
+    _bury_check_backend(backend)
+    if algorithm in (:random, :saran_vazirani) && backend !== :heap
+        throw(ArgumentError("backend selection applies only to :bury and :bury_seeded"))
+    end
+
+    reg = if algorithm === :bury
+        bury_k(g, k; backend=backend, verbose=verbose)
+    elseif algorithm === :bury_seeded
+        bury_k_seeded(g, k; backend=backend, verbose=verbose)
+    elseif algorithm === :random
+        k_partition_random(g, k)
+    elseif algorithm === :saran_vazirani
+        first(k_partition_saran_vazirani(g, k))
+    else
+        throw(ArgumentError("unknown algorithm $algorithm; use :bury, :bury_seeded, :random, or :saran_vazirani"))
+    end
+
+    length(reg) == nv(g) ||
+        error("$algorithm returned an incomplete registry")
+    return GraphPartition(reg; nparts=k)
+end
+
+function _bipartition_targets(g, targets)
+    n = nv(g)
+    n >= 2 || throw(ArgumentError("bipartition_graph requires at least two vertices"))
+    targets isa AbstractRange{<:Integer} && !isempty(targets) && step(targets) == 1 ||
+        throw(ArgumentError("targets must be a nonempty contiguous ascending integer range"))
+    1 <= first(targets) <= last(targets) < n ||
+        throw(ArgumentError("targets must lie in 1:nv(g)-1 for two nonempty parts"))
+    return Int(first(targets)):Int(last(targets))
+end
+
+function _bipartition_cost(objective)
+    objective === matching_cost && return _matching_cost
+    objective === edge_cut_cost && return _edge_cut_cost
+    objective === pairwise_cut_rank && return _bury_cut_rank
+    # Arbitrary callbacks must run once per target, with their public contract.
+    return (colors, g) -> objective(g, GraphPartition(Int.(colors) .+ 1; nparts=2))
+end
+
+"""
+    bipartition_graph(g; targets=fld(nv(g),2):cld(nv(g),2),
+                     objective=matching_cost, backend=:heap) -> GraphPartition
+
+Run ordinary BURY independently for each target and minimize the scalar
+`objective(g, p)`. Targets specify the size of label 2, are evaluated in
+ascending order, and ties retain the last target. The default evaluates one
+target for even graphs and both nearest-balanced targets for odd graphs.
+
+Require at least two vertices and a nonempty contiguous ascending integer
+range within `1:nv(g)-1`, validated before invoking the objective. Return two
+nonempty declared parts without modifying the graph. Built-in matching,
+edge-cut, and pairwise-rank objectives use the scalar membership kernels.
+All BURY backends (`:heap`, `:scan`, `:legacy`) are supported.
+
+This helper uses ordinary BURY; seeded/custom partitioners remain available
+through [`bury_not_balanced_bipartition`](@ref). [`partition_graph`](@ref)
+continues to require exactly equal-sized parts and divisibility.
+"""
+function bipartition_graph(g::Graphs.Graph;
+                           targets=fld(nv(g), 2):cld(nv(g), 2),
+                           objective=matching_cost, backend::Symbol=:heap)
+    _bury_check_backend(backend)
+    targets = _bipartition_targets(g, targets)
+    colors = _bury_select_colors(g, targets, backend, _bipartition_cost(objective))
+    return GraphPartition(Int.(colors) .+ 1; nparts=2)
 end

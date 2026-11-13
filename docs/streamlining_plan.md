@@ -1,23 +1,65 @@
-# Proposal to streamline QuantumHamlets.jl
+# Streamlining plan and implementation record
 
-**12 November 2026 — archival phase complete; broader cleanup remains proposed**
+**12 November 2026 — archiving complete; source consolidation implemented**
 
 The aim is a library that is easy to read, call, and extend, with a small set of
-research examples. Start by archiving completed research work and consolidating
-documentation. Then coalesce small source and test files while preserving
-current behavior. Decisions to retire algorithms or APIs should be separate.
+research examples. Completed research has been archived and three source files
+have been coalesced while preserving the existing API. Test regrouping,
+dependency changes, and decisions to retire algorithms or APIs remain separate.
 
 This report records the recommendations discussed with the user. The user
-subsequently authorized the archival phase. Completed snapshots and restoration
+subsequently authorized archiving and then source consolidation. Snapshots and restoration
 instructions are listed in the [archive index](../archive/README.md).
-The completed phase removed verified loose study copies, retained readable
-deliverables, repaired links, and moved the required cost reference into tests.
-Source coalescing, dependency removal, and API retirement remain proposals.
+
+## Completed changes
+
+**Archiving:** eight completed experiment collections, the coupled historical
+GraphML workflows, five historical documents, and shared restoration context
+were preserved in **11 ZIPs totaling 70.48 MiB**. All **3,464 archived payload
+copies** were extracted and hash-checked, and a second local archive copy was
+verified. These counts include shared context and nested Git files, rather than
+3,464 independent research outputs.
+
+The migration removed **3,325 verified loose payload files** and 15 regenerable
+cache files. It retained 26 readable reports, plots, and summary files under
+`docs/results/`, updated links, and copied the required cost reference
+byte-for-byte into `test/reference/costs_before_optimization.jl`. The test now
+uses that copy and imports its Nemo reference operations directly. Scoped
+`.gitignore` exceptions allow the retained PNG/PDF deliverables to be tracked.
+Runtime source, original graph collections, and algorithm policies were
+preserved during this phase.
+
+Post-archive validation passed **459,283 package assertions**. A restored
+historical GraphML workflow and the maintained seven-method Toffoli example
+passed smoke checks; 92 local documentation links and 29 anchors were checked.
+Details and backup location are in the
+[archival verification record](../archive/verification.json).
+
+**Source consolidation:** the three moves in section 3 reduce top-level Julia
+files from **ten to seven**, and total Julia source files from **thirteen to
+ten**. Public functions now live beside their implementations. The module
+include order loads legacy objects, `GraphPartition`, costs, BURY, baselines,
+and plotting in that order. Function bodies and docstrings are moved with their
+functions; exports, signatures, policies, dependencies, backend implementations,
+vendored Python code, and frozen test references are preserved. The usage guide
+now documents the actual file layout.
+
+Post-consolidation validation passed **459,283 package assertions**, using:
+
+```sh
+julia --startup-file=no --project=. -e 'using Pkg; Pkg.test(; allow_reresolve=false)'
+```
+
+An independent parsed-source comparison confirmed that all **114 top-level
+code and docstring expressions** were preserved exactly, apart from source
+location metadata. The module's only change is its include list/order.
+The edited documentation's 18 local links and heading anchors were checked.
+These checks validate this consolidation separately from the archival work.
 
 ## 1. Where the clutter is
 
-The working-tree inventory, excluding Git internals and Python/environment
-caches, is approximately:
+The **pre-cleanup** working-tree inventory, excluding Git internals and
+Python/environment caches, was approximately:
 
 | Area | Files | Size | Interpretation |
 | --- | ---: | ---: | --- |
@@ -27,10 +69,11 @@ caches, is approximately:
 | `experiments/` | 3,228 | 107.9 MiB | Main source of file-count growth. |
 | `resources/` | 219 | 160.3 MiB | Graph inputs, examples, historical workflows, and generated figures. |
 
-These counts precede this report and describe files on disk, not only tracked
-files. They are a prioritization aid rather than a future target.
+These historical counts precede the changes recorded above and describe files
+on disk, not only tracked files. They explain the original priorities and are
+not a current inventory or a future target.
 
-The completed min-cutrank comparison accounts for **2,494 files / 90.8 MiB**,
+The completed min-cutrank comparison accounted for **2,494 files / 90.8 MiB**,
 including 2,010 individual annealing task JSON files. The original QAOA graph
 collections occupy about 144.8 MiB but contain only 83 files. Archiving completed
 experiments therefore addresses the file-count problem more directly than
@@ -59,22 +102,26 @@ framework. A few readable Julia examples should be sufficient for new work.
 
 ## 3. Source consolidation
 
-These changes reduce top-level Julia source files from ten to seven without
-changing function names, signatures, return values, or partition policies:
+The following moves are implemented. The three former files and their module
+includes have been removed; their functions remain available under the same
+names, signatures, return values, and partition policies:
 
-| Current file | Proposed destination | Reason |
+| Former file | Current destination | What moved |
 | --- | --- | --- |
-| `src/display.jl` | `src/quantum_land.jl` | Its 14 lines display those legacy objects. |
-| `src/graph_utils.jl` | BURY helpers into `src/bury.jl`; legacy edge removal beside legacy objects | Three helpers do not need a miscellaneous file. |
-| `src/api.jl` | Partitioning functions into `src/bury.jl`, cost adapters into `src/costs.jl`, plotting adapter into `src/visualization.jl` | Put each public function beside its implementation. |
+| `src/display.jl` | `src/quantum_land.jl` | The three `Base.show` methods for legacy objects. |
+| `src/graph_utils.jl` | `src/bury.jl` and `src/quantum_land.jl` | `_check_partition_count` and `inverse_map` accompany BURY; `remove_local_edges` accompanies legacy objects. |
+| `src/api.jl` | `src/bury.jl`, `src/costs.jl`, `src/partition.jl`, and `src/visualization.jl` | Partition functions and target helpers accompany BURY; scalar cost adapters and `matching_details` accompany cost kernels; `_labels_for` accompanies `GraphPartition`; `_land_for` and `plot_partition` accompany plotting. |
 
-Retain `src/partition.jl` for `GraphPartition` and its accessors. Keep heap and
-scan implementations separate; they are substantial algorithms rather than
-scaffolding. Preserve the structure of `src/min_cutrank/`, its upstream version
-record, local-change notes, and MIT license. Flattening its four upstream
-modules would make future comparison with upstream harder for little benefit.
+`src/partition.jl` retains `GraphPartition`, its conversions, and accessors.
+Heap, scan, and legacy implementations remain separate under `src/bury/`.
+The structure of `src/min_cutrank/`, upstream version record, local-change notes,
+and MIT license are unchanged. Existing package calls need no migration.
+Historical archive snapshots keep their original source layout for restoration.
 
 ## 4. Dependencies and possible feature retirement
+
+These are remaining proposals; the source consolidation does not remove or
+upgrade dependencies or retire any algorithm/API.
 
 | Candidate | Recommendation | Prerequisite or tradeoff |
 | --- | --- | --- |
@@ -96,23 +143,25 @@ mandatory dependencies are related but distinct goals.
 
 ## 5. Documentation, examples, and tests
 
-Archive historical handoff prompts, the old revision proposal, implementation
-reviews, and resolved bug audits. First carry any still-current limitations or
-required explanations into the usage guide. The two backend performance reports
-could become one concise report, with their originals preserved in the archive.
+Historical handoff prompts, the old revision proposal, implementation reviews,
+and resolved bug audits are now in the historical documentation archive. The
+usage guide retains current limitations. Combining the two backend performance
+reports into one concise report remains a possible follow-up; both are still
+directly readable and their originals are preserved in the archives.
 
 The older `graphml_plots*` / `run_graphml_plots.py` workflow and the later
-`graphml_family_*` / `run_graphml_family_plots.py` workflow should become frozen
-historical studies unless their broader multipartition analyses remain active.
-The newer workflow includes the older one for shared helpers: archive them
-together, or separate those helpers before retiring either workflow.
+`graphml_family_*` / `run_graphml_family_plots.py` workflow are frozen together
+in the GraphML comparisons archive. The newer workflow includes the older one
+for shared helpers; their original relative layout and result directories are
+preserved together.
 
 Keep `resources/toffoli_baselines.jl` as the current short example. Bring useful
 grid/QAOA examples to the same pattern: a callable function, no experiment on
 include, explicit arguments, and returned data. Review `sandbox.jl` and other
 personal research scripts with the user before treating them as disposable.
 
-Consolidate tests by responsibility while preserving assertions:
+Test regrouping has not been performed. Possible follow-up work, preserving
+assertions, is to:
 
 - Fold the small `known_bugs.jl` cases into the relevant API, baseline, or cost
   tests; their historical label no longer helps navigation.
@@ -121,17 +170,19 @@ Consolidate tests by responsibility while preserving assertions:
   identifiable rather than building one enormous test file.
 - Preserve `test/reference/bury_original.jl` unchanged.
 
-One dependency must be fixed before archiving experiments:
-`test/cost_semantics_regressions.jl` includes
-`experiments/cost_performance/reference_costs.jl`. Copy that frozen reference
-into `test/reference/` without changing its contents, update the include, and
-make its test-only imports explicit.
+The archive dependency has been fixed: `test/cost_semantics_regressions.jl` now
+includes `test/reference/costs_before_optimization.jl`. That file is an unchanged
+copy of the former `experiments/cost_performance/reference_costs.jl`. Its
+reference imports are explicit, and the full package suite passed after the
+relocation. The frozen BURY reference remains unchanged.
 
-## 6. What archiving would entail
+## 6. Archive arrangement and restoration policy
 
 Archiving turns a completed study into a preserved snapshot that can be opened
 when needed. It removes thousands of loose files from the everyday working
-tree while keeping the evidence and reproduction material together.
+tree while keeping the evidence and reproduction material together. This phase
+is complete. The process below records the preservation policy used and the
+policy to follow for any future archived studies.
 
 ### Archive contents
 
@@ -161,17 +212,17 @@ third-party environments will remain runnable indefinitely.
 
 ### Storage and everyday access
 
-The simplest first arrangement is a small `archive/` directory containing one
-ZIP per study and one index. ZIP is convenient for ordinary file browsing;
-the archive format itself is not an important architectural decision.
+The chosen arrangement is `archive/`, containing the study ZIPs, shared-context
+and historical-document ZIPs, an index, checksums, and a verification record.
+ZIP is convenient for ordinary file browsing; the format itself is not an
+important architectural decision.
 
-For example, the index could identify a study by date, describe its scope,
-link its readable report, name its archive and checksum, and give its original
-paths and restoration instructions. Keep the current Markdown reports and
-their selected figures/tables outside the archive so normal reading does not
-require extraction. Their small duplication inside the complete snapshot is
-intentional. Update report links to the retained files or archive index;
-ordinary Markdown links cannot browse files inside a ZIP.
+The index identifies the studies and dates, describes their scope, links readable
+reports, names the archives and checksums, and gives restoration instructions.
+Current Markdown reports and selected figures/tables remain outside the ZIPs so
+normal reading does not require extraction. Their small duplication inside the
+complete snapshots is intentional. Report links now target the retained files
+or archive index; ordinary Markdown links cannot browse files inside a ZIP.
 
 An archive within the repository reduces visible file count but not necessarily
 Git storage. Previously committed files remain in Git history, and committing
@@ -203,11 +254,12 @@ rewrite Git history as part of this cleanup.
    and removal scope are accepted. Run package tests and maintained examples,
    then check links again.
 
-The existing min-cutrank artifact ZIP is a curated sharing bundle, **not a full
+The earlier min-cutrank artifact ZIP was a curated sharing bundle, **not a full
 archive of its working directory**. Its packaging code intentionally excludes
 superseded `figures/`, internal report-render QA and drafts, and the full
-upstream-source tarball. It is useful, but cannot alone justify deleting all
-loose study files.
+upstream-source tarball. The new complete min-cutrank archive preserves that
+bundle along with the omitted material, including the nested upstream Git
+repository. The curated bundle was not used as the sole preservation copy.
 
 ### Returning to an archived study
 
@@ -216,18 +268,17 @@ recorded layout. Work on a copy and give subsequent results a new study/run
 identity. The original archive remains immutable. Keep the files loose again
 if that study becomes active; archiving need not make future work cumbersome.
 
-## 7. Proposed order and acceptance criteria
+## 7. Current status and remaining work
 
-1. **Pilot the min-cutrank archive.** It offers the largest file-count reduction
-   and has a clear current report and a replacement callable baseline API.
-2. **Archive the other completed studies and historical workflows.** Preserve
-   cross-directory dependencies and keep original graph collections available.
-3. **Simplify documentation and source layout.** Apply the three source merges
-   and reorganize tests without changing behavior.
-4. **Remove unused runtime dependencies.** Move Nemo to tests and remove the
-   redundant Colors dependency, then run the package suite.
-5. **Decide on feature retirement separately.** Resolve Saran–Vazirani, runtime
-   legacy BURY, and any longer-term legacy-object migration with the user.
+| Work | Status |
+| --- | --- |
+| Archive completed studies, workflows, and historical documentation | Complete; verified snapshots, retained deliverables, repaired links, and restoration instructions are available. |
+| Relocate the test reference needed after archiving | Complete; copied unchanged and validated by the full package suite. |
+| Coalesce the three source files and update the usage guide | Complete; 459,283 assertions pass and parsed-source comparison confirms preserved definitions/docstrings. |
+| Regroup test files and combine performance reports | Proposed; not part of this source-only consolidation. |
+| Move Nemo to tests and remove the redundant Colors dependency | Proposed; package dependencies remain unchanged. |
+| Retire Saran–Vazirani, runtime legacy BURY, or legacy objects | Separate decisions requiring discussion with the user. |
+| Optional plotting or PythonCall loading | Deferred unless startup/dependency weight becomes a priority. |
 
 The first pass succeeds when the everyday tree is easier to navigate, current
 calls still work, maintained examples run, reports have working links, tests

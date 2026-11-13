@@ -370,23 +370,33 @@ julia --project=. -e 'using Pkg; Pkg.test()'
 
 The tests cover deterministic fixtures, exhaustive small graphs, valid partition sizes, numerical costs, input graph preservation, conversions, and equivalence against a frozen original BURY implementation. Backend checks also cover automatic seed selection, RNG consumption, custom callbacks, return types, and verbose traces. The five originally deferred failures are now ordinary passing regressions. Additional tests cover independent matching cardinalities and witnesses, one-part plots, validation before RNG/callbacks, disconnected zero-cut packing, constructor ownership, captured display output, and scalar research scores. Large matching checks run separately in disposable subprocesses with external time limits (`python3 test/run_matching_stress.py`). The full suite after the target-range improvements passed 459,086 assertions with no broken tests, including 1,877 new range assertions; its validation log is preserved in the [range-performance archive](../archive/README.md#bipartition-range-performance).
 
-The source is organized within one module:
+The source is organized within one module, with seven top-level Julia files
+and three BURY backend files:
 
 | File | Responsibility |
 | --- | --- |
 | `src/QuantumHamlets.jl` | Imports, exported API, and includes |
-| `src/quantum_land.jl` | Original villagers, hamlets, and `quantumLand` representation |
-| `src/graph_utils.jl` | Graph and vertex-map helpers |
-| `src/bury.jl` | Public BURY wrappers, backend selection, multipartitioning, and seed searches |
+| `src/quantum_land.jl` | Original villagers, hamlets, and `quantumLand`, their display methods, and legacy edge removal |
+| `src/partition.jl` | `GraphPartition`, conversions, accessors, and graph/partition size validation |
+| `src/costs.jl` | Shared cost kernels, graph-first scalar costs and matching details, and legacy tuple adapters |
+| `src/bury.jl` | BURY kernels' dispatch, seed searches, vertex-map helpers, `partition_graph`, and `bipartition_graph` |
 | `src/bury/heap.jl` | Indexed-heap color kernel |
 | `src/bury/scan.jl` | Optimized scan color kernel |
 | `src/bury/legacy.jl` | Original ordinary and seeded implementations |
-| `src/baselines.jl` | Random and Saran–Vazirani partitioning |
-| `src/costs.jl` | Shared cost kernels and legacy tuple adapters |
-| `src/visualization.jl` | Original graph plotting |
-| `src/display.jl` | Original text display methods |
-| `src/partition.jl` | `GraphPartition` and conversions |
-| `src/api.jl` | Simpler partition, cost, details, and plotting calls |
+| `src/baselines.jl` | Random, Saran–Vazirani, METIS, and min-cutrank/SA baselines and initializers |
+| `src/visualization.jl` | Graph plotting, legacy plotting adapters, and `plot_partition` |
+| `src/min_cutrank/` | Vendored upstream Python implementation, adapter, provenance, and license |
+
+The November 2026 source consolidation placed each public function beside its
+implementation. Existing function names, arguments, return types, exports,
+and algorithm policies are preserved; normal `using QuantumHamlets` calls need
+no migration. The [streamlining record](streamlining_plan.md#3-source-consolidation)
+maps the former files to their current locations. `GraphPartition` is loaded
+before cost and plotting methods that use it in their signatures.
+
+After consolidation, the full package suite passed 459,283 assertions with
+`Pkg.test(; allow_reresolve=false)`. An independent parsed-source comparison
+also confirmed that the moved definitions and docstrings were unchanged.
 
 Maintained research examples and original graph datasets remain under `resources/`. Completed studies, earlier plotting workflows, and historical design reviews are preserved through the [archive index](../archive/README.md). Reports and selected results remain directly readable under `docs/`.
 

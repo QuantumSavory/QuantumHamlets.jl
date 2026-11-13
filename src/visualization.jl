@@ -31,3 +31,33 @@ function visualize_graph_on_land(land::quantumLand, g::Graphs.Graph; method=Quan
     f = print_graph(g, edgecolors=edgecolors, nodecolors=nodecolors)
     return f, cost
 end
+
+# GraphPartition plotting adapter.
+function _land_for(g::Graphs.Graph, p::GraphPartition)
+    _labels_for(g, p)
+    return quantumLand(p)
+end
+
+"""
+    plot_partition(g, p::GraphPartition; highlight=:matching)
+
+Return `(figure, cost)` using the existing plotting implementation.
+`highlight=:matching` highlights pairwise matching edges; `:cut_edges`
+highlights every cross-part edge. With `:none`, show membership without
+highlighted edges and return `nothing` for the cost.
+
+Plotting dependencies still load with the package. To display rank, evaluate
+[`pairwise_cut_rank`](@ref) separately and use `highlight=:none`.
+"""
+function plot_partition(g::Graphs.Graph, p::GraphPartition; highlight::Symbol=:matching)
+    land = _land_for(g, p)
+    if highlight === :matching
+        return visualize_graph_on_land(land, g; method=matching_cost_of_partition)
+    elseif highlight === :cut_edges
+        return visualize_graph_on_land(land, g; method=naive_cost_of_partition)
+    elseif highlight === :none
+        return visualize_graph_on_land(land, g; method=(_, _) -> (nothing, nothing))
+    else
+        throw(ArgumentError("unknown highlight $highlight; use :matching, :cut_edges, or :none"))
+    end
+end
