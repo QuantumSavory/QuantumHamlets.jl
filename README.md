@@ -1,4 +1,4 @@
-# QuantumHamlets
+# QuantumHamlets (Currently Repo is a bit unstable as it is under active improvement - we should have most things tidied up by the end of the month (November 2026))
 Please feel free to email us questions if you would like to use this library and the current state of documentation is stopping you. More examples and API details are in the [usage guide](docs/usage.md).
 
 To use a local checkout, with Julia 1.11 or later, run these commands from the package directory:
