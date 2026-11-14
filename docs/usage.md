@@ -77,6 +77,7 @@ p = bury_sa(g; seed=3)           # ordinary BURY, then SA
 p = bury_seeded_sa(g; seed=3)    # sqrt-sampled BURY, then SA
 p = metis_partition(g)           # native METIS KWAY, 3% imbalance tolerance
 p = metis_sa(g; seed=3)          # explicitly balance METIS, then SA
+p = kl_partition(g; seed=3)     # classic two-way KL, minimizing edge-cut cost
 
 pairwise_cut_rank(g, p)
 partition_sizes(p)
@@ -100,6 +101,13 @@ go to the largest native parts, ties by label. Native output is the default for
 `metis_partition`; repaired output is the default initializer for `metis_sa`.
 Set `metis_sa(...; balance=false)` to preserve native sizes instead. Empty native
 parts are rejected by SA. Both choices leave METIS's caller options unchanged.
+
+`kl_partition(g; initial=p, max_iter=10)` improves an existing bipartition while
+preserving both nonempty part sizes. Without `initial`, it starts with a seeded
+floor/ceiling split, including for odd graphs. Each classic KL pass keeps its
+best improving prefix of paired swaps. `max_iter=0` returns the initializer;
+the result never has a larger edge cut than that initializer. KL is implemented
+in one Julia function, with no additional dependencies; it supports two parts.
 
 The [bundled upstream source and MIT license](../src/min_cutrank/README.md) live
 under `src/min_cutrank/`; PythonCall loads it directly with no separate Python

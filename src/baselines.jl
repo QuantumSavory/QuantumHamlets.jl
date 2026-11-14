@@ -208,6 +208,98 @@ function metis_partition(g::Graphs.Graph, k=2; seed=0, balance::Bool=false)
 end
 
 """
+    kl_partition(g; initial=nothing, seed=0, max_iter=10) -> GraphPartition
+
+Run classic Kernighan–Lin pair-swap refinement to minimize the edge cut of an
+undirected graph with at least two vertices. By default use a random floor/ceiling
+bipartition and a local RNG controlled by `seed`. Supply `initial` as a
+`GraphPartition`, registry, integer labels 1/2, or Boolean flags (true means 1).
+Both parts must be nonempty; their sizes are preserved, even if unequal.
+
+Each pass selects disjoint pairs, including swaps with nonpositive gains, then
+commits the first prefix with the greatest positive cumulative improvement.
+Pair ties use the smallest vertex IDs in parts 1 and 2. Stop when no improvement
+exists or after `max_iter` passes; `max_iter=0` returns only the initializer.
+Inputs and the global RNG are unchanged. Self loops are ignored. This is an
+edge-cut heuristic, with no guarantee of a globally optimal partition.
+
+The implementation uses O(n³) time per pass and O(n) extra memory. See Kernighan
+and Lin (1970), https://doi.org/10.1002/j.1538-7305.1970.tb01770.x.
+"""
+function kl_partition(g::Graphs.Graph; initial=nothing, seed=0, max_iter=10)
+    n = nv(g)
+    n >= 2 || throw(ArgumentError("KL requires at least two vertices"))
+    _baseline_seed(seed)
+    max_iter isa Integer && !(max_iter isa Bool) && max_iter >= 0 ||
+        throw(ArgumentError("max_iter must be a nonnegative integer"))
+    p = if initial === nothing
+        labels = fill(2, n)
+        labels[randperm(Xoshiro(seed), n)[1:fld(n, 2)]] .= 1
+        GraphPartition(labels; nparts=2)
+    elseif initial isa GraphPartition
+        initial
+    elseif initial isa AbstractVector{Bool}
+        GraphPartition(ifelse.(initial, 1, 2); nparts=2)
+    elseif initial isa Union{AbstractVector{<:Integer},AbstractDict}
+        GraphPartition(initial; nparts=2)
+    else
+        throw(ArgumentError("initial must be a GraphPartition, registry, labels, or Boolean flags"))
+    end
+    length(p) == n && p.nparts == 2 && all(>(0), partition_sizes(p)) ||
+        throw(ArgumentError("initial must assign every vertex to two nonempty parts"))
+    labels = membership(p)
+    max_iter == 0 && return GraphPartition(labels; nparts=2)
+    d = zeros(Int, n)
+    locked, adjacent = falses(n), falses(n)
+    swaps = Vector{Tuple{Int,Int}}(undef, minimum(partition_sizes(p)))
+    for _ in 1:max_iter
+        left, right = findall(==(1), labels), findall(==(2), labels)
+        fill!(locked, false)
+        fill!(d, 0)
+        for e in edges(g)
+            u, v = src(e), dst(e)
+            u == v && continue
+            delta = labels[u] == labels[v] ? -1 : 1
+            d[u] += delta
+            d[v] += delta
+        end
+        cumulative, best_gain, best_prefix = 0, 0, 0
+        for i in eachindex(swaps)
+            pair_gain, a, b = typemin(Int), 0, 0
+            for u in left
+                locked[u] && continue
+                fill!(adjacent, false)
+                adjacent[neighbors(g, u)] .= true
+                for v in right
+                    locked[v] && continue
+                    gain = d[u] + d[v] - 2 * adjacent[v]
+                    if gain > pair_gain
+                        pair_gain, a, b = gain, u, v
+                    end
+                end
+            end
+            swaps[i] = (a, b)
+            locked[a] = locked[b] = true
+            cumulative += pair_gain
+            if cumulative > best_gain
+                best_gain, best_prefix = cumulative, i
+            end
+            # Labels stay fixed until the pass commits; d tracks tentative swaps.
+            for v in (a, b), u in neighbors(g, v)
+                locked[u] && continue
+                d[u] += labels[u] == labels[v] ? 2 : -2
+            end
+        end
+        best_gain > 0 || break
+        for i in 1:best_prefix
+            a, b = swaps[i]
+            labels[a], labels[b] = labels[b], labels[a]
+        end
+    end
+    return GraphPartition(labels; nparts=2)
+end
+
+"""
     metis_sa(g; seed=0, balance=true, kwargs...) -> GraphPartition
 
 Initialize [`min_cutrank`](@ref) with METIS. By default explicitly repair METIS
@@ -219,8 +311,9 @@ function metis_sa(g::Graphs.Graph; seed=0, balance::Bool=true, kwargs...)
     return min_cutrank(g; initial=p, seed=seed, kwargs...)
 end
 
-"""Implementation of the n/2 balanced partitioning algorithm from https://ics.uci.edu/~vazirani/k-cut.pdf \n
-Input: a graph and number of pices to partition into.\n
+"""Balanced partitioning algorithm from https://ics.uci.edu/~vazirani/k-cut.pdf \n
+The edge-cut approximation factor is `nv(g) * (1 - 1/k)`, or `nv(g)/2` for bisection.
+Input: a graph and number of pieces to partition into.\n
 Output: `(registry, trace)`, with component snapshots and balance checks in the trace.
 The first snapshot checks the original connected components before removing edges.
 Require a nonempty graph and integer `k` in `1:nv(g)` dividing `nv(g)`.
@@ -228,10 +321,16 @@ Solver failure or failure to find a complete balanced assignment raises an error
 """
 function k_partition_saran_vazirani(g::Graphs.Graph, k)
     k = _check_partition_count(g, k)
+    target = nv(g) ÷ k
     dump = []
     function pack_components(graph)
         components = Graphs.connected_components(graph)
         sizes = length.(components)
+        # Whole components cannot fit if even one exceeds a part's capacity.
+        if any(>(target), sizes)
+            push!(dump, (copy(components), false))
+            return nothing
+        end
         inds = try
             partition(sizes, k; optimizer=HiGHS.Optimizer, strict=true)
         catch err
@@ -240,7 +339,7 @@ function k_partition_saran_vazirani(g::Graphs.Graph, k)
         end
         length(inds) == length(components) && all(i -> i isa Integer && 1 <= i <= k, inds) ||
             error("Saran–Vazirani component packing returned invalid labels")
-        balanced = all(i -> sum(sizes[inds .== i]) == nv(g) ÷ k, 1:k)
+        balanced = all(i -> sum(sizes[inds .== i]) == target, 1:k)
         push!(dump, (copy(components), balanced))
         balanced || return nothing
 
@@ -254,27 +353,6 @@ function k_partition_saran_vazirani(g::Graphs.Graph, k)
     # A disconnected input may already admit a balanced zero-cut partition.
     initial = pack_components(g)
     initial === nothing || return initial, dump
-
-    # Given a graph g, and two vectors corresponding the vertices within that graph, returns the set of edges the crosses the partition
-    function edges_spanning_partition(g::Graphs.Graph, v1, v2)
-        if length(v1) > length(v2)
-            v3 = v2
-            v2 = v1
-            v1 = v3
-        end
-
-        edges = []
-        for v in v1
-            neighbors = Graphs.neighbors(g,v)
-            for n in neighbors
-                if n ∉ v1
-                    push!(edges,Edge(v,n))
-                end
-            end
-        end
-
-        return edges
-    end
 
     d = Graphs.DiGraph(g)
     capacity_matrix = zeros(Int, nv(g), nv(g))
@@ -292,17 +370,25 @@ function k_partition_saran_vazirani(g::Graphs.Graph, k)
     unique!(min_cuts)
     sort!(min_cuts, by = x-> x[3], rev=false)
 
-    edge_set = []
-    for c in min_cuts
-        push!(edge_set, edges_spanning_partition(g,c[1],c[2]))
-    end
-
     g_prime = copy(g)
-    for cut in edge_set
-        for e in cut
-            rem_edge!(g_prime, e)
+    in_side = falses(nv(g))
+    for (left, right, _) in min_cuts
+        side = length(left) <= length(right) ? left : right
+        fill!(in_side, false)
+        in_side[side] .= true
+        changed = false
+        # Inspect original adjacency while deleting from the copy; no edge lists needed.
+        for v in side, neighbor in Graphs.neighbors(g, v)
+            if !in_side[neighbor]
+                changed |= rem_edge!(g_prime, v, neighbor)
+            end
         end
-    
+        if !changed
+            # Preserve the original trace without solving the same packing again.
+            push!(dump, deepcopy(last(dump)))
+            continue
+        end
+
         new_reg = pack_components(g_prime)
         new_reg === nothing || return new_reg, dump
     end

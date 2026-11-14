@@ -15,7 +15,7 @@ import PythonCall
 export GraphPartition, partition_graph, bipartition_graph, membership, registry, partition_sizes,
        edge_cut_cost, matching_cost, pairwise_cut_rank, vertex_cover_costs,
        matching_details, plot_partition,
-       min_cutrank, bury_sa, bury_seeded_sa, metis_partition, metis_sa
+       min_cutrank, bury_sa, bury_seeded_sa, metis_partition, metis_sa, kl_partition
 
 # Existing qualified entry points remain available with their original contracts.
 public quantumLand, villager, hamlet, defaultVillagerRegistry,
