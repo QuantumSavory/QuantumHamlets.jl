@@ -93,7 +93,6 @@ import PythonCall
     end
 
     @testset "METIS and explicit capacity repair" begin
-        original_options = copy(Metis.options)
         g = path_graph(11)
         original = copy(g)
         for k in (1, 2, 3, 7, 11)
@@ -104,19 +103,9 @@ import PythonCall
             @test maximum(sizes) - minimum(sizes) <= 1
             @test minimum(sizes) >= 1
             @test membership(metis_partition(g, k; balance=true, seed=5)) == membership(p)
-            @test Metis.options == original_options
         end
         @test g == original
         @test metis_partition(g; seed=5) isa GraphPartition
-        @test Metis.options == original_options
-        try
-            Metis.options[Int(Metis.LibMetis.METIS_OPTION_SEED) + 1] = 913
-            custom_options = copy(Metis.options)
-            metis_partition(g; seed=5, balance=true)
-            @test Metis.options == custom_options
-        finally
-            copyto!(Metis.options, original_options)
-        end
 
         # A deliberately empty native part is repaired using cut cost and ID ties.
         @test Q._balance_metis(path_graph(6), ones(Int, 6), 2) == [2, 2, 2, 1, 1, 1]
@@ -128,16 +117,13 @@ import PythonCall
         @test membership(actual) == membership(expected)
         @test sort(partition_sizes(actual)) == [5, 6]
         @test pairwise_cut_rank(g, actual) <= pairwise_cut_rank(g, initial)
-        @test Metis.options == original_options
 
         for k in (0, -1, 12, 2.0), balance in (false, true)
             @test_throws ArgumentError metis_partition(g, k; balance)
-            @test Metis.options == original_options
         end
         @test_throws ArgumentError metis_partition(SimpleGraph(0))
         @test_throws ArgumentError metis_partition(g; seed=-1)
         @test_throws ArgumentError metis_partition(g; seed=big(typemax(Int32)) + 1)
-        @test Metis.options == original_options
     end
 
     @testset "Invalid annealing inputs fail before solving" begin

@@ -17,7 +17,6 @@ end
 # Load the bundled Python package on first use, without modifying sys.path.
 const _MIN_CUTRANK = PythonCall.pynew()
 const _SA_LOCK = ReentrantLock()
-const _METIS_LOCK = ReentrantLock()
 
 function _min_cutrank_module()
     if PythonCall.pyisnull(_MIN_CUTRANK)
@@ -181,7 +180,7 @@ With `balance=true`, explicitly repair the result to floor/ceiling capacities:
 move vertices from oversized to undersized parts, choosing the smallest edge-cut
 increase, then smallest vertex ID and destination on ties. This postprocessing
 can change the native cost. The extra capacities go to the largest native parts
-(smallest label on ties). METIS's global options are restored after each call.
+(smallest label on ties).
 """
 function metis_partition(g::Graphs.Graph, k=2; seed=0, balance::Bool=false)
     n = nv(g)
@@ -189,18 +188,8 @@ function metis_partition(g::Graphs.Graph, k=2; seed=0, balance::Bool=false)
         throw(ArgumentError("k must be an integer in 1:nv(g)"))
     _baseline_seed(seed)
     seed <= typemax(Cint) || throw(ArgumentError("METIS seed must fit in Int32"))
-    labels = lock(_METIS_LOCK) do
-        saved = copy(Metis.options)
-        try
-            fill!(Metis.options, -1)
-            Metis.options[Int(Metis.LibMetis.METIS_OPTION_NUMBERING) + 1] = 1
-            Metis.options[Int(Metis.LibMetis.METIS_OPTION_SEED) + 1] = seed
-            Metis.options[Int(Metis.LibMetis.METIS_OPTION_UFACTOR) + 1] = 30
-            Int.(Metis.partition(g, k; alg=:KWAY))
-        finally
-            copyto!(Metis.options, saved)
-        end
-    end
+    options = Metis.Options(seed=seed, ufactor=30)
+    labels = Int.(Metis.partition(g, k; alg=Metis.Algorithm.KWAY, options))
     p = GraphPartition(labels; nparts=k)
     length(p) == n || error("METIS returned an incomplete partition")
     balance && _balance_metis(g, labels, k)
